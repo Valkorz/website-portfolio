@@ -1,0 +1,33 @@
+---
+const { activeTab = 'main' } = Astro.props;
+---
+
+<div>
+    <header class="bg-steam-dark w-full shadow-2xl border-b border-steam-blue/10">
+        <div class="max-w-6xl mx-auto px-4">
+            <div class="py-6">
+            <h1 class="text-steam-accent text-3xl font-black tracking-tighter uppercase">
+                Vittorio Pivarci<span class="text-steam-blue italic"> Portfolio</span>
+            </h1>
+            </div>
+        </div>
+    </header>
+    <nav class="flex gap-1 bg-steam-dark2 nav-header">
+      {['main', 'library', 'blog', 'about'].map((tab) => (
+        <a  href={tab === 'main' ? '/' : `/${tab}`}
+            class:list={[
+            "px-6 py-2 uppercase text-sm font-bold transition-all duration-200 transform hover:-translate-y-1 active:scale-95",
+            activeTab === tab 
+              ? "bg-steam-dark text-white border-b-2 border-steam-blue" 
+              : "text-steam-accent hover:text-white hover:bg-white/5"
+            // "nav-button"
+            ]}>
+            {tab}
+        </a>
+      ))}
+    </nav>
+</div>
+
+<style>
+
+</style>

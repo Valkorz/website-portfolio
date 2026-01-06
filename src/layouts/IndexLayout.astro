@@ -1,0 +1,35 @@
+---
+    import '../styles/global.css'
+    const { title } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="generator" content={Astro.generator} />
+		<title>Valkor's Portfolio</title>
+	</head>
+	<body class="bg-steam-gray">
+		<div id="PageBodyHeader" class="bg-steam-dark header">
+            <h1 class="text-text-light">hello</h1>
+		</div>    
+        <slot />
+	</body>
+</html>
+
+<style>
+	html,
+	body {
+		margin: 0;
+		width: 100%;
+		height: 100%;
+	};
+
+    .header{
+	    width: 500px;
+	    height: 200px;
+	}
+</style>
