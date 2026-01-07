@@ -1,0 +1,40 @@
+---
+import { getCollection, render, type CollectionEntry } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import { Image } from 'astro:assets';
+
+export async function getStaticPaths() {
+  const entries = await getCollection('projects');
+  return entries.map((entry) => ({
+    params: { slug: entry.id.replace(/\.md$/, '') }, 
+    props: { entry },
+  }));
+}
+
+type Props = {
+  entry: CollectionEntry<'projects'>;
+};
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+---
+
+<Layout title={entry.data.title}>
+  <h1 class="text-4xl font-bold text-white">{entry.data.title}</h1>
+  <p class="text-steam-accent mt-2">{entry.data.description}</p>
+  
+  <div class="grid grid-cols-2 gap-4 mt-8">
+    {entry.data.screenshots.map((img) => (
+      <Image 
+        src={img} 
+        alt="Screenshot" 
+        class="rounded border border-white/10 shadow-lg"
+        width={800} 
+      />
+    ))}
+  </div>
+
+  <article class="prose prose-invert mt-12 max-w-none">
+    <Content />
+  </article>
+</Layout>

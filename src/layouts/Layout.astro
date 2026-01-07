@@ -12,7 +12,7 @@ const { title, currentTab } = Astro.props;
         <title>{title}</title>
     </head>
     <body class="bg-steam-gray text-steam-accent min-h-screen">
-        <SteamHeader activeTab={currentTab} />
+        <SteamHeader activeTab={currentTab}/>
         
         <main class="max-w-6xl mx-auto p-4">
             <slot /> </main>

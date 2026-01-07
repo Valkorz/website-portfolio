@@ -3,7 +3,7 @@ const { activeTab = 'main' } = Astro.props;
 ---
 
 <div>
-    <header class="bg-steam-dark w-full shadow-2xl border-b border-steam-blue/10">
+    <header class="bg-steam-dark w-full z-10 relative">
         <div class="max-w-6xl mx-auto px-4">
             <div class="py-6">
             <h1 class="text-steam-accent text-3xl font-black tracking-tighter uppercase">
@@ -12,14 +12,14 @@ const { activeTab = 'main' } = Astro.props;
             </div>
         </div>
     </header>
-    <nav class="flex gap-1 bg-steam-dark2 nav-header">
+    <nav class="flex gap-1 bg-steam-dark2 nav-header z-0 relative -mt-2">
       {['main', 'library', 'blog', 'about'].map((tab) => (
-        <a  href={tab === 'main' ? '/' : `/${tab}`}
+        <a  href={tab === 'main' ? '/website-portfolio' : `/website-portfolio/${tab}`}
             class:list={[
-            "px-6 py-2 uppercase text-sm font-bold transition-all duration-200 transform hover:-translate-y-1 active:scale-95",
+            "px-6 py-6 uppercase text-sm font-bold drop-shadow-2xl transition-all duration-200 transform hover:translate-y-2 active:scale-95",
             activeTab === tab 
               ? "bg-steam-dark text-white border-b-2 border-steam-blue" 
-              : "text-steam-accent hover:text-white hover:bg-white/5"
+              : "text-steam-accent hover:text-white hover:bg-steam-dark2"
             // "nav-button"
             ]}>
             {tab}
