@@ -16,8 +16,9 @@ const { project } = Astro.props;
             <h3 class="text-white font-bold uppercase tracking-tight">{project.data.title}</h3>
             <div class="flex gap-2 mt-2">
               {project.data.tags.map((tag: string) => (
-                <span class="text-[10px] bg-black/40 px-2 py-0.5 text-steam-accent">{tag}</span>
+                <span class="text-[10px] h-fit mt-auto mb-auto bg-black/40 px-2 py-0.5 text-steam-accent">{tag}</span>
               ))}
+              <p class="text-white font-bold ml-auto mt-auto mb-auto">v{project.data.version}</h3>
             </div>  
         </div> 
 

@@ -17,3 +17,5 @@
 :root{
     --color-text-dark-transparent: rgba(23, 26, 33, 1);
 }
+
+@source "../**/*.{astro,html,js,jsx,md,mdx,ts,tsx}";

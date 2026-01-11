@@ -1,0 +1,61 @@
+---
+import Image from "astro/components/Image.astro";
+
+interface Props{
+    screenshots: any[];
+}
+
+const { screenshots } = Astro.props;
+---
+
+<div class="swiper main-slider bg-steam-dark2 border-b-4 aspect-video">
+    <div class="swiper-wrapper">
+        {screenshots.map((img: any) => (
+            <div class="swiper-slide h-full">
+                <Image src={img} alt="Screenshot" class="w-full h-full object-contain"/>
+            </div>
+        ))}
+    </div>
+    <div class="swiper-button-next text-steam-blue! opacity-0 group-hover:opacity-100 transition-opacity"></div>
+    <div class="swiper-button-prev text-steam-blue! opacity-0 group-hover:opacity-100 transition-opacity"></div>
+</div>
+
+<div class="swiper thumb-slider mt-2 h-20">
+    <div class="swiper-wrapper">
+        {screenshots.map((img) => (
+            <div class="swiper-slide cursor-pointer opacity-50 border-2 border-transparent transition-all hover:opacity-100 [&.swiper-slide-thumb-active]:border-steam-blue [&.swiper-slide-thumb-active]:opacity-100">
+                <Image src={img} alt="thumbnail" class="w-full h-full object-cover"/>
+            </div>
+        ))}
+    </div>
+</div>
+
+<script>
+    import Swiper from 'swiper'
+    import {Navigation, Thumbs} from 'swiper/modules'
+    import 'swiper/css'
+    import 'swiper/css/navigation'
+    import 'swiper/css/thumbs'
+
+    const swiperThumbs = new Swiper('.thumb-slider', {
+        spaceBetween: 0,
+        slidesPerView: 4,
+        freeMode: true,
+        watchSlidesProgress: true,
+        breakpoints: {
+            640: { slidesPerView: 6}
+        }
+    });
+
+    new Swiper('.main-slider', {
+        modules: [Navigation, Thumbs],
+        navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev'
+        },
+        thumbs: {
+            swiper: swiperThumbs
+        },
+        loop: true
+    });
+</script>

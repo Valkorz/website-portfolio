@@ -1,5 +1,11 @@
 /** @type {import('tailwindcss').Config} */
+import typography from '@tailwindcss/typography';
+
 export default {
+  plugins: [typography],
+  vite: {
+    plugins: [tailwindcss()],
+  },
   content: ['./src/**/*.{astro,html,js,jsx,md,mdx,ts,tsx}'],
   theme: {
     extend: {
@@ -13,6 +19,5 @@ export default {
         '2xs': '0 6px 14px -8px rgba(0,0,0,1)',
       },
     },
-  },
-  plugins: [],
+  }
 }
