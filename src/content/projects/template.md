@@ -1,4 +1,5 @@
 ---
+projectName: "template"
 title: "Sample project"
 description: "Sample description"
 tags: ["Open-Source", "TailWind", "Astro", "GitHub"]

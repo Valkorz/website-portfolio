@@ -1,7 +1,15 @@
 ---
+import { getCollection } from 'astro:content';
 import Layout from '../layouts/Layout.astro';
+import ProjectCard from '../components/ProjectCard.astro'
+
+const allProjects = await getCollection('projects');
 ---
 
-<Layout currentTab="library">
-	<!-- <Welcome /> -->
+<Layout currentTab="library" searchEnabled="true">
+	<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+		{allProjects.map(item => (
+			<ProjectCard project={item}/>
+		))}
+	</div>
 </Layout>

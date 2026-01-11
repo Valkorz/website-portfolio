@@ -1,5 +1,5 @@
 ---
-const { activeTab = 'main' } = Astro.props;
+const { activeTab = 'main', searchEnabled = false} = Astro.props;
 ---
 
 <div>
@@ -25,9 +25,20 @@ const { activeTab = 'main' } = Astro.props;
             {tab}
         </a>
       ))}
+<!-- 
+    <div class:list={[searchEnabled ? 'searchbar-visible' : 'searchbar-hidden', 'bg-steam-accent ml-auto w-full']} >
+        test
+    </div> -->
+
     </nav>
 </div>
 
 <style>
+    /* .searchbar-visible{
+        display: block;
+    }
 
+    .searchbar-hidden{
+        display: none;
+    } */
 </style>

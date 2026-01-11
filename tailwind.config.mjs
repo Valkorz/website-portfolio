@@ -9,6 +9,9 @@ export default {
         'steam-blue': '#66c0f4',    // Links and highlights
         'steam-accent': '#c7d5e0',  // Text color
       },
+      boxShadow: {
+        '2xs': '0 6px 14px -8px rgba(0,0,0,1)',
+      },
     },
   },
   plugins: [],

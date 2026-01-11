@@ -13,3 +13,7 @@
   --color-text-gray: #b6c0d1;
   --color-text-dark: #66748c;
 }
+
+:root{
+    --color-text-dark-transparent: rgba(23, 26, 33, 1);
+}

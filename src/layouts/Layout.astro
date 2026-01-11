@@ -1,7 +1,9 @@
 ---
 import '../styles/global.css';
+import Image from 'astro/components/Image.astro';
 import SteamHeader from '../components/SteamHeader.astro'; // Import the component
-const { title, currentTab } = Astro.props;
+import searchIcon from '../content/images/icons/search.png';
+const { title, currentTab, searchEnabled = false } = Astro.props;
 ---
 
 <!doctype html>
@@ -9,12 +11,45 @@ const { title, currentTab } = Astro.props;
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width" />
-        <title>{title}</title>
+        <title>{title}</title>  
     </head>
     <body class="bg-steam-gray text-steam-accent min-h-screen">
-        <SteamHeader activeTab={currentTab}/>
+        <SteamHeader activeTab={currentTab} searchEnabled={searchEnabled}/>
+        <div class:list={[searchEnabled? 'searchbar-visible' : 'searchbar-hidden', 'bg-steam-accent rounded-2xl h-min-{100} flex flex-row items-center px-3 py-2 gap-3 shadow-2xs shadow-steam-dark']}>
+            <Image 
+            class='filter-none'
+            src={searchIcon} 
+            alt="search" 
+            width={32} 
+            height={32}
+            densities={[1, 2]}/>
+            <div class="w-sep-px opacity-50 bg-steam-dark2 h-8 rounded-2xl" aria-hidden="true"></div>
+            <input class="flex-1 bg-transparent text-steam-dark placeholder-steam-accent outline-none border-none" placeholder="Search" />
+        </div>
         
         <main class="max-w-6xl mx-auto p-4">
             <slot /> </main>
     </body>
 </html>
+
+<style>
+    .searchbar-visible{
+        display: flex;
+        width: 50%;
+        justify-content: center;
+        align-items: center;
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: 10px;
+    }
+
+    .searchbar-hidden{
+        display: none;
+    }
+
+    .w-sep-px{
+        width: 2px;
+        /* color: var(--color-text-dark-transparent); */
+        /* box-shadow: 0 8px 20px 0 var(--color-text-dark-transparent); */
+    }
+</style>
