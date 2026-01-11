@@ -1,8 +1,6 @@
 ---
 import '../styles/global.css';
-import Image from 'astro/components/Image.astro';
 import SteamHeader from '../components/SteamHeader.astro'; // Import the component
-import searchIcon from '../assets/search.png';
 const { title, currentTab, searchEnabled = false } = Astro.props;
 ---
 
@@ -15,16 +13,9 @@ const { title, currentTab, searchEnabled = false } = Astro.props;
     </head>
     <body class="bg-steam-gray text-steam-accent min-h-screen">
         <SteamHeader activeTab={currentTab} searchEnabled={searchEnabled}/>
-        <div class:list={[searchEnabled ? 'searchbar-visible' : 'searchbar-hidden', 'bg-steam-accent rounded-2xl flex flex-row items-center px-3 py-2 gap-3 shadow-2xs shadow-steam-dark']}>
-            <Image 
-            src={searchIcon} 
-            alt="search" 
-            width={32} 
-            height={32}
-            densities={[1, 2]} 
-            class="filter-none mr-auto" 
-            />
-        </div>
+        <!-- this crap needs fixing -->
+        <!-- <div class:list={[searchEnabled ? 'searchbar-visible' : 'searchbar-hidden', 'bg-steam-accent rounded-2xl flex flex-row items-center px-3 py-2 gap-3 shadow-2xs shadow-steam-dark']}>
+        </div> -->
         
         <main class="max-w-6xl mx-auto p-4">
             <slot /> </main>
