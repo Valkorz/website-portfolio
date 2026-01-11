@@ -2,7 +2,7 @@
 import '../styles/global.css';
 import Image from 'astro/components/Image.astro';
 import SteamHeader from '../components/SteamHeader.astro'; // Import the component
-const searchIcon = '/website-portfolio/images/icons/search.png';
+import searchIcon from '../assets/search.png';
 const { title, currentTab, searchEnabled = false } = Astro.props;
 ---
 
@@ -15,16 +15,15 @@ const { title, currentTab, searchEnabled = false } = Astro.props;
     </head>
     <body class="bg-steam-gray text-steam-accent min-h-screen">
         <SteamHeader activeTab={currentTab} searchEnabled={searchEnabled}/>
-        <div class:list={[searchEnabled? 'searchbar-visible' : 'searchbar-hidden', 'bg-steam-accent rounded-2xl h-min-{100} flex flex-row items-center px-3 py-2 gap-3 shadow-2xs shadow-steam-dark']}>
+        <div class:list={[searchEnabled ? 'searchbar-visible' : 'searchbar-hidden', 'bg-steam-accent rounded-2xl flex flex-row items-center px-3 py-2 gap-3 shadow-2xs shadow-steam-dark']}>
             <Image 
-            class='filter-none'
             src={searchIcon} 
             alt="search" 
             width={32} 
             height={32}
-            densities={[1, 2]}/>
-            <div class="w-sep-px opacity-50 bg-steam-dark2 h-8 rounded-2xl" aria-hidden="true"></div>
-            <input class="flex-1 bg-transparent text-steam-dark placeholder-steam-accent outline-none border-none" placeholder="Search" />
+            densities={[1, 2]} 
+            class="filter-none mr-auto" 
+            />
         </div>
         
         <main class="max-w-6xl mx-auto p-4">
