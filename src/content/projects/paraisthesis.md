@@ -3,7 +3,7 @@ projectName: "paraisthesis"
 githubPage: "https://github.com/ValkorProjects/Paraisthesis"
 title: "Paraisthesis"
 description: "It knows where you are, and all you have is a radar."
-version: "0.1.0a"
+version: "0.1.0"
 author: "Valkor"
 contributors: ["Luisenbon", "AmToffer", "GuiMLima"]
 tags: ["C#", "Horror", "Unity3D", "Singleplayer"]
