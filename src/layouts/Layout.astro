@@ -11,7 +11,7 @@ const { title, currentTab, searchEnabled = false } = Astro.props;
         <meta name="viewport" content="width=device-width" />
         <title>{title}</title>  
     </head>
-    <body class="bg-steam-gray text-steam-accent min-h-screen">
+    <body class="bg-linear-to-b from-steam-gray to-steam-dark2 text-steam-accent min-h-screen">
         <SteamHeader activeTab={currentTab} searchEnabled={searchEnabled}/>
         <!-- this crap needs fixing -->
         <!-- <div class:list={[searchEnabled ? 'searchbar-visible' : 'searchbar-hidden', 'bg-steam-accent rounded-2xl flex flex-row items-center px-3 py-2 gap-3 shadow-2xs shadow-steam-dark']}>

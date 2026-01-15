@@ -18,18 +18,18 @@ const projectLink = `${cleanBase}projects/${slug}`;
           class="object-cover w-full h-full bg-steam-dark2"
         />
 
-        <div class="p-4 border-b-2 border-transparent group-hover:border-steam-blue bg-steam-dark">
+        <div class="p-4 border-b-2 border-transparent group-hover:border-steam-blue bg-linear-to-b from-steam-dark to-steam-dark2">
             <h3 class="text-white font-bold uppercase tracking-tight">{project.data.title}</h3>
             <div class="flex gap-2 mt-2">
               {project.data.tags.map((tag: string) => (
                 <span class="text-[10px] h-fit mt-auto mb-auto bg-black/40 px-2 py-0.5 text-steam-accent">{tag}</span>
               ))}
-              <p class="text-white font-bold ml-auto mt-auto mb-auto">v{project.data.version}</h3>
+              <p class="text-white font-bold ml-auto mt-auto mb-auto">{project.data.version}</h3>
             </div>  
         </div> 
 
         <div class="absolute inset-0 shadow-[inset_0_0_30px_rgba(102,192,244,0)] group-hover:shadow-[inset_0_0_30px_rgba(102,192,244,0.2)] transition-shadow"></div>
-        <div class="pointer-events-none absolute inset-0 shadow-[0_10px_28px_-4px_rgba(0,0,0,0.5)] group-hover:shadow-[0_10px_28px_-4px_rgba(0,0,0,0.2)] transition-shadow"></div>
+        <div class="pointer-events-none absolute inset-0 shadow-[0_10px_28px_-4px_rgba(0,0,0,0.2)] group-hover:shadow-[0_10px_28px_-4px_rgba(0,0,0,0.6)] transition-shadow"></div>
     </div>
 </a>
 
