@@ -14,6 +14,7 @@ const projects = defineCollection({
         author: z.string(),
         contributors: z.array(z.string()).optional(),
         tags: z.array(z.string()),
+        dateOfCreation: z.string(),
         screenshots: z.array(image()),
         thumbnail: image(),
       }),

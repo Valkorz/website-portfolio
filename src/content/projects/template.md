@@ -7,6 +7,7 @@ version: "0.0.0"
 author: "authorName"
 contributors: ["contributor1", "contributor2", "contributor3"]
 tags: ["Open-Source", "TailWind", "Astro", "GitHub"]
+dateOfCreation: "01/01/2001"
 thumbnail: "./images/thumb.png"
 screenshots:
     - "./images/shot1.png"

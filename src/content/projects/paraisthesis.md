@@ -7,6 +7,7 @@ version: "0.1.0"
 author: "Valkor"
 contributors: ["Luisenbon", "AmToffer", "GuiMLima"]
 tags: ["C#", "Horror", "Unity3D", "Singleplayer"]
+dateOfCreation: "01/01/2001"
 thumbnail: "./images/shot1.png"
 screenshots:
     - "./images/shot1.png"

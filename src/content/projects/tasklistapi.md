@@ -7,6 +7,7 @@ version: "1.2.0"
 author: "Valkorz"
 contributors: []
 tags: ["Open-Source", "Dotnet Core", "C#", "Entity Framework", "MVC", "API"]
+dateOfCreation: "01/01/2001"
 thumbnail: "./images/thumb.png"
 screenshots:
     - "./images/shot1.png"
@@ -14,11 +15,28 @@ screenshots:
     - "./images/shot3.png"
 ---
 
-Lorem Ipsum. Whatever is written here is injected into the layout.
+## .NET Core C# API + Database project
 
-test normal text
-# test header 1
-## test header 2    
+This project is a task/todo list, using dotnet core MVC and Entity Framework to implement a database of tasks (in SQLite) that can be modified through http protocol commands, featuring GET, POST, PUT and DELETE.
 
-*test italic*
-**test bold**
+
+# FILES
+
+`./docs/guide.md`: a comprehensive step-by-step guide to building your own .Net CORE WebApi.
+
+`.docs/httpAttributes.md`: a list of http attributes to be used when defining methods for a controller.
+
+`./Tasks/`: the WebApi folder.
+
+`./Tasks/Program.cs`: root file of the api, used for initializing controllers and other resources.
+
+`.Tasks/Controllers/`: where the custom controller implementations will be stored.
+
+`./Requesters/`: code examples in different programming languages to communicate with the API.
+
+
+# FEATURES
+
+- A Controller that creates a database, with GET and POST methods;
+- Two program examples for calling http requests (javascript and batch);
+- Detailed documentation;

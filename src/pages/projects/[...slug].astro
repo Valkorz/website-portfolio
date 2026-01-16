@@ -55,7 +55,7 @@ const isRepoAccessible = entry.data.githubPage ? await isRepoAccessibleAsync(ent
       </div>
       <p class="text-gray-400 mt-2">{entry.data.description}</p>
       <p class="mt-6 text-slate-400">Author: {entry.data.author}</p>
-      <p class=" text-slate-400 gap-2">Contributors:
+      <p class=" text-slate-400 gap-2"><label style=`${(entry.data.contributors ?? []).length > 0? "visiblity: visible;" : "visibility: hidden;"}`>Contributors:</label>
         {(entry.data.contributors ?? []).map((contributor: string) => (
           <span class="mr-1">{contributor},</span>
         ))}
@@ -117,6 +117,10 @@ const isRepoAccessible = entry.data.githubPage ? await isRepoAccessibleAsync(ent
   .link-disabled{
     pointer-events: none;
     cursor: default;
+  }
+
+  .test{
+    visibility: hidden
   }
 
   .panel-glow{
