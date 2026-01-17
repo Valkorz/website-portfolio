@@ -8,11 +8,13 @@ author: "Valkorz"
 contributors: []
 tags: ["Open-Source", "Dotnet Core", "C#", "Entity Framework", "MVC", "API"]
 dateOfCreation: 2025-01-01
-thumbnail: "./images/thumb.png"
+thumbnail: "./images/tasklist2.png"
 screenshots:
-    - "./images/shot1.png"
-    - "./images/shot2.png"
-    - "./images/shot3.png"
+    - "./images/tasklist1.png"
+    - "./images/tasklist2.png"
+    - "./images/tasklist3.png"
+    - "./images/tasklist4.png"
+    - "./images/tasklist5.png"
 ---
 
 ## .NET Core C# API + Database project
