@@ -8,6 +8,7 @@ const projects = defineCollection({
       z.object({
         projectName: z.string(),
         githubPage: z.string().optional(),
+        supported: z.boolean(),
         title: z.string(),
         description: z.string(),
         version: z.string().optional(),

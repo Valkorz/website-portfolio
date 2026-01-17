@@ -54,6 +54,9 @@ allTagsSorted.forEach(t => {
 		<!-- Order by date -->
 		<!-- <input id="orderByDate" type="checkbox" class="w-5 h-5 accent-steam-blue cursor-pointer rounded mt-auto mb-auto ml-2"/>
 		<h2 class="font-mono text-slate-400 uppercase mt-auto mb-auto ml-2">Order by date</h2> -->
+		<!-- Show unsupported/cancelled -->
+		<input id="showUnsupported" type="checkbox" class="w-5 h-5 accent-steam-blue cursor-pointer rounded mt-auto mb-auto ml-2"/>
+		<h2 class="font-mono text-slate-400 uppercase mt-auto mb-auto ml-2">Show unsupported</h2>
 	</div>
 
 	<span id="ordered-project-list">
@@ -68,7 +71,8 @@ allTagsSorted.forEach(t => {
 					<div 
             		class="project-wrapper" 
             		data-title={item.data.title.toLowerCase()}
-            		data-tags={item.data.tags.join(' ').toLowerCase()}>
+            		data-tags={item.data.tags.join(' ').toLowerCase()}
+					data-supported={String(item.data.supported)}>
 						<ProjectCard project={item}/>
 					</div>
 				))}
@@ -84,7 +88,8 @@ allTagsSorted.forEach(t => {
 				<div 
         	    class="project-wrapper" 
         	    data-title={item.data.title.toLowerCase()}
-        	    data-tags={item.data.tags.join(' ').toLowerCase()}>
+        	    data-tags={item.data.tags.join(' ').toLowerCase()}
+				data-supported={String(item.data.supported)}>
 					<ProjectCard project={item}/>
 				</div>
 			))}
@@ -96,22 +101,30 @@ allTagsSorted.forEach(t => {
 	const input = document.querySelector('#search-input') as HTMLInputElement;
 	const projectWrappers = document.querySelectorAll<HTMLElement>('.project-wrapper');
 	const orderByTagCheck = document.querySelector('#orderByTag') as HTMLInputElement;
+	const showUnsupported = document.querySelector('#showUnsupported') as HTMLInputElement;
 
 	// Project lists
 	const orderedList = document.querySelector('#ordered-project-list') as HTMLInputElement;
 	const unorderedList = document.querySelector('#unordered-project-list') as HTMLInputElement;
 
-	input?.addEventListener('input', (e) => {
-		const searchTerm = (e.target as HTMLInputElement).value.toLowerCase();
+	const updateShowInput = () => {
+		const searchTerm = input.value.toLowerCase();
 		projectWrappers.forEach(wrapper => {
 			const title = wrapper.dataset.title || "";
 			const tags = wrapper.dataset.tags || "";
+			const show = showUnsupported?.checked;
 
-			if(title.includes(searchTerm) || tags.includes(searchTerm)){
+			const isSupported = wrapper.dataset.supported === 'true';
+
+			if((title.includes(searchTerm) || tags.includes(searchTerm)) && 
+			(isSupported || show)){
 				wrapper.style.display = 'block';
 			} else wrapper.style.display = 'none';
 		});
-	});
+	}
+
+	input?.addEventListener('input', updateShowInput);
+	showUnsupported?.addEventListener('input', updateShowInput);
 
 	const updateListDisplay = () => {
 		if(orderByTagCheck?.checked){
@@ -126,6 +139,7 @@ allTagsSorted.forEach(t => {
 	orderByTagCheck?.addEventListener('change', updateListDisplay);
 	
 	updateListDisplay();
+	updateShowInput();
 </script>
 
 <style is:global>

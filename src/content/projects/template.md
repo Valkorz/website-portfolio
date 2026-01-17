@@ -1,6 +1,7 @@
 ---
 projectName: "template"
 githubPage: ""
+supported: false
 title: "Sample project"
 description: "Sample description"
 version: "0.0.0"

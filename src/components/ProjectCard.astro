@@ -27,11 +27,14 @@ const dateString = `${formattedDate.split(' ')[0]} ${day}, ${dateOfCreation.getF
 <a  href={projectLink}
     class="group block bg-steam-gray/50 hover:bg-steam-gray transition-all duration-300">
     <div class="relative group-hover:scale-105 transition-transform duration-300 drop-shadow-2xl aspect-video">
-        <Image 
-          src={project.data.thumbnail} 
-          alt={project.data.title} 
-          class="object-cover w-full h-full bg-steam-dark2"
-        />
+        <span>
+            <label class:list={[project.data.supported ? 'unsupported-title-hidden' : 'unsupported-title-visible', 'absolute']}>UNSUPPORTED</label>
+            <Image 
+            src={project.data.thumbnail} 
+            alt={project.data.title} 
+            class="object-cover w-full h-full bg-steam-dark2"
+            /> 
+        </span>
 
         <div class="p-4 border-b-2 border-transparent group-hover:border-steam-blue bg-linear-to-b from-steam-dark to-steam-dark2">
             <h3 class="text-white font-bold font-mono text-lg uppercase tracking-tight">{project.data.title}</h3>
@@ -83,8 +86,17 @@ const dateString = `${formattedDate.split(' ')[0]} ${day}, ${dateOfCreation.getF
     });
 </script>
 
-<style>
+<style is:global>
+  @reference "../styles/global.css";
     .perspective-1000{
         perspective: 1000px;
+    }
+
+    .unsupported-title-visible{
+        @apply font-mono font-extrabold shadow-2xs opacity-70 text-steam-dark bg-steam-accent uppercase absolute rounded-2xl mt-2 ml-2 p-2;
+    }
+
+    .unsupported-title-hidden{
+        visibility: hidden;
     }
 </style>

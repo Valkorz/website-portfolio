@@ -1,6 +1,7 @@
 ---
 projectName: "tasklistapi"
 githubPage: "https://github.com/Valkorz/dotnet-tasklist-api"
+supported: true
 title: "Dotnet Tasklist API"
 description: "WebApi tasklist sample project created with .Net Core MVC and Entity framework, containing instructions and documentation."
 version: "1.2.0"

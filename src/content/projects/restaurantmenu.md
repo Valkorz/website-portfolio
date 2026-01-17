@@ -1,6 +1,7 @@
 ---
 projectName: "restaurantMenu"
 githubPage: "https://github.com/Valkorz/restaurant-menu"
+supported: true
 title: "Restaurant Menu Website"
 description: "A website that simulates a menu for a restaurant, featuring different dishes, selection and payment screen."
 version: "1.0.1"

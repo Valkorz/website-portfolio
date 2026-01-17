@@ -1,6 +1,7 @@
 ---
 projectName: "maiajr"
 githubPage: "https://www.tinkercad.com/things/0Z4H6C7rQzh-maiajr-circuit"
+supported: true
 title: "Obstacle-avoiding vehicle"
 description: "A miniature obstacle-avoiding arduino vehicle created in MAIA Facens."
 version: "1.0.0"

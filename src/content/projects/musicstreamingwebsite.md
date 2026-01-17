@@ -1,6 +1,7 @@
 ---
 projectName: "musicstreamingwebsite"
 githubPage: "https://github.com/ValkorProjects/AudioPlayerApp"
+supported: true
 title: "Audio Player Website"
 description: "An audio player website for searching and listening to music."
 version: "1.0.1"
