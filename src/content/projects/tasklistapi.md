@@ -7,7 +7,7 @@ version: "1.2.0"
 author: "Valkorz"
 contributors: []
 tags: ["Open-Source", "Dotnet Core", "C#", "Entity Framework", "MVC", "API"]
-dateOfCreation: "01/01/2001"
+dateOfCreation: 2025-01-01
 thumbnail: "./images/thumb.png"
 screenshots:
     - "./images/shot1.png"

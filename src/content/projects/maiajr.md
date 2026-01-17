@@ -7,7 +7,7 @@ version: "1.0.0"
 author: "Valkorz"
 contributors: []
 tags: ["Open-Source", "Arduino", "C/C++", "Robotics"]
-dateOfCreation: "01/01/2001"
+dateOfCreation: 2025-03-31
 thumbnail: "./images/maiajr1.png"
 screenshots:
     - "./images/maiajr1.png"

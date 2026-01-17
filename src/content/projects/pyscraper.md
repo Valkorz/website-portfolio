@@ -7,7 +7,7 @@ version: "1.0.1"
 author: "Valkor"
 contributors: []
 tags: ["Open-Source", "Python", "BS4"]
-dateOfCreation: "01/01/2001"
+dateOfCreation: 2025-01-01
 thumbnail: "./images/pyscraper1.png"
 screenshots:
     - "./images/pyscraper1.png"

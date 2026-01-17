@@ -1,15 +1,71 @@
 ---
 import { getCollection } from 'astro:content';
+import { Image } from 'astro:assets'
 import Layout from '../layouts/Layout.astro';
 import ProjectCard from '../components/ProjectCard.astro'
+import searchIconUrl from '../../public/images/icons/search.png'
+
+const searchQuery = Astro.url.searchParams.get('q') || "";
 
 const allProjects = await getCollection('projects');
+// const filteredProjects = allProjects
+//   .filter(p => 
+//     p.data.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+//     p.data.tags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()))
+//   )
+//   .sort((a, b) => a.data.title.localeCompare(b.data.title));
+
+// console.log(`filtered projects: ${filteredProjects}`);	
 ---
 
-<Layout title="library" currentTab="library" searchEnabled="true">
+<Layout title="library" currentTab="library">
+	<div class='bg-steam-accent searchbar-visible rounded-2xl flex flex-row items-center px-3 py-2 gap-3 mb-5 shadow-2xs shadow-steam-dark'>
+		<input class="w-full text-black" id="search-input" placeholder="Search projects...">
+		<Image src={searchIconUrl} alt="Search"/>
+    </div>
+	
 	<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-		{allProjects.map(item => (
-			<ProjectCard project={item}/>
+		{allProjects
+		.map(item => (
+			<div 
+            class="project-wrapper" 
+            data-title={item.data.title.toLowerCase()}
+            data-tags={item.data.tags.join(' ').toLowerCase()}>
+				<ProjectCard project={item}/>
+			</div>
 		))}
 	</div>
 </Layout>
+
+<script>
+	const input = document.querySelector('#search-input') as HTMLInputElement;
+	const projectWrappers = document.querySelectorAll<HTMLElement>('.project-wrapper');
+
+	input?.addEventListener('input', (e) => {
+		const searchTerm = (e.target as HTMLInputElement).value.toLowerCase();
+		projectWrappers.forEach(wrapper => {
+			const title = wrapper.dataset.title || "";
+			const tags = wrapper.dataset.tags || "";
+
+			if(title.includes(searchTerm) || tags.includes(searchTerm)){
+				wrapper.style.display = 'block';
+			} else wrapper.style.display = 'none';
+		});
+	});
+</script>
+
+<style>
+	.searchbar-visible{
+        display: flex;
+        width: 50%;
+        justify-content: center;
+        align-items: center;
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: 10px;
+    }
+
+    .searchbar-hidden{
+        display: none;
+    }
+</style>

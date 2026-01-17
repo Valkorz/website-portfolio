@@ -25,11 +25,24 @@ type Props = {
   entry: CollectionEntry<'projects'>;
 };
 
-
-
 const { entry } = Astro.props;
 const { Content } = await render(entry);
+const { dateOfCreation } = entry.data;
 const isRepoAccessible = entry.data.githubPage ? await isRepoAccessibleAsync(entry.data.githubPage) : false;
+
+const getOrdinal = (n: number) => {
+  const s = ["th", "st", "nd", "rd"];
+  const v = n % 100;
+  return n + (s[(v - 20) % 10] || s[v] || s[0]);
+};
+
+const formattedDate = dateOfCreation.toLocaleDateString('en-US', {
+  month: 'long',
+  year: 'numeric',
+});
+
+const day = getOrdinal(dateOfCreation.getDate());
+const dateString = `${formattedDate.split(' ')[0]} ${day}, ${dateOfCreation.getFullYear()}`;
 ---
 
 <Layout title={entry.data.title} currentTab="library"> 
@@ -60,6 +73,7 @@ const isRepoAccessible = entry.data.githubPage ? await isRepoAccessibleAsync(ent
           <span class="mr-1">{contributor},</span>
         ))}
       </p>
+      <p class="mt-6 text-slate-400">Created on {dateString}</p>
       <span class="mt-auto mr-auto mb-2 flex h-fit w-full">
         <span title=`${isRepoAccessible ? "Navigate to github.com" : "Repository not found or unavailable."}`>
           <a class=`${isRepoAccessible ? "navigate-repo-btn-enabled link-enabled" : "navigate-repo-btn-disabled link-disabled"}` href={entry.data.githubPage}>
