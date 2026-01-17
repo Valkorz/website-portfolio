@@ -6,7 +6,7 @@ description: "A price scraper for eshopping websites"
 version: "1.0.1"
 author: "Valkor"
 contributors: []
-tags: ["Open-Source", "Python", "BS4"]
+tags: ["Open-Source", "Python", "Automation"]
 dateOfCreation: 2025-01-01
 thumbnail: "./images/pyscraper1.png"
 screenshots:

@@ -6,7 +6,7 @@ description: "A miniature obstacle-avoiding arduino vehicle created in MAIA Face
 version: "1.0.0"
 author: "Valkorz"
 contributors: []
-tags: ["Open-Source", "Arduino", "C/C++", "Robotics"]
+tags: ["Open-Source", "Arduino", "C/C++"]
 dateOfCreation: 2025-03-31
 thumbnail: "./images/maiajr1.png"
 screenshots:

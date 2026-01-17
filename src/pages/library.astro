@@ -7,39 +7,99 @@ import searchIconUrl from '../../public/images/icons/search.png'
 
 const searchQuery = Astro.url.searchParams.get('q') || "";
 
+//Get and sort all projects
 const allProjects = await getCollection('projects');
-// const filteredProjects = allProjects
-//   .filter(p => 
-//     p.data.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-//     p.data.tags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()))
-//   )
-//   .sort((a, b) => a.data.title.localeCompare(b.data.title));
+const sortedProjects = allProjects
+  .sort((a, b) => {
+    const timeDiff = b.data.dateOfCreation.valueOf() - a.data.dateOfCreation.valueOf();
+    if(timeDiff !== 0) return timeDiff;
+    return a.data.title.localeCompare(b.data.title);
+  });
 
-// console.log(`filtered projects: ${filteredProjects}`);	
+//Get and sort all tags
+const allTags: string[] = [];
+allProjects.forEach(p => {
+	p.data.tags.forEach(t => {
+		const upperTag = t.toUpperCase();
+		if(!allTags.includes(upperTag))
+			allTags.push(upperTag);
+	})
+});
+
+const allTagsSorted = allTags
+	.sort((a,b) => a.localeCompare(b));
+
+//all projects sorted by tag
+const projectsByTag: { key: string, value: typeof allProjects }[] = [];
+
+allTagsSorted.forEach(t => {
+	const projects = sortedProjects.filter(p => 
+		p.data.tags.some(tag => tag.toUpperCase() === t)
+	);
+	projectsByTag.push({ key: t, value: projects });
+});
+
 ---
 
 <Layout title="library" currentTab="library">
-	<div class='bg-steam-accent searchbar-visible rounded-2xl flex flex-row items-center px-3 py-2 gap-3 mb-5 shadow-2xs shadow-steam-dark'>
-		<input class="w-full text-black" id="search-input" placeholder="Search projects...">
-		<Image src={searchIconUrl} alt="Search"/>
-    </div>
-	
-	<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-		{allProjects
-		.map(item => (
-			<div 
-            class="project-wrapper" 
-            data-title={item.data.title.toLowerCase()}
-            data-tags={item.data.tags.join(' ').toLowerCase()}>
-				<ProjectCard project={item}/>
-			</div>
-		))}
+	<div class="flex flex-row">
+		<div class='bg-steam-accent searchbar-visible rounded-2xl flex flex-row items-center px-3 py-2 gap-3 mb-5 shadow-2xs shadow-steam-dark'>
+			<input class="w-full text-black" id="search-input" placeholder="Search projects...">
+			<Image src={searchIconUrl} alt="Search"/>
+    	</div>
+
+		<!-- Order by tag -->
+		<input id="orderByTag" type="checkbox" class="w-5 h-5 accent-steam-blue cursor-pointer rounded mt-auto mb-auto ml-2"/>
+		<h2 class="font-mono text-slate-400 uppercase mt-auto mb-auto ml-2">Order by tag</h2>
+		<!-- Order by date -->
+		<!-- <input id="orderByDate" type="checkbox" class="w-5 h-5 accent-steam-blue cursor-pointer rounded mt-auto mb-auto ml-2"/>
+		<h2 class="font-mono text-slate-400 uppercase mt-auto mb-auto ml-2">Order by date</h2> -->
 	</div>
+
+	<span id="ordered-project-list">
+		{projectsByTag.map(group => (
+    	<div>
+        	<div class="tag-header mb-2">
+				<h1 class="tag-title">{group.key}</h2>
+			</div>
+			<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 bg-steam-dark2/50 mb-5">
+				{group.value
+					.map(item => (
+					<div 
+            		class="project-wrapper" 
+            		data-title={item.data.title.toLowerCase()}
+            		data-tags={item.data.tags.join(' ').toLowerCase()}>
+						<ProjectCard project={item}/>
+					</div>
+				))}
+			</div>
+    	</div>
+		))}
+	</span>
+
+	<span id="unordered-project-list">
+		<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">	
+			{sortedProjects
+			.map(item => (
+				<div 
+        	    class="project-wrapper" 
+        	    data-title={item.data.title.toLowerCase()}
+        	    data-tags={item.data.tags.join(' ').toLowerCase()}>
+					<ProjectCard project={item}/>
+				</div>
+			))}
+		</div>
+	</span>
 </Layout>
 
 <script>
 	const input = document.querySelector('#search-input') as HTMLInputElement;
 	const projectWrappers = document.querySelectorAll<HTMLElement>('.project-wrapper');
+	const orderByTagCheck = document.querySelector('#orderByTag') as HTMLInputElement;
+
+	// Project lists
+	const orderedList = document.querySelector('#ordered-project-list') as HTMLInputElement;
+	const unorderedList = document.querySelector('#unordered-project-list') as HTMLInputElement;
 
 	input?.addEventListener('input', (e) => {
 		const searchTerm = (e.target as HTMLInputElement).value.toLowerCase();
@@ -52,9 +112,24 @@ const allProjects = await getCollection('projects');
 			} else wrapper.style.display = 'none';
 		});
 	});
+
+	const updateListDisplay = () => {
+		if(orderByTagCheck?.checked){
+			orderedList.style.display = 'block';
+			unorderedList.style.display = 'none';
+		} else {
+			orderedList.style.display = 'none';
+			unorderedList.style.display = 'block';
+		}
+	}
+
+	orderByTagCheck?.addEventListener('change', updateListDisplay);
+	
+	updateListDisplay();
 </script>
 
-<style>
+<style is:global>
+  @reference "../styles/global.css";
 	.searchbar-visible{
         display: flex;
         width: 50%;
@@ -68,4 +143,12 @@ const allProjects = await getCollection('projects');
     .searchbar-hidden{
         display: none;
     }
+
+	.tag-header{
+		@apply border-b border-b-steam-accent/30 shadow-2xl;
+	}
+
+	.tag-title{
+		@apply font-mono uppercase font-extrabold text-3xl;
+	}
 </style>

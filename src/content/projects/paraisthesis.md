@@ -6,7 +6,7 @@ description: "It knows where you are, and all you have is a radar."
 version: "0.1.0"
 author: "Valkor"
 contributors: ["Luisenbon", "AmToffer", "GuiMLima", "MuriloCoelho1212"]
-tags: ["C#", "Horror", "Unity3D", "Singleplayer"]
+tags: ["C#", "Horror", "Unity3D", "Game Development"]
 dateOfCreation: 2025-09-01
 thumbnail: "./images/shot1.png"
 screenshots:

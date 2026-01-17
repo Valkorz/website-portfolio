@@ -6,7 +6,7 @@ description: "An audio player website for searching and listening to music."
 version: "1.0.1"
 author: "Valkorz"
 contributors: ["Luisenbon", "MuriloCoelho1212", "brenoorem"]
-tags: ["Open-Source", "HTML", "CSS", "Javascript", "Bootstrap"]
+tags: ["Open-Source", "HTML", "CSS", "Javascript", "Bootstrap", "Web Application"]
 dateOfCreation: 2024-10-21
 thumbnail: "./images/musicwebsite1.png"
 screenshots:
