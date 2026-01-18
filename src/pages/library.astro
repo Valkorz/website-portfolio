@@ -16,6 +16,8 @@ const sortedProjects = allProjects
     return a.data.title.localeCompare(b.data.title);
   });
 
+const unsupportedProjects = sortedProjects.filter( p => p.data.supported === false).length;
+
 //Get and sort all tags
 const allTags: string[] = [];
 allProjects.forEach(p => {
@@ -44,7 +46,7 @@ allTagsSorted.forEach(t => {
 <Layout title="library" currentTab="library">
 	<div class="flex flex-row">
 		<div class='bg-steam-accent searchbar-visible rounded-2xl flex flex-row items-center px-3 py-2 gap-3 mb-5 shadow-2xs shadow-steam-dark'>
-			<input class="w-full text-black" id="search-input" placeholder="Search projects...">
+			<input class="w-full text-black" id="search-input" placeholder="Search projects by name or tag...">
 			<Image src={searchIconUrl} alt="Search"/>
     	</div>
 
@@ -56,7 +58,7 @@ allTagsSorted.forEach(t => {
 		<h2 class="font-mono text-slate-400 uppercase mt-auto mb-auto ml-2">Order by date</h2> -->
 		<!-- Show unsupported/cancelled -->
 		<input id="showUnsupported" type="checkbox" class="w-5 h-5 accent-steam-blue cursor-pointer rounded mt-auto mb-auto ml-2"/>
-		<h2 class="font-mono text-slate-400 uppercase mt-auto mb-auto ml-2">Show unsupported</h2>
+		<h2 class="font-mono text-slate-400 uppercase mt-auto mb-auto ml-2">Show unsupported ({unsupportedProjects})</h2>
 	</div>
 
 	<span id="ordered-project-list">
