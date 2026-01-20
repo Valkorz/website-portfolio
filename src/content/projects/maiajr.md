@@ -5,7 +5,7 @@ supported: true
 title: "Obstacle-avoiding vehicle"
 description: "A miniature obstacle-avoiding arduino vehicle created in MAIA Facens."
 version: "1.0.0"
-author: "Valkorz"
+author: "Valkorz (Vittorio Pivarci)"
 contributors: []
 tags: ["Open-Source", "Arduino", "C/C++"]
 dateOfCreation: 2025-03-31

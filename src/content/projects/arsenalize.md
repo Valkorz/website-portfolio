@@ -5,7 +5,7 @@ supported: true
 title: "Arsenalize"
 description: "A 2D roguelite RPG about killing monsters with an assortment of strange weapons with unique mechanics."
 version: "0.2.3"
-author: "Valkorz"
+author: "Valkorz (Vittorio Pivarci)"
 contributors: []
 tags: ["Game Development", "Godot", "C#"]
 dateOfCreation: 2025-01-19

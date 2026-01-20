@@ -5,7 +5,7 @@ supported: false
 title: "Armed Crusader (Unity)"
 description: "The first prototype for Armed Crusader (unsupported). A 2D roguelite with RPG elements developed using Unity."
 version: "0.0.1"
-author: "Valkorz"
+author: "Valkorz (Vittorio Pivarci)"
 contributors: []
 tags: ["Game Development", "C#", "UnityEngine"]
 dateOfCreation: 2023-01-17

@@ -5,7 +5,7 @@ supported: true
 title: "Dotnet Tasklist API"
 description: "WebApi tasklist sample project created with .Net Core MVC and Entity framework, containing instructions and documentation."
 version: "1.2.0"
-author: "Valkorz"
+author: "Valkorz (Vittorio Pivarci)"
 contributors: []
 tags: ["Open-Source", "Dotnet Core", "C#", "Entity Framework", "MVC", "API"]
 dateOfCreation: 2025-01-01

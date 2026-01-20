@@ -5,7 +5,7 @@ supported: false
 title: "Sustainable Refrigeration Unit"
 description: "A project developed and presented in FACENS during UPX (June 2025). The main goal was to develop a sustainable system capable of refrigerating vaccines and other hospital equipment using renewable energy."
 version: "1.0.0"
-author: "Valkorz"
+author: "Valkorz (Vittorio Pivarci)"
 contributors: ["Luisenbon", "MuriloCoelho1212", "GuiMLima"]
 tags: ["Electronics", "Arduino", "C/C++"]
 dateOfCreation: 2025-04-01

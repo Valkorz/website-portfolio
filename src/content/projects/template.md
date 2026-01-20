@@ -5,7 +5,7 @@ supported: false
 title: "Sample project"
 description: "Sample description"
 version: "0.0.0"
-author: "authorName"
+author: "Valkorz (Vittorio Pivarci)"
 contributors: ["contributor1", "contributor2", "contributor3"]
 tags: ["Open-Source", "TailWind", "Astro", "GitHub"]
 dateOfCreation: 2025-01-01

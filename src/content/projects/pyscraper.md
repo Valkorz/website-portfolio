@@ -5,7 +5,7 @@ supported: true
 title: "eshopping price scraper"
 description: "A price scraper for eshopping websites"
 version: "1.0.1"
-author: "Valkor"
+author: "Valkorz (Vittorio Pivarci)"
 contributors: []
 tags: ["Open-Source", "Python", "Automation"]
 dateOfCreation: 2025-01-01

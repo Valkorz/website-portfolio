@@ -5,7 +5,7 @@ supported: false
 title: "Vehicle Traffic Alert System"
 description: "A project developed and presented in FACENS during UPX (November 2025). The main goal was to develop an alert and data collection system for pedestrians in highly movimented highways."
 version: "1.0.0"
-author: "Valkorz"
+author: "Valkorz (Vittorio Pivarci)"
 contributors: ["Luisenbon", "MuriloCoelho1212", "GuiMLima", "murilogaarcia"]
 tags: ["Electronics", "ESP-32", "C/C++", "API", "SQLite", "HTML", "CSS"]
 dateOfCreation: 2025-08-01

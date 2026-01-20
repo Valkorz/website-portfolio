@@ -5,7 +5,7 @@ supported: true
 title: "Restaurant Menu Website"
 description: "A website that simulates a menu for a restaurant, featuring different dishes, selection and payment screen."
 version: "1.0.1"
-author: "Valkorz"
+author: "Valkorz (Vittorio Pivarci)"
 contributors: ["GuiMLima", "Luisenbon", "MuriloCoelho1212"]
 tags: ["Open-Source", "HTML", "CSS", "JavaScript", "Web Application"]
 dateOfCreation: 2025-03-19

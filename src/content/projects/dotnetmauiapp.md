@@ -2,14 +2,14 @@
 projectName: "dotnetMauiApp"
 githubPage: "https://github.com/Valkorz/maui-school-auth"
 supported: true
-title: "MAUI School Auth"
-description: "A multi-platform application created with Dotnet MAUI that simulates a school authentication system for FACENS. Project made for learning purposes."
+title: "MAUI Dashboard App"
+description: "A multi-platform application created with Dotnet MAUI that simulates a school dashboard system for FACENS. Project made for learning purposes."
 version: "1.0.5"
-author: "Valkorz"
+author: "Valkorz (Vittorio Pivarci)"
 contributors: []
 tags: ["Open-Source", "C#", "Dotnet MAUI", "Entity Framework", "SQLite"]
 dateOfCreation: 2025-06-27
-thumbnail: "./images/dotnetmaui3.png"
+thumbnail: "./images/dotnetmaui4.png"
 screenshots:
     - "./images/dotnetmaui1.png"
     - "./images/dotnetmaui2.png"

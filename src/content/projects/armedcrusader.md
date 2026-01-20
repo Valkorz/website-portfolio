@@ -5,7 +5,7 @@ supported: false
 title: "Armed Crusader (Monogame)"
 description: "The second prototype for Arsenalize (unsupported). A 2D roguelite with RPG elements developed using MonoGame."
 version: "0.0.2"
-author: "Valkorz"
+author: "Valkorz (Vittorio Pivarci)"
 contributors: []
 tags: ["Game Development", "C#", "MonoGame"]
 dateOfCreation: 2023-08-20

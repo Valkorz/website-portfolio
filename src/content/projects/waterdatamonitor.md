@@ -5,7 +5,7 @@ supported: true
 title: "Water Data Monitor"
 description: "A project developed and presented in FACENS during two instances of UPX (2024). The main goal was to develop a sustainable system capable of measuring and monitoring water levels and variation on self-contained systems or rivers."
 version: "1.1.0"
-author: "Valkorz"
+author: "Valkorz (Vittorio Pivarci)"
 contributors: ["Luisenbon", "MuriloCoelho1212", "brenoorem"]
 tags: ["Arduino", "HTML", "CSS", "C#", "Javascript", "API", "SQLite", "Entity Framework", "C/C++"]
 dateOfCreation: 2024-06-04
