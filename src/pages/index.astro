@@ -1,7 +1,25 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import { execSync } from 'node:child_process';
+import ActivityCarousel from '../components/ActivityCarousel.astro';
+import { getCollection } from 'astro:content';
+
+const allProjects = await getCollection('projects');
+
+const projectsWithActivity = allProjects.map((project) => {
+  try {
+    const gitDate = execSync(`git log -1 --format=%ai src/content/projects/${project.id}`).toString();
+    return { ...project, lastActive: new Date(gitDate).getTime() };
+  } catch (e) {
+    return { ...project, lastActive: 0 };
+  }
+});
+
+const activeProjects = projectsWithActivity
+  .sort((a : any, b : any) => b.lastActive - a.lastActive)
+  .slice(0, 3);
 ---
 
 <Layout title="main" currentTab="main">
-	<!-- <Welcome /> -->
+	<ActivityCarousel projects={activeProjects} />
 </Layout>
