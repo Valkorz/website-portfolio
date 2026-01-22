@@ -36,4 +36,4 @@ http://valkorz.github.io/website-portfolio/
 
 This project's design is heavily inspired by Steam's desktop application design. I took great inspiration from how the games library is displayed, along with effects such as blurred images, shadows, shiny borders and colors.
 
-![library page](public/images/portfoliolibrary1.png)
+![library page](public/images/portfoliolibrary2.png)
