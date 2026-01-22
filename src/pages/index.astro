@@ -6,18 +6,43 @@ import { getCollection } from 'astro:content';
 
 const allProjects = await getCollection('projects');
 
-const projectsWithActivity = allProjects.map((project) => {
-  try {
-    const gitDate = execSync(`git log -1 --format=%ai src/content/projects/${project.id}`).toString();
-    return { ...project, lastActive: new Date(gitDate).getTime() };
-  } catch (e) {
-    return { ...project, lastActive: 0 };
-  }
-});
+const projectsWithActivity = await Promise.all(
+  allProjects.map(async (project) => {
+    const repoUrl = project.data.githubPage;
+
+    if (!repoUrl || !repoUrl.includes('github.com')) {
+      return { ...project, lastPush: 0 };
+    }
+
+    try{
+      const repoPath = repoUrl.split('github.com/')[1].replace(/\$/, '');
+      const response = await fetch(`https://api.github.com/repos/${repoPath}`, {
+        headers: import.meta.env.GITHUB_TOKEN 
+          ? { Authorization: `Bearer ${import.meta.env.GITHUB_TOKEN}` } 
+          : {}
+      });
+
+      const data = await response.json();
+      // console.log(`data: ${data.name}, path: ${repoPath}, lastpush: ${new Date(data.pushed_at).getTime()}`);
+
+      return {
+        ...project,
+        lastPush: new Date(data.pushed_at).getTime(),
+        starts: data.stargazers_count
+      };
+    }
+    catch (e){
+      console.error(`Failed to fetch for ${project.id}:`, e);
+      return { ...project, lastPush: 0 };
+    }
+  })
+)
 
 const activeProjects = projectsWithActivity
-  .sort((a : any, b : any) => b.lastActive - a.lastActive)
+  .filter(p => p.lastPush > 0)
+  .sort((a, b) => b.lastPush - a.lastPush)
   .slice(0, 3);
+
 ---
 
 <Layout title="main" currentTab="main">
