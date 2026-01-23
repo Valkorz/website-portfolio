@@ -17,8 +17,8 @@ const projectsWithActivity = await Promise.all(
     try{
       const repoPath = repoUrl.split('github.com/')[1].replace(/\$/, '');
       const response = await fetch(`https://api.github.com/repos/${repoPath}`, {
-        headers: import.meta.env.GITHUB_TOKEN 
-          ? { Authorization: `Bearer ${import.meta.env.GITHUB_TOKEN}` } 
+        headers: import.meta.env.TOKEN 
+          ? { Authorization: `Bearer ${import.meta.env.TOKEN}` } 
           : {}
       });
 
@@ -45,13 +45,13 @@ const activeProjects = projectsWithActivity
 
 
 // Only for debug. Remove later.
-console.log(`active projects: ${activeProjects}`);
-if(activeProjects.length > 0)
-{
-  activeProjects.forEach(p => {
-    console.log(`activeProjects entry: ${p.data.projectName}`);
-  })
-}
+// console.log(`active projects: ${activeProjects}`);
+// if(activeProjects.length > 0)
+// {
+//   activeProjects.forEach(p => {
+//     console.log(`activeProjects entry: ${p.data.projectName}`);
+//   })
+// }
 ---
 
 <Layout title="main" currentTab="main">
