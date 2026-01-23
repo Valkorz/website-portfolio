@@ -43,6 +43,15 @@ const activeProjects = projectsWithActivity
   .sort((a, b) => b.lastPush - a.lastPush)
   .slice(0, 3);
 
+
+// Only for debug. Remove later.
+console.log(`active projects: ${activeProjects}`);
+if(activeProjects.length > 0)
+{
+  activeProjects.forEach(p => {
+    console.log(`activeProjects entry: ${p.data.projectName}`);
+  })
+}
 ---
 
 <Layout title="main" currentTab="main">
