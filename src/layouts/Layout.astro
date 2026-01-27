@@ -1,7 +1,7 @@
 ---
 import '../styles/global.css';
 import SteamHeader from '../components/SteamHeader.astro'; // Import the component
-const { title, currentTab, searchEnabled = false } = Astro.props;
+const { title, currentTab, headerEnabled = true } = Astro.props;
 ---
 
 <!doctype html>
@@ -12,10 +12,8 @@ const { title, currentTab, searchEnabled = false } = Astro.props;
         <title>{title}</title>  
     </head>
     <body class="bg-linear-to-b from-steam-gray to-steam-dark2 text-steam-accent min-h-screen">
-        <SteamHeader activeTab={currentTab} searchEnabled={searchEnabled}/>
-        <!-- this crap needs fixing -->
-        
-        <main class="max-w-6xl mx-auto p-4">
+        <SteamHeader activeTab={currentTab} headerEnabled={headerEnabled}/>     
+        <main>
             <slot /> </main>
     </body>
 </html>

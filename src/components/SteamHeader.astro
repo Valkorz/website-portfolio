@@ -1,16 +1,14 @@
 ---
-const { activeTab = 'main', searchEnabled = false} = Astro.props;
+const { activeTab = 'main', headerEnabled = true} = Astro.props;
+
+console.log(`class: ${headerEnabled? 'header-visible' : 'header-hidden'}`);
 ---
 
 <div>
-    <header class="bg-steam-dark w-full z-10 relative">
-        <div class="max-w-6xl mx-auto px-4">
-            <div class="py-6">
-            <h1 class="text-steam-accent text-3xl font-black tracking-tighter uppercase">
-                Vittorio Pivarci<span class="text-steam-blue italic"> Portfolio</span>
-            </h1>
-            </div>
-        </div>
+    <header class="bg-steam-dark w-full z-10 relative p-3">
+        <h1 class:list={[headerEnabled? 'header-visible' : 'header-hidden', "text-steam-accent text-3xl mr-3 text-right font-black tracking-tighter uppercase"]}>
+         <span class="text-steam-blue font-mono font-extrabold">{"</>"}</span> Vittorio Pivarci
+        </h1>
     </header>
     <nav class="flex gap-1 bg-steam-dark2/60 opacity-90 nav-header z-3 relative -mt-2">
       {['main', 'library', 'blog', 'about'].map((tab) => (
@@ -34,11 +32,11 @@ const { activeTab = 'main', searchEnabled = false} = Astro.props;
 </div>
 
 <style>
-    /* .searchbar-visible{
+    .header-visible{
         display: block;
     }
 
-    .searchbar-hidden{
+    .header-hidden{
         display: none;
-    } */
+    }
 </style>

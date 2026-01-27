@@ -44,59 +44,61 @@ allTagsSorted.forEach(t => {
 ---
 
 <Layout title="library" currentTab="library">
-	<div class="flex flex-row justify-center items-center gap-3 w-full mb-5 mt-2">
-        <div class='bg-steam-accent searchbar-visible rounded-2xl flex flex-row items-center px-3 py-2 gap-3 shadow-2xs shadow-steam-dark'>
-            <input class="w-full text-black" id="search-input" placeholder="Search projects by name or tag...">
-            <Image src={searchIconUrl} alt="Search"/>
-        </div>
+	<div class="mr-20 ml-20 mt-5">
+		<div class="flex flex-row justify-center items-center gap-3 w-full mb-5 mt-2">
+        	<div class='bg-steam-accent searchbar-visible rounded-2xl flex flex-row items-center px-3 py-2 gap-3 shadow-2xs shadow-steam-dark'>
+        	    <input class="w-full text-black" id="search-input" placeholder="Search projects by name or tag...">
+        	    <Image src={searchIconUrl} alt="Search"/>
+        	</div>
 
-		<!-- Order by tag -->
-		<input id="orderByTag" type="checkbox" class="w-5 h-5 accent-steam-blue cursor-pointer rounded mt-auto mb-auto ml-2"/>
-		<h2 class="font-mono text-slate-400 uppercase mt-auto mb-auto ml-2">Order by tag</h2>
-		<!-- Order by date -->
-		<!-- <input id="orderByDate" type="checkbox" class="w-5 h-5 accent-steam-blue cursor-pointer rounded mt-auto mb-auto ml-2"/>
-		<h2 class="font-mono text-slate-400 uppercase mt-auto mb-auto ml-2">Order by date</h2> -->
-		<!-- Show unsupported/cancelled -->
-		<input id="showUnsupported" type="checkbox" class="w-5 h-5 accent-steam-blue cursor-pointer rounded mt-auto mb-auto ml-2"/>
-		<h2 class="font-mono text-slate-400 uppercase mt-auto mb-auto ml-2">Show unsupported ({unsupportedProjects})</h2>
-	</div>
+			<!-- Order by tag -->
+			<input id="orderByTag" type="checkbox" class="w-5 h-5 accent-steam-blue cursor-pointer rounded mt-auto mb-auto ml-2"/>
+			<h2 class="font-mono text-slate-400 uppercase mt-auto mb-auto ml-2">Order by tag</h2>
+			<!-- Order by date -->
+			<!-- <input id="orderByDate" type="checkbox" class="w-5 h-5 accent-steam-blue cursor-pointer rounded mt-auto mb-auto ml-2"/>
+			<h2 class="font-mono text-slate-400 uppercase mt-auto mb-auto ml-2">Order by date</h2> -->
+			<!-- Show unsupported/cancelled -->
+			<input id="showUnsupported" type="checkbox" class="w-5 h-5 accent-steam-blue cursor-pointer rounded mt-auto mb-auto ml-2"/>
+			<h2 class="font-mono text-slate-400 uppercase mt-auto mb-auto ml-2">Show unsupported ({unsupportedProjects})</h2>
+		</div>
 
-	<span id="ordered-project-list">
-		{projectsByTag.map(group => (
-    	<div>
-        	<div class="tag-header mb-2">
-				<h1 class="tag-title">{group.key}</h2>
-			</div>
-			<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 bg-steam-dark2/50 mb-5">
-				{group.value
-					.map(item => (
+		<span id="ordered-project-list">
+			{projectsByTag.map(group => (
+    		<div>
+    	    	<div class="tag-header mb-2">
+					<h1 class="tag-title">{group.key}</h2>
+				</div>
+				<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 bg-steam-dark2/50 mb-5">
+					{group.value
+						.map(item => (
+						<div 
+    	        		class="project-wrapper" 
+    	        		data-title={item.data.title.toLowerCase()}
+    	        		data-tags={item.data.tags.join(' ').toLowerCase()}
+						data-supported={String(item.data.supported)}>
+							<ProjectCard project={item}/>
+						</div>
+					))}
+				</div>
+    		</div>
+			))}
+		</span>
+
+		<span id="unordered-project-list">
+			<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">	
+				{sortedProjects
+				.map(item => (
 					<div 
-            		class="project-wrapper" 
-            		data-title={item.data.title.toLowerCase()}
-            		data-tags={item.data.tags.join(' ').toLowerCase()}
+    	    	    class="project-wrapper" 
+    	    	    data-title={item.data.title.toLowerCase()}
+    	    	    data-tags={item.data.tags.join(' ').toLowerCase()}
 					data-supported={String(item.data.supported)}>
 						<ProjectCard project={item}/>
 					</div>
 				))}
 			</div>
-    	</div>
-		))}
-	</span>
-
-	<span id="unordered-project-list">
-		<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">	
-			{sortedProjects
-			.map(item => (
-				<div 
-        	    class="project-wrapper" 
-        	    data-title={item.data.title.toLowerCase()}
-        	    data-tags={item.data.tags.join(' ').toLowerCase()}
-				data-supported={String(item.data.supported)}>
-					<ProjectCard project={item}/>
-				</div>
-			))}
-		</div>
-	</span>
+		</span>
+	</div>
 </Layout>
 
 <script>

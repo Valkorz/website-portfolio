@@ -2,6 +2,7 @@
 import Layout from '../layouts/Layout.astro';
 import { execSync } from 'node:child_process';
 import ActivityCarousel from '../components/ActivityCarousel.astro';
+import MatrixBanner from '../components/MatrixBanner.astro';
 import { getCollection } from 'astro:content';
 
 const allProjects = await getCollection('projects');
@@ -54,6 +55,12 @@ const activeProjects = projectsWithActivity
 // }
 ---
 
-<Layout title="main" currentTab="main">
+<Layout title="main" currentTab="main" headerEnabled={false}>
+  <!-- <div class="bg-steam-gray w-full h-96 mb-10 shadow-2xl">
+    <h1 class=" text-4xl font-mono font-extrabold uppercas mt-10 ml-5">VITTORIO PIVARCI</h1>
+  </div> -->
+
+  <MatrixBanner />
+  
 	<ActivityCarousel projects={activeProjects} />
 </Layout>
