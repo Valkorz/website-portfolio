@@ -5,10 +5,11 @@ console.log(`class: ${headerEnabled? 'header-visible' : 'header-hidden'}`);
 ---
 
 <div>
-    <header class="bg-steam-dark w-full z-10 relative p-3">
-        <h1 class:list={[headerEnabled? 'header-visible' : 'header-hidden', "text-steam-accent text-3xl mr-3 text-right font-black tracking-tighter uppercase"]}>
+    <header class:list={[headerEnabled? 'header-visible' : 'header-hidden', "bg-steam-dark w-full z-10 relative p-3"]}>
+        <h1 class="text-steam-accent text-3xl mr-3 text-right font-black tracking-tighter uppercase z-0">
          <span class="text-steam-blue font-mono font-extrabold">{"</>"}</span> Vittorio Pivarci
         </h1>
+        <canvas id="matrix-canvas-header" class="absolute top-0 left-0 w-full h-full z-1 opacity-80"></canvas>
     </header>
     <nav class="flex gap-1 bg-steam-dark2/60 opacity-90 nav-header z-3 relative -mt-2">
       {['main', 'library', 'blog', 'about'].map((tab) => (
@@ -30,6 +31,67 @@ console.log(`class: ${headerEnabled? 'header-visible' : 'header-hidden'}`);
 
     </nav>
 </div>
+
+<script>
+    const canvas = document.getElementById('matrix-canvas-header') as HTMLCanvasElement;
+    const ctx = canvas.getContext('2d');
+
+    let width = canvas.parentElement?.offsetWidth ?? 800;
+    let height = canvas.parentElement?.offsetHeight ?? 256;
+    canvas.width = width;
+    canvas.height = height;
+
+    const characters = '0123456789ABCDEF';
+    const fontSize = 16;
+    const columns = Math.floor(width / fontSize);
+    const drops: number[] = [];
+
+    for(let i = 0; i < columns; i++){
+        drops[i] = Math.random() * -height;
+    }
+
+    function draw(){
+        if(!ctx) return;     
+        ctx.fillStyle = 'rgba(10,10,18,0.1)';
+        ctx.fillRect(0,0,width,height);
+
+        ctx.fillStyle = '#00AAFF';
+        ctx.font = `${fontSize}px monospace`;
+
+        for(let i = 0; i < drops.length; i++){
+            const text = characters.charAt(Math.floor(Math.random() * characters.length));
+
+            const x = i * fontSize;
+            const y = drops[i] * fontSize;
+
+            ctx.fillText(text, x, y);
+
+            if(y > height && Math.random() > 0.975){
+                drops[i] = 0;
+            }
+
+            drops[i]++;
+        }
+
+        requestAnimationFrame(draw);
+    }
+
+    window.addEventListener('resize', () => {
+        width = canvas.parentElement?.offsetWidth ?? 0;
+        height = canvas.parentElement?.offsetHeight ?? 0;
+        canvas.width = width;
+        canvas.height = height;
+
+        const newColumns = Math.floor(width / fontSize);
+        if (newColumns > columns) {
+            for (let i = columns; i < newColumns; i++) {
+                drops[i] = Math.random() * -height;
+            }
+        }
+      });
+
+  draw();
+</script>
 
 <style>
     .header-visible{
