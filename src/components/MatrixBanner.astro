@@ -1,13 +1,38 @@
 ---
+const base = import.meta.env.BASE_URL;
+const libraryUrl = `${base}/library`;
+const aboutUrl = `${base}/about`;
 ---
 
-<div class="relative w-full h-64 bg-[#0A0A12] overflow-hidden shadow-2xl">
+<div class="relative w-full h-72 bg-[#0A0A12] overflow-auto shadow-2xl">
   <canvas id="matrix-canvas" class="absolute top-0 left-0 w-full h-full z-0 opacity-80"></canvas>
   
   <div class="absolute inset-0 flex items-center justify-start z-10 pl-8 md:pl-16">
-    <h1 class="text-3xl md:text-5xl font-black text-white uppercase tracking-widest drop-shadow-[0_0_10px_rgba(0,170,255,0.8)]">
-      Vittorio Pivarci
-    </h1>
+    <div class="grid grid-cols-2 grid-rows-1 w-full">
+        <h1 class="text-3xl md:text-5xl font-black text-white uppercase tracking-widest drop-shadow-[0_0_10px_rgba(0,170,255,0.8)]">
+            <p>Vittorio Pivarci</p>
+            <p class="text-2xl text-slate-400 font-semibold">Software Developer</p>
+        </h1>
+        <span class="ml-10">
+            <h1 class="text-2xl w-full font-black text-white uppercase tracking-widest drop-shadow-[0_0_10px_rgba(0,170,255,0.8)]">
+                ABOUT ME
+            </h1>   
+            <p class="text-slate-400 font-semibold tracking-widest drop-shadow-[0_0_10px_rgba(0,170,255,0.8)]">
+                Mechatronics Technician graduate and in-progress bachelor degree of Computer Engineering at Facens, I love computers, programming and math! 
+            </p>
+            <a href={aboutUrl} class="text-steam-blue uppercase font-semibold tracking-widest drop-shadow-[0_0_10px_rgba(0,170,255,0.8)]">Learn more →</a>
+
+            <hr class="w-64 h-1 my-4 bg-neutral-quaternary border-0 rounded-sm bg-slate-400/50">
+
+            <h1 class="text-2xl w-full font-black text-white uppercase tracking-widest drop-shadow-[0_0_10px_rgba(0,170,255,0.8)]">
+                MY WORK
+            </h1>
+            <p class="text-slate-400 font-semibold tracking-widest drop-shadow-[0_0_10px_rgba(0,170,255,0.8)]">
+                I have experience in a plethora of projects, ranging from software solutions to hardware implementations. I have worked with a wide variety of tech stacks from frontend to backend. 
+            </p>
+            <a href={libraryUrl} class="text-steam-blue uppercase font-semibold tracking-widest drop-shadow-[0_0_10px_rgba(0,170,255,0.8)]">Browse projects →</a>
+        </span>
+    </div>
   </div>
 </div>
 

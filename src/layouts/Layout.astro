@@ -1,7 +1,7 @@
 ---
 import '../styles/global.css';
 import SteamHeader from '../components/SteamHeader.astro'; // Import the component
-const { title, currentTab, headerEnabled = true } = Astro.props;
+const { title, currentTab, headerEnabled = true, headerVisible = true } = Astro.props;
 ---
 
 <!doctype html>
@@ -12,13 +12,24 @@ const { title, currentTab, headerEnabled = true } = Astro.props;
         <title>{title}</title>  
     </head>
     <body class="bg-linear-to-b from-steam-gray to-steam-dark2 text-steam-accent min-h-screen">
-        <SteamHeader activeTab={currentTab} headerEnabled={headerEnabled}/>     
+        <span class={headerVisible? 'header-visible' : 'header-hidden'}>
+            <SteamHeader activeTab={currentTab} headerEnabled={headerEnabled}/>  
+        </span>   
         <main>
             <slot /> </main>
     </body>
 </html>
 
 <style>
+    .header-hidden{
+        visibility: hidden;
+    }
+
+    .header-visible{
+        visibility: visible;
+    }
+
+
     .w-sep-px{
         width: 2px;
         /* color: var(--color-text-dark-transparent); */
