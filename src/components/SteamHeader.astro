@@ -11,7 +11,7 @@ console.log(`class: ${headerEnabled? 'header-visible' : 'header-hidden'}`);
         </h1>
         <canvas id="matrix-canvas-header" class="absolute top-0 left-0 w-full h-full z-1 opacity-80"></canvas>
     </header>
-    <nav class="flex gap-1 bg-steam-dark2/60 opacity-90 nav-header z-3 relative -mt-2">
+    <nav class="flex gap-1 bg-steam-dark2/90 opacity-90 nav-header z-3 relative -mt-2">
       {['main', 'library', 'about'].map((tab) => (
         <a  href={tab === 'main' ? '/website-portfolio' : `/website-portfolio/${tab}`}
             class:list={[
