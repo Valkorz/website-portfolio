@@ -45,21 +45,23 @@ allTagsSorted.forEach(t => {
 
 <Layout title="library" currentTab="library">
 	<div class="mr-20 ml-20 mt-5">
-		<div class="flex flex-row justify-center items-center gap-3 w-full mb-5 mt-2">
-        	<div class='bg-steam-accent searchbar-visible rounded-2xl flex flex-row items-center px-3 py-2 gap-3 shadow-2xs shadow-steam-dark'>
+		<div class="grid grid-rows-2 w-full mb-5 mt-2 items-center justify-center">
+        	<div class='bg-steam-accent searchbar-visible rounded-2xl flex flex-row px-3 py-2 gap-3 shadow-2xs shadow-steam-dark'>
         	    <input class="w-full text-black" id="search-input" placeholder="Search projects by name or tag...">
         	    <Image src={searchIconUrl} alt="Search"/>
         	</div>
 
-			<!-- Order by tag -->
-			<input id="orderByTag" type="checkbox" class="w-5 h-5 accent-steam-blue cursor-pointer rounded mt-auto mb-auto ml-2"/>
-			<h2 class="font-mono text-slate-400 uppercase mt-auto mb-auto ml-2">Order by tag</h2>
-			<!-- Order by date -->
-			<!-- <input id="orderByDate" type="checkbox" class="w-5 h-5 accent-steam-blue cursor-pointer rounded mt-auto mb-auto ml-2"/>
-			<h2 class="font-mono text-slate-400 uppercase mt-auto mb-auto ml-2">Order by date</h2> -->
-			<!-- Show unsupported/cancelled -->
-			<input id="showUnsupported" type="checkbox" class="w-5 h-5 accent-steam-blue cursor-pointer rounded mt-auto mb-auto ml-2"/>
-			<h2 class="font-mono text-slate-400 uppercase mt-auto mb-auto ml-2">Show unsupported ({unsupportedProjects})</h2>
+			<span class="flex flex-row w-full">
+				<!-- Order by tag -->
+				<input id="orderByTag" type="checkbox" class="w-5 h-5 accent-steam-blue cursor-pointer rounded mt-auto mb-auto ml-2"/>
+				<h2 class="font-mono text-slate-400 uppercase mt-auto mb-auto ml-2">Order by tag</h2>
+				<!-- Order by date -->
+				<!-- <input id="orderByDate" type="checkbox" class="w-5 h-5 accent-steam-blue cursor-pointer rounded mt-auto mb-auto ml-2"/>
+				<h2 class="font-mono text-slate-400 uppercase mt-auto mb-auto ml-2">Order by date</h2> -->
+				<!-- Show unsupported/cancelled -->
+				<input id="showUnsupported" type="checkbox" class="w-5 h-5 accent-steam-blue cursor-pointer rounded mt-auto mb-auto ml-10"/>
+				<h2 class="font-mono text-slate-400 uppercase mt-auto mb-auto ml-2">Show unsupported ({unsupportedProjects})</h2>
+			</span>
 		</div>
 
 		<span id="ordered-project-list">
@@ -150,7 +152,7 @@ allTagsSorted.forEach(t => {
   @reference "../styles/global.css";
 	.searchbar-visible{
         display: flex;
-        width: 50%;
+        width: 100%;
         justify-content: center;
         align-items: center;
         margin-right: auto;
