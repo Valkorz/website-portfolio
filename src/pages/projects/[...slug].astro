@@ -55,7 +55,7 @@ const dateString = `${formattedDate.split(' ')[0]} ${day}, ${dateOfCreation.getF
       />
     </div>
 
-  <div class="grid grid-cols-2 grid-rows-1 gap-2 ml-[10%] mr-[10%] mt-5 bg-steam-dark2/60 panel-glow border border-white/10 border-t-white/30 border-l-white/30 opacity-90 z-2">
+  <div class="grid grid-cols-2 grid-rows-1 gap-2 ml-[10%] mr-[10%] mt-5 bg-steam-dark2/90 panel-glow border border-white/10 border-t-white/30 border-l-white/30 opacity-90 z-2 rounded">
     <div class="overflow-hidden bg-steam-dark">
       <ImageCarousel screenshots={entry.data.screenshots} />
     </div>
@@ -91,12 +91,9 @@ const dateString = `${formattedDate.split(' ')[0]} ${day}, ${dateOfCreation.getF
   </div>
 
   <div>
-    <article class="panel-glow prose prose-invert ml-[10%] mr-[10%] mt-6 max-w-none row-span-3 bg-steam-dark2/60 p-2 border border-white/10 border-t-white/30 border-l-white/30 opacity-90">
+    <article class="panel-glow prose prose-invert rounded ml-[10%] mr-[10%] mt-6 max-w-none row-span-3 bg-steam-dark2/90 p-2 border border-white/10 border-t-white/30 border-l-white/30 opacity-90">
       <Content />
     </article>
-    <!-- <div class="bg-steam-dark">
-
-    </div> -->
   </div>
 </Layout>
 

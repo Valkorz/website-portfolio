@@ -46,12 +46,12 @@ allTagsSorted.forEach(t => {
 <Layout title="library" currentTab="library">
 	<div class="mr-20 ml-20 mt-5">
 		<div class="grid grid-rows-2 w-full mb-5 mt-2 items-center justify-center">
-        	<div class='bg-steam-accent searchbar-visible rounded-2xl flex flex-row px-3 py-2 gap-3 shadow-2xs shadow-steam-dark'>
+        	<div class='bg-steam-accent/80 border-2 border-t-steam-blue hover:scale-102 transition-all duration-300 searchbar-visible rounded-2xl flex flex-row px-3 py-2 gap-3 shadow-2xl shadow-steam-dark z-1'>
         	    <input class="w-full text-black" id="search-input" placeholder="Search projects by name or tag...">
         	    <Image src={searchIconUrl} alt="Search"/>
         	</div>
 
-			<span class="flex flex-row w-full">
+			<span class="flex flex-row w-full z-2">
 				<!-- Order by tag -->
 				<input id="orderByTag" type="checkbox" class="w-5 h-5 accent-steam-blue cursor-pointer rounded mt-auto mb-auto ml-2"/>
 				<h2 class="font-mono text-slate-400 uppercase mt-auto mb-auto ml-2">Order by tag</h2>

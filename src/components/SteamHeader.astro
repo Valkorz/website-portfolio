@@ -4,7 +4,7 @@ const { activeTab = 'main', headerEnabled = true} = Astro.props;
 console.log(`class: ${headerEnabled? 'header-visible' : 'header-hidden'}`);
 ---
 
-<div>
+<div class="shadow-2xl">
     <header class:list={[headerEnabled? 'header-visible' : 'header-hidden', "bg-steam-dark w-full z-10 relative p-3"]}>
         <h1 class="text-steam-accent text-3xl mr-3 text-right font-black tracking-tighter uppercase z-0">
          <span class="text-steam-blue font-mono font-extrabold">{"</>"}</span> Vittorio Pivarci
@@ -15,7 +15,7 @@ console.log(`class: ${headerEnabled? 'header-visible' : 'header-hidden'}`);
       {['main', 'library', 'about'].map((tab) => (
         <a  href={tab === 'main' ? '/website-portfolio' : `/website-portfolio/${tab}`}
             class:list={[
-            "px-6 py-6 uppercase text-sm font-bold drop-shadow-2xl transition-all duration-200 transform hover:translate-y-2 active:scale-95",
+            "px-6 py-6 uppercase text-sm font-bold drop-shadow-2xl transition-all duration-200 transform hover:translate-y-2 active:scale-95 rounded",
             activeTab === tab 
               ? "bg-steam-dark text-white border-b-2 border-steam-blue" 
               : "text-steam-accent hover:text-white hover:bg-steam-dark2 hover:border hover:border-l-0 hover:border-r-0 hover:border-t-0 hover:border-b-steam-accent"

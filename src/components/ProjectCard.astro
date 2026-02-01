@@ -25,19 +25,19 @@ const dateString = `${formattedDate.split(' ')[0]} ${day}, ${dateOfCreation.getF
 ---
 
 <a  href={projectLink}
-    class="group block bg-steam-gray/50 hover:bg-steam-gray transition-all duration-300">
+    class="group block bg-steam-gray/50 hover:bg-steam-gray transition-all duration-300 rounded">
     <div class="relative group-hover:scale-105 transition-transform duration-300 drop-shadow-2xl aspect-video">
         <span>
             <label class:list={[project.data.supported ? 'unsupported-title-hidden' : 'unsupported-title-visible', 'absolute']}>UNSUPPORTED</label>
             <Image 
             src={project.data.thumbnail} 
             alt={project.data.title} 
-            class="object-cover w-full h-full bg-steam-dark2"
+            class="object-cover w-full h-full bg-steam-dark2 rounded-t"
             /> 
         </span>
 
-        <div class="p-4 border-b-2 border-transparent group-hover:border-steam-blue bg-linear-to-b from-steam-dark to-steam-dark2">
-            <h3 class="text-white font-bold font-mono text-lg uppercase tracking-tight">{project.data.title}</h3>
+        <div class="p-4 border-b-2 border-transparent group-hover:border-steam-blue bg-linear-to-b from-steam-dark to-steam-dark2 overflow-hidden rounded-b">
+            <h3 class="text-white truncate font-bold font-mono text-lg uppercase tracking-tight">{project.data.title}</h3>
             <div class="grid grid-cols-2, grid-rows-2 mt-2">
               <span class="col-span-2 flex gap-2">
                 {
@@ -45,15 +45,14 @@ const dateString = `${formattedDate.split(' ')[0]} ${day}, ${dateOfCreation.getF
                         .sort((a : string, b : string) => a.localeCompare(b)) // 1. Alphabetical sort
                         .slice(0, 4)                        // 2. Take only the first 4
                         .map((tag: string) => (             // 3. Map the result
-                        <span class="text-[10px] mt-auto mb-auto bg-black/40 px-2 py-0.5 text-steam-accent">
+                        <span class="text-[10px] truncate h-5 overflow-hidden mt-auto mb-auto bg-black/40 px-2 py-0.5 text-steam-accent">
                             {tag}
                         </span>
                     ))
                 }
               </span>
-              <!-- <p class="text-white font-bold ml-auto mt-auto mb-auto">{project.data.version}</h3> -->
-              <p class="text-slate-500 ml-auto mt-auto mb-auto col-span-2">{dateString}</h3>
             </div>  
+            <span class="text-slate-500 ml-auto mt-auto mb-auto">{dateString}</span>
         </div> 
 
         <div class="absolute inset-0 shadow-[inset_0_0_30px_rgba(102,192,244,0)] group-hover:shadow-[inset_0_0_30px_rgba(102,192,244,0.2)] transition-shadow"></div>

@@ -2,15 +2,21 @@
 import { Image } from 'astro:assets'
 const { projects} = Astro.props;
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+
+// Icons served from /public
+const arrowLeftSrc = `${base}/images/icons/arrow-left.svg`;
+const arrowRightSrc = `${base}/images/icons/arrow-right.svg`;
 ---
 <span class="m-10">
-  <h1 class="uppercase font-bold text-steam-accent ml-[15%] mr-[15%] mx-auto">Recently updated</h1>
-  <div class="relative ml-[15%] mr-[15%] w-fit mx-auto overflow-hidden bg-steam-dark2 shadow-2xl border border-white/10 border-t-white/30 border-l-white/30 opacity-90 group">
-    <div class="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-1">
-          {projects.map((_ : any, i : any) => (
-            <div class="w-4 h-2 bg-white/20 rounded-full cursor-pointer hover:bg-steam-blue transition-colors"></div>
-          ))}
-    </div>
+  <h1 class="uppercase font-bold text-steam-accent ml-[15%] mr-[15%] mx-auto">Recently updated projects</h1>
+  <span class="flex flex-row relative">
+    <!-- Navigation left -->
+    <button id="carousel-prev" class="absolute left-[11%] top-1/2 h-100 -translate-y-1/2 z-20 p-3 bg-linear-to-r hover:scale-102 from-black/40 to-black/20 hover:bg-white/10 transition-colors cursor-pointer hidden md:block rounded">
+        <img src={arrowLeftSrc} class="w-8 h-8 opacity-80 hover:opacity-100" alt="Previous" />
+    </button>
+
+    <!-- Carousel content -->
+    <div class="relative ml-[15%] mr-[15%] mx-auto overflow-hidden rounded bg-steam-dark2 shadow-2xl border border-white/10 border-t-white/30 border-l-white/30 opacity-90 group">
       {projects.map((project : any,index: any) => {
           const dateObj = new Date(project.lastPush);
           const displayDate = dateObj.toLocaleDateString('en-US', {
@@ -51,18 +57,78 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
           </div>
           );
       })}
+    </div>
+
+    <!-- Navigation right -->
+    <button id="carousel-next" class="absolute right-[11%] h-100 top-1/2 -translate-y-1/2 z-20 p-3 bg-linear-to-l hover:scale-102 from-black/40 to-black/20 hover:bg-white/10 transition-colors cursor-pointer hidden md:block rounded">
+        <img src={arrowRightSrc} class="w-8 h-8 opacity-80 hover:opacity-100" alt="Next" />
+    </button>
+  </span>
+
+  <!-- Navigation position markers -->
+  <div class="flex flex-row items-center justify-center mt-2 gap-1 z-1">
+      {projects.map((_ : any, i : any) => (
+            <div class="w-4 h-2  rounded-full cursor-pointer carousel-dot transition-colors"></div>
+      ))}
   </div>
 </span>
 
 <script>
   let current = 0;
   const items = document.querySelectorAll('.carousel-item');
-  
-  setInterval(() => {
+  const dots = document.querySelectorAll('.carousel-dot');
+  const prevBtn = document.getElementById('carousel-prev');
+  const nextBtn = document.getElementById('carousel-next');
+  let intervalId: any;
+
+  const updateCarousel = (newIndex: number) => {
     items[current].classList.add('hidden');
-    current = (current + 1) % items.length;
+    dots[current].classList.add('bg-white/20');
+    dots[current].classList.remove('bg-steam-blue');
+    
+    current = newIndex;
+    
     items[current].classList.remove('hidden');
-  }, 5000);
+    dots[current].classList.remove('bg-white/20');
+    dots[current].classList.add('bg-steam-blue');
+  };
+
+  const startInterval = () => {
+    intervalId = setInterval(() => {
+        const nextIndex = (current + 1) % items.length;
+        updateCarousel(nextIndex);
+    }, 5000);
+  };
+
+  const resetInterval = () => {
+      clearInterval(intervalId);
+      startInterval();
+  };
+
+  prevBtn?.addEventListener('click', () => {
+      const prevIndex = (current - 1 + items.length) % items.length;
+      updateCarousel(prevIndex);
+      resetInterval();
+  });
+
+  nextBtn?.addEventListener('click', () => {
+      const nextIndex = (current + 1) % items.length;
+      updateCarousel(nextIndex);
+      resetInterval();
+  });
+
+  dots.forEach(dot => {
+      dot.addEventListener('click', (e) => {
+          const target = e.target as HTMLElement;
+          const index = parseInt(target.dataset.index || '0');
+          if (index !== current) {
+            updateCarousel(index);
+            resetInterval();
+          }
+      });
+  });
+
+  startInterval();
 </script>
 
 <style is:global>
