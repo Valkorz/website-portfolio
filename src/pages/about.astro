@@ -1,7 +1,53 @@
 ---
-import Layout from '../layouts/Layout.astro';
+import Image from 'astro/components/Image.astro'
+import Layout from '../layouts/Layout.astro'
+import Footer from '../components/Footer.astro'
+import PictureSelf from '../../public/images/picture-self.jpeg'
 ---
 
 <Layout title="about" currentTab="about">
-	<!-- <Welcome /> -->
+	<span class="p-20">
+		<span class="flex flex-row h-fit w-[80%] ml-auto mr-auto gap-5">
+			<div class="contentBox w-200 mr-5">
+				<span class="flex flex-row w-full">
+				<Image src={PictureSelf} alt="Me" class="h-32 w-32 rounded-full m-2"/>
+				<label>
+					<h1 class="uppercase text-white text-3xl font-mono"> ABOUT ME </h1>
+					<p>Mechatronics Technician graduate and in-progress bachelor degree of Computer Engineering at Facens, I love computers, programming and math! </p>
+				</label>
+				</span>
+			</div>
+			<div class="contentBox w-full ml-5">
+				<h1 class="uppercase text-white text-3xl font-mono mb-2"> TECH STACK </h1>
+				<span class="gap-5">
+					<p>C#</p>
+					<p>Dotnet MAUI</p>
+					<p>Dotnet Core</p>
+					<p>Entity Framework</p>
+					<p>Blazor</p>
+					<p>Astro</p>
+					<p>JavaScript</p>
+					<p>TypeScript</p>
+					<p>HTML/CSS</p>
+					<p>HTML/CSS</p>
+					<p>HTML/CSS</p>
+					<p>HTML/CSS</p>
+					<p>HTML/CSS</p>
+					<p>HTML/CSS</p>
+				</span>
+			</div>
+			
+		</span>
+		<div class="contentBox mt-5 w-[80%]">
+			
+		</div>
+	</span>
 </Layout>
+
+<style is:global>
+  	@reference "../styles/global.css";
+
+	.contentBox{
+		@apply h-fit ml-auto mr-auto bg-steam-dark2/50 backdrop-blur rounded border border-white/30 border-t-steam-matrix/30;
+	}
+</style>
