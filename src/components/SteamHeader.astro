@@ -9,7 +9,7 @@ console.log(`class: ${headerEnabled? 'header-visible' : 'header-hidden'}`);
         <h1 class="text-steam-accent text-3xl mr-3 text-right font-black tracking-tighter uppercase z-0">
          <span class="text-steam-blue font-mono font-extrabold">{"</>"}</span> Vittorio Pivarci
         </h1>
-        <canvas id="matrix-canvas-header" class="absolute top-0 left-0 w-full h-full z-1 opacity-80"></canvas>
+        <canvas id="matrix-canvas-header" class="absolute top-0 left-0 w-full h-full z-1 opacity-15"></canvas>
     </header>
     <nav class="flex gap-1 bg-steam-dark2/90 opacity-90 nav-header z-3 relative -mt-2">
       {['main', 'library', 'about'].map((tab) => (
@@ -73,7 +73,9 @@ console.log(`class: ${headerEnabled? 'header-visible' : 'header-hidden'}`);
             drops[i]++;
         }
 
-        requestAnimationFrame(draw);
+        setTimeout(() => {
+            requestAnimationFrame(draw);
+        }, 50);
     }
 
     window.addEventListener('resize', () => {

@@ -5,18 +5,18 @@ const aboutUrl = `${base}/about`;
 ---
 
 <div class="relative w-full h-full bg-[#0A0A12] shadow-2xl p-5">
-  <canvas id="matrix-canvas" class="absolute top-0 left-0 w-full h-full z-0 opacity-80"></canvas>
+  <canvas id="matrix-canvas" class="absolute top-0 left-0 w-full h-full z-0 opacity-35"></canvas>
   
-  <div class="inset-0 flex items-center justify-start z-10 pl-8 md:pl-16">
+  <div class="inset-0 flex items-center justify-start z-10">
     <div id="header-content" class="flex flex-col justify-center min-[1155px]:grid min-[1155px]:grid-cols-2 w-full gap-8">
-        <span class="h-auto block ml-auto mr-auto">
-            <h1 class="text-4xl md:text-5xl font-black text-center text-white uppercase tracking-widest drop-shadow-[0_0_10px_rgba(0,170,255,0.8)]">
+        <span class="h-auto block ml-auto mr-auto min-[1155px]:m-0">
+            <h1 class="text-4xl md:text-5xl font-black text-center min-[1155px]:text-start text-white uppercase tracking-widest drop-shadow-[0_0_10px_rgba(0,170,255,0.8)]">
                 <p>Vittorio Pivarci</p>
                 <p class="text-3xl text-slate-400 font-semibold">Software Developer</p>
             </h1>
         </span>
         <span class="grid grid-rows-2 gap-5 justify-center items-center min-[1155px]:gap-0 min-[1155px]:flex min-[1155px]:flex-row ">
-            <a href={aboutUrl} class="bg-slate-500/15 backdrop-blur max-w-200 h-full ml-auto mr-auto rounded border border-t-steam-matrix p-6 hover:scale-102 z-3 cursor-pointer transition-all duration-300">
+            <a href={aboutUrl} class="bg-slate-500/10 backdrop-blur max-w-200 h-full ml-auto mr-auto rounded border border-t-steam-matrix p-6 hover:scale-102 z-3 cursor-pointer transition-all duration-300">
                 <h1 class="text-2xl w-full font-black text-white uppercase tracking-widest drop-shadow-[0_0_10px_rgba(0,170,255,0.8)]">
                     ABOUT ME
                 </h1>   
@@ -82,7 +82,9 @@ const aboutUrl = `${base}/about`;
             drops[i]++;
         }
 
-        requestAnimationFrame(draw);
+        setTimeout(() => {
+            requestAnimationFrame(draw);
+        }, 50);
     }
 
     window.addEventListener('resize', () => {

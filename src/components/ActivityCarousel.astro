@@ -16,7 +16,7 @@ const arrowRightSrc = `${base}/images/icons/arrow-right.svg`;
     </button>
 
     <!-- Carousel content -->
-    <div class="relative ml-[15%] mr-[15%] mx-auto overflow-hidden rounded bg-steam-dark2 shadow-2xl border border-white/10 border-t-white/30 border-l-white/30 opacity-90 group">
+    <div class="relative ml-[15%] mr-[15%] mx-auto overflow-hidden rounded bg-steam-dark2 shadow-2xl border border-t-steam-matrix opacity-90 group">
       {projects.map((project : any,index: any) => {
           const dateObj = new Date(project.lastPush);
           const displayDate = dateObj.toLocaleDateString('en-US', {
