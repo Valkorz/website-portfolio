@@ -1,0 +1,33 @@
+---
+---
+<div class="fixed inset-0 -z-10 bg-steam-dark overflow-hidden">
+  <svg class="wave" viewBox="0 0 1440 320" preserveAspectRatio="none">
+    <path fill="#1a2a3a" fill-opacity="0.4" d="M0,160L48,176C96,192,192,224,288,213.3C384,203,480,149,576,144C672,139,768,181,864,202.7C960,224,1056,224,1152,202.7C1248,181,1344,139,1392,117.3L1440,96V320H0Z"></path>
+  </svg>
+  
+  <svg class="wave wave-slow" viewBox="0 0 1440 320" preserveAspectRatio="none">
+    <path fill="#1b2838" fill-opacity="0.6" d="M0,64L60,90.7C120,117,240,171,360,170.7C480,171,600,117,720,117.3C840,117,960,171,1080,186.7C1200,203,1320,181,1380,170.7L1440,160V320H0Z"></path>
+  </svg>
+</div>
+
+<style>
+  .wave {
+    position: absolute;
+    bottom: -50px;
+    width: 200%; 
+    height: 100vh;
+    animation: move-wave 20s infinite linear;
+    transform: translate3d(0, 0, 0);
+  }
+
+  .wave-slow {
+    animation: move-wave 35s infinite linear reverse;
+    opacity: 0.7;
+  }
+
+  @keyframes move-wave {
+    0% { transform: translateX(0) scaleY(1); }
+    50% { transform: translateX(-25%) scaleY(1.1); } /* Slight deformation effect */
+    100% { transform: translateX(-50%) scaleY(1); }
+  }
+</style>

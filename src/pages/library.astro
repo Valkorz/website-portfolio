@@ -3,6 +3,7 @@ import { getCollection } from 'astro:content';
 import { Image } from 'astro:assets'
 import Layout from '../layouts/Layout.astro';
 import ProjectCard from '../components/ProjectCard.astro'
+import Footer from '../components/Footer.astro'
 import searchIconUrl from '../../public/images/icons/search.png'
 
 const searchQuery = Astro.url.searchParams.get('q') || "";
@@ -101,6 +102,7 @@ allTagsSorted.forEach(t => {
 			</div>
 		</span>
 	</div>
+	<Footer/>
 </Layout>
 
 <script>

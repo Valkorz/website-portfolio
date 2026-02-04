@@ -1,6 +1,7 @@
 ---
 import '../styles/global.css';
-import SteamHeader from '../components/SteamHeader.astro'; // Import the component
+import SteamHeader from '../components/SteamHeader.astro'; 
+import AnimatedBackground2 from '../components/AnimatedBackground2.astro';
 const { title, currentTab, headerEnabled = true, headerVisible = true } = Astro.props;
 ---
 
@@ -11,10 +12,11 @@ const { title, currentTab, headerEnabled = true, headerVisible = true } = Astro.
         <meta name="viewport" content="width=device-width" />
         <title>{title}</title>  
     </head>
-    <body class="bg-linear-to-b from-steam-gray to-steam-dark2 text-steam-accent min-h-screen">
+    <body class=" text-steam-accent min-h-screen">
         <span class={headerVisible? 'header-visible' : 'header-hidden'}>
             <SteamHeader activeTab={currentTab} headerEnabled={headerEnabled}/>  
         </span>   
+        <AnimatedBackground2/>
         <main>
             <slot /> </main>
     </body>

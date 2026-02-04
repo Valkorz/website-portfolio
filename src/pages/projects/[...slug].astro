@@ -2,6 +2,7 @@
 // import '../../styles/global.css';
 import { getCollection, render, type CollectionEntry } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
+import Footer from '../../components/Footer.astro'
 import ImageCarousel from '../../components/ImageCarousel.astro';
 import githubLogo from '../../../public/images/icons/github.png';
 import { Image } from 'astro:assets';
@@ -47,13 +48,13 @@ const dateString = `${formattedDate.split(' ')[0]} ${day}, ${dateOfCreation.getF
 
 <Layout title={entry.data.title} currentTab="library"> 
     <!-- background -->
-    <div class="absolute inset-0 z-0">
+    <!-- <div class="absolute inset-0 z-0">
       <Image 
         src={entry.data.thumbnail} 
         alt="" 
         class="w-full h-full object-cover blur-md scale-110 brightness-70"
       />
-    </div>
+    </div> -->
 
   <div class="grid grid-cols-2 grid-rows-1 gap-2 ml-[10%] mr-[10%] mt-5 bg-steam-dark2/90 panel-glow border border-white/10 border-t-white/30 border-l-white/30 opacity-90 z-2 rounded">
     <div class="overflow-hidden bg-steam-dark">
@@ -95,6 +96,8 @@ const dateString = `${formattedDate.split(' ')[0]} ${day}, ${dateOfCreation.getF
       <Content />
     </article>
   </div>
+
+  <Footer />
 </Layout>
 
 <style is:global>
