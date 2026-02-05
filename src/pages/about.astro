@@ -1,16 +1,25 @@
 ---
-import Image from 'astro/components/Image.astro'
+import { Image } from 'astro:assets'
 import Layout from '../layouts/Layout.astro'
-import Footer from '../components/Footer.astro'
+import TechTags from '../components/TechTags.astro'
 import PictureSelf from '../../public/images/picture-self.jpeg'
+import GraduationIcon from '../../public/images/icons/graduation.png'
+import SuitcaseIcon from '../../public/images/icons/suitcase.png'
 ---
 
 <Layout title="about" currentTab="about">
 	<span>
-		<div class="contentBox mt-5 w-[80%]">
+		<div class="contentBox mt-5 w-[80%] p-4 shadow-2xl">
+			<div class="flex items-center gap-3 mb-4">
+  				<span class="px-2 py-1 bg-steam-blue/20 border border-steam-blue/50 text-steam-blue text-[10px] font-bold uppercase tracking-widest rounded-sm">
+    				Leadership
+  				</span>
+  				<h2 class="text-white font-mono uppercase">Vice-Chairman @ MAIA AI Team</h2>
+			</div>
+			<!-- ABOUT ME -->
 			<span class="lineBox">
 				<Image src={PictureSelf} alt="Me" class="h-32 w-32 rounded-full m-2"/>
-				<span class="mb-2">
+				<span>
 					<h1 class="title">ABOUT ME</h1>
 					<p>
 						Mechatronics Technician and Computer Engineering undergaduate. I love computers and everything related!
@@ -23,11 +32,144 @@ import PictureSelf from '../../public/images/picture-self.jpeg'
 					</p>
 				</span>
 			</span>
-			<hr class="w-[80%] h-5 mx-auto border-slate-700/65 bg-neutral-quaternary rounded-sm">
-			<span class="lineBox">
-
+			<hr class="w-[80%] mt-5 h-5 mx-auto border-slate-700/65 bg-neutral-quaternary rounded-sm">
+				
+			<!-- WORK EXPERIENCE -->
+			 <span class="linebox">
+				<h1 class="title flex flex-row text-start">
+					<Image src={SuitcaseIcon} alt="work" class="w-12 h-12"/>
+					<label class="mt-3 ml-2">WORK EXPERIENCE</label>
+				</h1>
 			</span>
-			
+			<span class="linebox">
+				<!-- COMPANY 2 ROLE 2 -->
+				<div class="space-y-12">
+					<div class="relative pl-8 border-l-2 border-steam-blue/30 group">
+				    	<div class="absolute -left-2.25 top-0 w-4 h-4 bg-steam-dark border-2 border-steam-blue rounded-full group-hover:scale-125 transition-transform"></div>
+						
+				    	<div class="flex flex-col md:flex-row md:items-center justify-between mb-2">
+				    	  <h3 class="text-xl font-black text-white uppercase tracking-tight">Software Development Intern</h3>
+				    	  <span class="text-steam-blue font-mono text-sm bg-steam-blue/10 px-2 py-1 rounded">OCT 2025 — CURRENT</span>
+				    	</div>
+					
+				    	<p class="text-slate-400 font-bold text-sm mb-4">RAVEN TECNOLOGIA LTDA</p>
+					
+				    	<p class="text-slate-300 text-sm leading-relaxed mb-4">
+				    	  Leading the software maintenance and QA for the "Raven Scanner 3" vehicular device. 
+				    	  Focused on optimizing the Bluetooth interfacing layer and MVVM architecture.
+				    	</p>
+					
+				    	<div class="flex flex-wrap gap-2">
+				    	  <TechTags tags={["C#","Dotnet", "Entity Framework", "MVVM"]}>
+				    </div>
+				  </div>
+				</div>
+				<!-- COMPANY 2 ROLE 1 -->
+				<div class="space-y-12">
+					<div class="relative pl-8 border-l-2 border-dashed border-steam-blue/30 group">
+				    	<div class="absolute -left-2.25 top-0 w-4 h-4 bg-steam-dark border-2 border-steam-blue rounded-full group-hover:scale-125 transition-transform"></div>
+						
+				    	<div class="flex flex-col md:flex-row md:items-center justify-between mb-2">
+				    	  <h3 class="text-xl font-black text-white uppercase tracking-tight">Firmware Development Intern</h3>
+				    	  <span class="text-steam-blue font-mono text-sm bg-steam-blue/10 px-2 py-1 rounded">APRIL 2025 — SEPT. 2025</span>
+				    	</div>
+					
+				    	<p class="text-slate-400 font-bold text-sm mb-4">RAVEN TECNOLOGIA LTDA</p>
+					
+				    	<p class="text-slate-300 text-sm leading-relaxed mb-4">
+				    	  Developing firmware for the ARM-Based "Raven Scanner 3" device. A scanner for vehicle diagnosis.
+				    	</p>
+					
+				    	<div class="flex flex-wrap gap-2">
+				    	  <TechTags tags={["C/C++", "ARM"]}/>
+				    	</div>
+				  </div>
+				</div>
+
+				<!-- COMPANY 1 ROLE 2 -->
+				<div class="space-y-12 mt-5">
+					<div class="relative pl-8 border-l-2 border-steam-blue/30 group">
+				    	<div class="absolute -left-2.25 top-0 w-4 h-4 bg-steam-dark border-2 border-steam-blue rounded-full group-hover:scale-125 transition-transform"></div>
+						
+				    	<div class="flex flex-col md:flex-row md:items-center justify-between mb-2">
+				    	  <h3 class="text-xl font-black text-white uppercase tracking-tight">Vice-Chairman</h3>
+				    	  <span class="text-steam-blue font-mono text-sm bg-steam-blue/10 px-2 py-1 rounded">MAR 2025 — CURRENT</span>
+				    	</div>
+					
+				    	<p class="text-slate-400 font-bold text-sm mb-4">MAIA Intelligence & Automation</p>
+					
+				    	<p class="text-slate-300 text-sm leading-relaxed mb-4">
+				    	  <p><b> - Strategic Oversight: </b> Co-lead a multidisciplinary team in the development of autonomous systems, reinforcement learning models, and computer vision projects.</p>
+				    	  <p><b> - Technical Mentorship: </b>Oversee and manage the development of projects to ensure a streamlined and well-integrated workflow.</p>
+				    	  <p><b> - Operations Management: </b>Plan and allocate workflow to meet project milestones and deadlines, using the SCRUM framework.</p>
+				    	</p>
+					
+				    	<div class="flex flex-wrap gap-2">
+				    	  <TechTags tags={["Python","C/C++", "Computer Vision", "Artificial Intelligence", "OpenCV", "YOLO", "PyTorch"]}>
+				    </div>
+				  </div>
+				</div>
+
+				<!-- COMPANY 1 ROLE 1 -->
+				<div class="space-y-12">
+					<div class="relative pl-8 border-l-2 border-dashed border-steam-blue/30 group">
+				    	<div class="absolute -left-2.25 top-0 w-4 h-4 bg-steam-dark border-2 border-steam-blue rounded-full group-hover:scale-125 transition-transform"></div>
+						
+				    	<div class="flex flex-col md:flex-row md:items-center justify-between mb-2">
+				    	  <h3 class="text-xl font-black text-white uppercase tracking-tight">Voluntary Intern</h3>
+				    	  <span class="text-steam-blue font-mono text-sm bg-steam-blue/10 px-2 py-1 rounded">MAR 2024 — FEB 2025</span>
+				    	</div>
+					
+				    	<p class="text-slate-400 font-bold text-sm mb-4">MAIA Intelligence & Automation</p>
+					
+				    	<p class="text-slate-300 text-sm leading-relaxed mb-4">
+				    	  Aid in the development of Artificial Intelligence and Computer Vision based projects. 
+						  Assistance in model training, data preparation, hardware/circuit development.
+				    	</p>
+					
+				    	<div class="flex flex-wrap gap-2">
+				    	  <TechTags tags={["Python","C/C++", "Computer Vision", "Artificial Intelligence", "OpenCV", "YOLO", "PyTorch"]}>
+				    </div>
+				  </div>
+				</div>
+			</span>	
+			<hr class="w-[80%] mt-5 h-5 mx-auto border-slate-700/65 bg-neutral-quaternary rounded-sm">
+
+			<!-- EDUCATION -->
+			<span class="lineBox">
+				<h1 class="title flex flex-row text-center justify-center">
+					<Image src={GraduationIcon} alt="work" class="w-16 h-16"/>
+					<label class="mt-4 ml-2">EDUCATION</label>
+				</h1>
+			</span>
+			<span class="linebox">
+				<!-- GRADUATION 2 -->
+				<div class="space-y-12">
+					<div class="relative pl-8 border-l-2 border-steam-blue/30 group">
+				    	<div class="absolute -left-2.25 top-0 w-4 h-4 bg-steam-dark border-2 border-steam-blue rounded-full group-hover:scale-125 transition-transform"></div>
+						
+				    	<div class="flex flex-col md:flex-row md:items-center justify-between mb-2">
+				    	  <h3 class="text-xl font-black text-white uppercase tracking-tight">Bachelors Degree In Computer Engineering (Ongoing)</h3>
+				    	  <span class="text-steam-btn2 font-mono text-sm bg-steam-btn1/10 px-2 py-1 rounded">FEB. 2024 - DEC. 2028</span>
+				    	</div>
+					
+				    	<p class="text-slate-400 font-bold text-sm mb-4">FACENS UNIVERSITY</p>
+				    </div>
+				</div>
+				<!-- GRADUATION 1 -->
+				<div class="space-y-12">
+					<div class="relative pl-8 border-l-2 border-dashed border-steam-blue/30 group">
+				    	<div class="absolute -left-2.25 top-0 w-4 h-4 bg-steam-dark border-2 border-steam-blue rounded-full group-hover:scale-125 transition-transform"></div>
+
+				    	<div class="flex flex-col md:flex-row md:items-center justify-between mb-2">
+				    	  	<h3 class="text-xl font-black text-white uppercase tracking-tight">Mechatronics Technician (High School
+							Integrated)</h3>
+				    	  	<span class="text-steam-blue font-mono text-sm bg-steam-blue/10 px-2 py-1 rounded">FEB. 2021 - DEC. 2023</span>
+				    	</div>
+					
+				    	<p class="text-slate-400 font-bold text-sm mb-4">ETEC Rubens de Faria e Souza / Centro Paula Souza</p>
+				</div>
+			</span>
 		</div>
 	</span>
 </Layout>
@@ -48,6 +190,6 @@ import PictureSelf from '../../public/images/picture-self.jpeg'
 	}
 
 	.caption{
-		@apply uppercase font-bold text-slate-400
+		@apply uppercase font-bold text-slate-400;
 	}
 </style>

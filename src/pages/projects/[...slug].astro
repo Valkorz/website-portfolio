@@ -62,7 +62,7 @@ const dateString = `${formattedDate.split(' ')[0]} ${day}, ${dateOfCreation.getF
     </div>
     <div class="flex flex-col z-2">
       <h1 class="text-5xl text-white mt-2 uppercase font-mono font-extrabold">{entry.data.title}</h1>
-      <div class="flex gap-2">
+      <div class="flex overflow-hidden gap-2">
             {entry.data.tags.map((tag: string) => (
               <span class="text-[12px] h-fit mt-auto bg-black/40 px-2 py-0.5 text-steam-accent">{tag}</span>
             ))}
@@ -96,8 +96,6 @@ const dateString = `${formattedDate.split(' ')[0]} ${day}, ${dateOfCreation.getF
       <Content />
     </article>
   </div>
-
-  <Footer />
 </Layout>
 
 <style is:global>
