@@ -26,7 +26,7 @@ const dateString = `${formattedDate.split(' ')[0]} ${day}, ${dateOfCreation.getF
 
 <a  href={projectLink}
     class="group block bg-steam-gray/50 hover:bg-steam-gray transition-all duration-300 rounded">
-    <div class="relative group-hover:scale-105 transition-transform duration-300 drop-shadow-2xl aspect-video">
+    <div class="relative group-hover:scale-105 backdrop-blur rounded border border-white/30 border-t-steam-matrix/45 border-l-white/30 transition-transform duration-300 drop-shadow-2xl aspect-video">
         <span>
             <label class:list={[project.data.supported ? 'unsupported-title-hidden' : 'unsupported-title-visible', 'absolute']}>UNSUPPORTED</label>
             <Image 
@@ -73,4 +73,8 @@ const dateString = `${formattedDate.split(' ')[0]} ${day}, ${dateOfCreation.getF
     .unsupported-title-hidden{
         visibility: hidden;
     }
+
+    /* .hover-effects{
+        @apply pointer-events-none absolute inset-0 shadow-[0_10px_28px_-4px_rgba(0,0,0,0.2)] group-hover:shadow-[0_10px_28px_-4px_rgba(0,0,0,0.6)] transition-shadow group-hover:border-steam-blue
+    } */
 </style>

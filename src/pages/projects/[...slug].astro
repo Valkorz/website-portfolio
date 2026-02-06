@@ -56,16 +56,16 @@ const dateString = `${formattedDate.split(' ')[0]} ${day}, ${dateOfCreation.getF
       />
     </div> -->
 
-  <div class="grid grid-cols-2 grid-rows-1 gap-2 ml-[10%] mr-[10%] mt-5 bg-steam-dark2/90 panel-glow border border-white/10 border-t-white/30 border-l-white/30 opacity-90 z-2 rounded">
-    <div class="overflow-hidden bg-steam-dark">
+  <div class="grid grid-cols-1 grid-rows-2 min-[940px]:grid-cols-2 min-[940px]:grid-rows-1 h-175 min-[940px]:h-fit gap-2 ml-[10%] mr-[10%] mt-5 bg-steam-dark2/90 panel-glow border border-white/30 border-t-steam-matrix/45 border-l-white/45 opacity-90 z-2 p-2 rounded">
+    <div class="overflow-hidden bg-steam-dark border border-white/30 border-t-steam-matrix/50 rounded shadow-2xl">
       <ImageCarousel screenshots={entry.data.screenshots} />
     </div>
     <div class="flex flex-col z-2">
       <h1 class="text-5xl text-white mt-2 uppercase font-mono font-extrabold">{entry.data.title}</h1>
       <div class="flex overflow-hidden gap-2">
-            {entry.data.tags.map((tag: string) => (
-              <span class="text-[12px] h-fit mt-auto bg-black/40 px-2 py-0.5 text-steam-accent">{tag}</span>
-            ))}
+        {entry.data.tags.map((tag: string) => (
+          <span class="text-[12px] h-fit mt-auto bg-black/40 px-2 py-0.5 text-steam-accent">{tag}</span>
+        ))}
       </div>
       <p class="text-gray-400 mt-2">{entry.data.description}</p>
       <p class="mt-6 text-slate-400">Author: {entry.data.author}</p>
@@ -92,7 +92,7 @@ const dateString = `${formattedDate.split(' ')[0]} ${day}, ${dateOfCreation.getF
   </div>
 
   <div>
-    <article class="panel-glow prose prose-invert rounded ml-[10%] mr-[10%] mt-6 max-w-none row-span-3 bg-steam-dark2/90 p-2 border border-white/10 border-t-white/30 border-l-white/30 opacity-90">
+    <article class="panel-glow prose prose-invert rounded ml-[10%] mr-[10%] mt-6 max-w-none row-span-3 bg-steam-dark2/90 p-2 border border-white/30 border-t-steam-matrix/45 border-l-white/45 opacity-90">
       <Content />
     </article>
   </div>

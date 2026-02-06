@@ -1,7 +1,7 @@
 ---
 projectName: "pyscraper"
 githubPage: "https://github.com/Valkorz/eshopping-price-scraper"
-supported: true
+supported: false
 title: "eshopping price scraper"
 description: "A price scraper for eshopping websites"
 version: "1.0.1"
