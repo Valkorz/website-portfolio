@@ -29,3 +29,5 @@ The current state of the project is capable of scraping the Mercado Livre interf
 
 # PURPOSE
 The sole purpose of this project is to facilitate the gathering, analysis and comparison of pricing data. The ability to quickly price items is extremely useful to budget efficiently and ensure the best deals on products.
+
+**DEVELOPER NOTE: I've put the project on hold for a while. I want to get back to it eventually, though.**

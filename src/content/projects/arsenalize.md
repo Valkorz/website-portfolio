@@ -22,4 +22,5 @@ screenshots:
 # INTRODUCTION
 
 Arsenalize is a single-player roguelite with RPG elements. The main goal is to eliminate as many enemies as possible, clearing dungeons, while at the disposal of a wide array of unique weapons.
-- The game's development has been temporarily halted due to focus on other projects.
+
+The game's development has been temporarily halted due to focus on other projects.

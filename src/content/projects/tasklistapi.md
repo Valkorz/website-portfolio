@@ -39,6 +39,7 @@ This project is a task/todo list, using dotnet core MVC and Entity Framework to 
 
 
 # FEATURES
+The project contains the following features:
 
 - A Controller that creates a database, with GET and POST methods;
 - Two program examples for calling http requests (javascript and batch);

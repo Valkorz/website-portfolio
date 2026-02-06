@@ -20,4 +20,6 @@ screenshots:
 
 # INTRODUCTION
 
-One of the first prototypes for Arsenalize, which eventually got discontinued in favor of switching the project over to the Godot Engine. **This project is no longer maintaned**
+One of the first prototypes for Arsenalize, which eventually got discontinued in favor of switching the project over to the Godot Engine. 
+
+**This project is no longer maintaned**

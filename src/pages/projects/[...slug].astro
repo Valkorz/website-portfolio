@@ -101,7 +101,7 @@ const dateString = `${formattedDate.split(' ')[0]} ${day}, ${dateOfCreation.getF
 <style is:global>
   @reference "../../styles/global.css";
   .prose h1, .prose h2 {
-    @apply text-white uppercase tracking-wider border-b border-steam-gray pb-2;
+    @apply text-white text-2xl font-mono font-bold uppercase tracking-wider border-b border-steam-gray pb-2 mt-5;
   }
   .prose p {
     @apply text-steam-accent leading-relaxed;
@@ -109,6 +109,17 @@ const dateString = `${formattedDate.split(' ')[0]} ${day}, ${dateOfCreation.getF
   .prose strong {
     @apply text-steam-blue;
   }
+
+  .prose ul {
+    @apply list-disc ml-6 mb-4 text-steam-accent;
+  }
+  .prose ol {
+    @apply list-decimal ml-6 mb-4 text-steam-accent;
+  }
+  .prose li {
+    @apply mb-1 pl-1 text-steam-blue;
+  }
+
   .background{
     background-size: cover;
     height: 100vh;

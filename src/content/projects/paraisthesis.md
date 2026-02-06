@@ -23,4 +23,5 @@ Paraisthesis is a singleplayer horror game where you play as a Technician invest
 
 # GAMEPLAY
 
-While exploring the underground, you must fend off against monsters with the aid of a radar: a device that contains a measurement of distance between you and the monster. The monster is attracted by sound, so you must manage your distance from it before solving any of the game's puzzles.
+While exploring the underground, you must fend off against monsters with the aid of a radar: a device that contains a measurement of distance between you and the monster. The monster is attracted by sound, so you must manage your distance from it before solving any of the game's puzzles. 
+

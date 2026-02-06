@@ -18,4 +18,6 @@ screenshots:
 
 # INTRODUCTION
 
-One of the first prototypes for Arsenalize, which eventually got discontinued in favor of switching the project over to Monogame (August 2023). There have not been any project files backed up, rendering the project unrecoverable. **This project is no longer maintaned**
+One of the first prototypes for Arsenalize, which eventually got discontinued in favor of switching the project over to Monogame (August 2023). There have not been any project files backed up, rendering the project unrecoverable. 
+
+**This project is no longer maintaned**
