@@ -1,6 +1,8 @@
 ---
 import OpenCvLogo from '../../public/images/icons/OpenCV_Logo.svg';
 import ClangLogo from '../../public/images/icons/clogo.png';
+import UnityLogo from '../../public/images/icons/unity.png';
+import DotnetLogo from '../../public/images/icons/dotnet.png';
 import LayoutSimple from '../layouts/LayoutSimple.astro';
 import { Image } from 'astro:assets'
 import { execSync } from 'node:child_process';
@@ -65,16 +67,16 @@ const domains = [
     icon: ClangLogo
   },
   {
-    title: "Low-level engineering",
-    desc: "Memory-safe firmware development and hardware interfacing.",
-    tags: ["C/C++", "Arduino", "ESP-32", "ARM"],
-    icon: ClangLogo
+    title: "Game Development",
+    desc: "Team-based and solo game development implementing principles of clean code, teamwork and design patterns to ensure smooth and coherent gameplay logic.",
+    tags: ["C#", "Unity Engine", "Godot"],
+    icon: UnityLogo
   },
   {
-    title: "Low-level engineering",
-    desc: "Memory-safe firmware development and hardware interfacing.",
-    tags: ["C/C++", "Arduino", "ESP-32", "ARM"],
-    icon: ClangLogo
+    title: "Full-stack Development",
+    desc: "Creating full-stack applications with modern frameworks and programming principles, ensuring the seamless interaction of databases, UI/UX and logic.",
+    tags: ["C#", "SQL", "Dotnet"],
+    icon: DotnetLogo
   }
 ]
 
@@ -86,21 +88,23 @@ const domains = [
   
 	<body>
     <ActivityCarousel projects={activeProjects} />
+    <hr class="w-[80%] mt-5 h-5 mx-auto border-slate-700/65 bg-neutral-quaternary rounded-sm">
+    
     <!-- Domans tech stack: maximum of 4 -->
-    <h1 class="font-mono text-white text-3xl font-bold ml-5">TECH STACK</h1>
-    <div class="grid grid-cols-2 grid-rows-2 gap-6 h-fit">
+    <h1 class="font-mono text-steam-accent text-3xl font-bold mb-5">TECH STACK</h1>
+    <div class="min-[1450px]:flex min-[1450px]:flex-row grid grid-cols-2 grid-rows-2 gap-6 h-fit">
       {domains.map(domain => (
-        <div class="h-85 w-85 rounded border bg-steam-dark2/10 border-white/30 border-t-steam-matrix/45 border-l-white/45 hover:scale-102 backdrop-blur shadow-2xl">
+        <div class="h-65 w-85 rounded border bg-steam-dark2/10 border-white/30 border-t-steam-matrix/45 border-l-white/45 hover:scale-102 backdrop-blur shadow-2xl">
           <div class="h-full w-full hover:shadow-inner shadow-steam-matrix/50 pt-2 transition-all duration-100">
-            <h1 class="font-white font-extrabold text-2xl uppercase ml-5 drop-shadow-[0_0_10px_rgba(0,170,255,0.5)]">{domain.title}</h1>
+            <h1 class="font-white font-extrabold text-2xl text-center uppercase drop-shadow-[0_0_10px_rgba(0,170,255,0.5)]">{domain.title}</h1>
             <p class="text-slate-400 text-center mt-2 ml-2 font-mono drop-shadow-[0_0_10px_rgba(0,170,255,0.5)]">{domain.desc}</p>
-            <span class="flex flex-row absolute right-0 bottom-0 mb-4 mr-2">
-              <div class="flex flex-row flex-wrap">
+            <span class="flex flex-row absolute left-0 bottom-0 mb-4 ml-2">
+              <Image src={domain.icon} alt="openCV" class="w-16 h-16"/>
+              <div class="flex flex-row flex-wrap justify-end items-end ml-2">
               {domain.tags.map(tag => (
                 <div class="h-fit w-fit scale-80 p-2 border border-steam-matrix/30 text-sm rounded bg-steam-dark/5 font-mono text-steam-blue drop-shadow-[0_0_10px_rgba(0,170,255,0.5)]">{tag}</div>
               ))}
-              </div>
-              <Image src={domain.icon} alt="openCV" class="ml-5 w-16 h-16"/>
+              </div>            
             </span>
           </div>
         </div>

@@ -18,12 +18,31 @@
   --color-text-dark: #66748c;
 }
 
+/* FOR CRT FILTER */
+@keyframes flicker {
+  0% { opacity: 0.98; }
+  5% { opacity: 0.95; }
+  10% { opacity: 0.99; }
+  100% { opacity: 1; }
+}
+
+.crt-text,
+p, h1, h3, span, div {
+  text-shadow: 
+    1.5px 0px 1px rgba(255,0,0,0.4), 
+    -1.5px 0px 1px rgba(0,0,255,0.4),
+    0 0 5px rgba(0, 170, 255, 0.2);
+}
+
 .scanlines {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
+
+  animation: flicker 0.1s infinite;
+  opacity: 0.15; 
 
   background: linear-gradient(
     rgba(18, 16, 16, 0) 50%, 
@@ -38,7 +57,22 @@
   background-size: 100% 2px, 3px 100%;
   pointer-events: none; 
   z-index: 50; 
+
+  /* @apply shadow-[inset_0_0_100px_rgba(0,0,0,0.5)] */
 }
+
+.crt-screen::before {
+  content: " ";
+  display: block;
+  position: absolute;
+  top: 0; left: 0; bottom: 0; right: 0;
+  /* Simulates the curve of the glass and the corner shadows */
+  background: radial-gradient(circle, transparent 60%, rgba(0, 0, 0, 0.4) 100%);
+  pointer-events: none;
+  z-index: 60; 
+}
+
+
 
 :root{
     --color-text-dark-transparent: rgba(23, 26, 33, 1);
