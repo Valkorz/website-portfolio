@@ -9,11 +9,13 @@ author: "Valkorz (Vittorio Pivarci)"
 contributors: ["GuiMLima"]
 tags: ["Open-Source", "Python", "YOLO", "Computer Vision"]
 dateOfCreation: 2025-07-01
-thumbnail: "./images/trafficDetector3.png"
+thumbnail: "./images/trafficDetector1.png"
 screenshots:
     - "./images/trafficDetector1.png"
     - "./images/trafficDetector2.png"
     - "./images/trafficDetector3.png"
+    - "./images/trafficDetector4.png"
+    - "./images/trafficDetector5.png"
 ---
 
 # INTRODUCTION
