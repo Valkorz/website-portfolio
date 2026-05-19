@@ -3,7 +3,7 @@ projectName: "paraisthesis"
 githubPage: "https://github.com/ValkorProjects/Paraisthesis"
 supported: true
 title: "Paraisthesis"
-description: "It knows where you are, and all you have is a radar."
+description: "An in-development singleplayer first-person horror game created in Unity. Part of the 2025 'virtual environment' computer engineering classes."
 version: "0.1.0"
 author: "Valkorz (Vittorio Pivarci)"
 contributors: ["Luisenbon", "AmToffer", "GuiMLima", "MuriloCoelho1212"]

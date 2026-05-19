@@ -47,15 +47,6 @@ const dateString = `${formattedDate.split(' ')[0]} ${day}, ${dateOfCreation.getF
 ---
 
 <Layout title={entry.data.title} currentTab="library"> 
-    <!-- background -->
-    <!-- <div class="absolute inset-0 z-0">
-      <Image 
-        src={entry.data.thumbnail} 
-        alt="" 
-        class="w-full h-full object-cover blur-md scale-110 brightness-70"
-      />
-    </div> -->
-
   <div class="grid grid-cols-1 min-[940px]:grid-cols-2 min-[940px]:grid-rows-1 h-fit min-[940px]:h-fit gap-2 ml-[10%] mr-[10%] mt-5 bg-steam-dark2/90 panel-glow border border-white/30 border-t-steam-matrix/45 border-l-white/45 opacity-90 z-2 p-2 rounded">
     <div class="overflow-hidden bg-steam-dark border border-white/30 border-t-steam-matrix/50 rounded shadow-2xl h-fit">
       <ImageCarousel screenshots={entry.data.screenshots} /> 
@@ -74,17 +65,19 @@ const dateString = `${formattedDate.split(' ')[0]} ${day}, ${dateOfCreation.getF
           <span class="mr-1">{contributor},</span>
         ))}
       </p>
-      <p class="mt-6 text-slate-400">Created on {dateString}</p>
-      <span class="mt-auto mr-auto mb-2 flex h-fit w-full">
-        <span title=`${isRepoAccessible ? "Navigate to github.com" : "Repository not found or unavailable."}`>
-          <a class=`${isRepoAccessible ? "navigate-repo-btn-enabled link-enabled" : "navigate-repo-btn-disabled link-disabled"}` href={entry.data.githubPage}>
-            <Image 
-                width={32}
-                height={32}
-                src={githubLogo} 
-                alt="Go to repository"/>
-            <p class="font-mono font-bold text-white ml-2 mt-auto mb-auto">GO TO REPOSITORY</p>
-          </a>
+      <span class="mt-auto grid grid-rows-2 grid-cols-2">
+        <p class=" text-slate-400 col-span-2 mb-2 content-end">Created on {dateString}</p>
+        <span class="mr-auto mb-2 flex h-fit w-full">
+          <span title=`${isRepoAccessible ? "Navigate to github.com" : "Repository not found or unavailable."}`>
+            <a class=`${isRepoAccessible ? "navigate-repo-btn-enabled link-enabled" : "navigate-repo-btn-disabled link-disabled"}` href={entry.data.githubPage}>
+              <Image 
+                  width={32}
+                  height={32}
+                  src={githubLogo} 
+                  alt="Go to repository"/>
+              <p class="font-mono font-bold text-white ml-2 mt-auto mb-auto">GO TO REPOSITORY</p>
+            </a>
+          </span>
         </span>
         <p class="ml-auto mr-2 mt-auto text-white font-mono font-bold text-2xl">{entry.data.version}</p>
       </span>
@@ -92,7 +85,7 @@ const dateString = `${formattedDate.split(' ')[0]} ${day}, ${dateOfCreation.getF
   </div>
 
   <div>
-    <article class="panel-glow prose prose-invert rounded ml-[10%] mr-[10%] mt-6 max-w-none row-span-3 bg-steam-dark2/90 p-2 border border-white/30 border-t-steam-matrix/45 border-l-white/45 opacity-90">
+    <article class="panel-glow prose prose-invert rounded ml-[10%] mr-[10%] mt-6 max-w-none row-span-3 bg-steam-dark2/90 p-2 border border-white/30 border-t-steam-matrix/45 border-l-white/45 opacity-90 markdown-content">
       <Content />
     </article>
   </div>
@@ -156,6 +149,16 @@ const dateString = `${formattedDate.split(' ')[0]} ${day}, ${dateOfCreation.getF
 
   .specular-overlay{
     @apply absolute inset-0 bg-linear-to-br from-white/5 via-transparent to-transparent pointer-events-none;
+  }
+
+  .markdown-content img {
+    width: 65% !important;
+    max-width: 65% !important;
+    height: auto !important;
+    display: block;
+    margin: 2rem auto; /* Optional: centers and adds spacing */
+    border-radius: 8px; /* Optional: adds styling */
+    @apply shadow-2xl
   }
 
 </style>
