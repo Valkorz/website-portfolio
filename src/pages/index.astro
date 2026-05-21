@@ -11,9 +11,9 @@ import MatrixBanner from '../components/MatrixBanner.astro';
 import Footer from '../components/Footer.astro';
 import AnimatedBackground from '../components/AnimatedBackground.astro';
 import { getCollection } from 'astro:content';
+import { json } from 'node:stream/consumers';
 
 const allProjects = await getCollection('projects');
-
 const projectsWithActivity = await Promise.all(
   allProjects.map(async (project) => {
     const repoUrl = project.data.githubPage;
@@ -31,7 +31,7 @@ const projectsWithActivity = await Promise.all(
       });
 
       const data = await response.json();
-      // console.log(`data: ${data.name}, path: ${repoPath}, lastpush: ${new Date(data.pushed_at).getTime()}`);
+      console.log(`data: ${data.name}, path: ${repoPath}, lastpush: ${new Date(data.pushed_at).getTime()}`);
 
       return {
         ...project,
@@ -51,7 +51,6 @@ const activeProjects = projectsWithActivity
   .sort((a, b) => b.lastPush - a.lastPush)
   .slice(0, 3);
 
-//Tech stack
 
 const domains = [
   {
@@ -79,7 +78,6 @@ const domains = [
     icon: DotnetLogo
   }
 ]
-
 
 ---
 
