@@ -21,13 +21,13 @@ const serializableProjects = projects.map((p: any) => ({
   <h1 class="uppercase font-bold text-steam-accent text-center font-mono text-3xl mb-5 mx-auto">Recently updated projects</h1>
   <span class="flex flex-row relative">
     <!-- Carousel content -->
-    <div id="carousel-container" data-base={base} class="relative ml-[5%] mr-[5%] h-122 mx-auto overflow-hidden rounded bg-steam-dark2 shadow-2xl border border-white/30 border-t-steam-matrix/45 opacity-90 group">
+    <div id="carousel-container" data-base={base} class="relative ml-[10%] mr-[10%] h-102 mx-auto overflow-hidden rounded bg-steam-dark2 shadow-2xl border border-white/30 border-t-steam-matrix/45 opacity-90 group">
       <!-- Navigation left -->
-      <button id="carousel-prev" class="absolute top-1/2 h-full -translate-y-1/2 z-20 p-3 bg-linear-to-r hover:scale-102 opacity-20 hover:opacity-90 backdrop-blur border-0 border-r border-r-steam-matrix/50 from-transparent to-steam-matrix/20 hover:bg-white/10 cursor-pointer hidden md:block rounded transition-all duration-150">
+      <button id="carousel-prev" class="absolute top-1/2 h-full -translate-y-1/2 z-20 p-3 bg-linear-to-r hover:scale-105 hover:-translate-x-1 opacity-20 hover:opacity-90 backdrop-blur border-0 border-r border-r-steam-matrix/50 from-transparent to-steam-matrix/20 hover:bg-white/10 cursor-pointer hidden md:block rounded transition-all duration-150">
         <img src={arrowLeftSrc} class="w-8 h-8 opacity-80 hover:opacity-100" alt="Previous" />
       </button>
 
-      <div id="carousel-items">
+      <div id="carousel-items" class="h-full">
         {projects.map((project : any, index: any) => {
             const dateObj = new Date(project.lastPush);
             const displayDate = dateObj.toLocaleDateString('en-US', {
@@ -38,30 +38,30 @@ const serializableProjects = projects.map((p: any) => ({
             });
 
             return(
-            <div class={`carousel-item ${index === 0 ? 'block' : 'hidden'} z-0 animate-fade-in`}>
+            <div class={`carousel-item ${index === 0 ? 'block' : 'hidden'} h-full z-0 animate-fade-in`}>
                 <a href={`${base}/projects/${project.id.replace(/\.md$/, '')}`} class="flex flex-col md:flex-row h-full">
                     <div class="w-full md:w-2/3 relative aspect-video">
                         <Image src={project.data.thumbnail} alt={project.data.title} class="w-full h-full object-cover"/>
                         <div class="absolute inset-0 bg-linear-to-r from-transparent to-steam-dark2/50"></div>
                     </div>
 
-                    <div class="w-full h-fit md:w-1/3 p-6 justify-between bg-[#0f1922] grid-rows-[minmax(0,150px)_1fr]">
+                    <div class="w-full h-full md:w-1/3 p-6 flex flex-col bg-[#0f1922]">
                         <div>
                             <h2 class="text-3xl font-black text-white uppercase font-mono tracking-tighter">{project.data.title}</h2>
-                            <div class="grid grid-cols-2 grap-2 mt-4">
+                            {/* <div class="grid grid-cols-2 gap-2 mt-4">
                                 {project.data.screenshots?.slice(0, 4).map((ss : any) => (
                                     <Image src={ss} alt="Preview" class="aspect-video object-cover opacity-60 hover:opacity-100 transition-opacity" />
                                 ))}
-                            </div>
+                            </div> */}
                         </div>
-                        
-                        <p class="mt-2 h-auto">{project.data.description}</p>
+
+                        <p class="mt-2 flex-1 overflow-hidden">{project.data.description}</p>
 
                         <div class="mt-4">
                             <p class="text-steam-accent text-sm font-bold uppercase">Last updated in {displayDate}</p>
                             <p class="text-slate-400 text-xs mt-1">Based on recent GitHub activity</p>
                             <div class="mt-4 flex justify-between items-center">
-                               <span class="bg-white/10 px-2 py-1 text-xs text-white uppercase font-mono">{project.data.version}</span>
+                                <span class="bg-white/10 px-2 py-1 text-xs text-white uppercase font-mono">{project.data.version}</span>
                             </div>
                         </div>
                     </div>
@@ -72,7 +72,7 @@ const serializableProjects = projects.map((p: any) => ({
       </div>
 
       <!-- Navigation right -->
-      <button id="carousel-next" class="absolute right-0 h-full top-1/2 -translate-y-1/2 z-20 p-3 bg-linear-to-l hover:scale-102 opacity-20 hover:opacity-90 backdrop-blur from-transparent to-steam-matrix/20 hover:bg-white/10 cursor-pointer hidden md:block rounded transition-all duration-150">
+      <button id="carousel-next" class="absolute right-0 h-full top-1/2 -translate-y-1/2 z-20 p-3 bg-linear-to-l hover:scale-105 hover:translate-x-1 opacity-20 hover:opacity-90 backdrop-blur from-transparent to-steam-matrix/20 hover:bg-white/10 cursor-pointer hidden md:block rounded transition-all duration-150">
           <img src={arrowRightSrc} class="w-8 h-8 opacity-80 hover:opacity-100" alt="Next" />
       </button>
     </div>
@@ -81,7 +81,7 @@ const serializableProjects = projects.map((p: any) => ({
   <!-- Navigation position markers -->
   <div id="carousel-dots" class="flex flex-row items-center justify-center mt-2 gap-1 z-1">
       {projects.map((_ : any) => (
-            <div class="w-4 h-2 rounded-full cursor-pointer carousel-dot transition-colors"></div>
+            <div class="w-4 h-2 rounded-full cursor-pointer carousel-dot transition-colors bg-white/20"></div>
       ))}
   </div>
 </span>
@@ -209,6 +209,7 @@ const serializableProjects = projects.map((p: any) => ({
     });
 
     startInterval();
+    updateCarousel(0)
   }
 </script>
 
