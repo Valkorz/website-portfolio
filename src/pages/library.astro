@@ -8,6 +8,36 @@ import searchIconUrl from '../../public/images/icons/search.png'
 
 const searchQuery = Astro.url.searchParams.get('q') || "";
 
+const githubHeaders: HeadersInit = {
+  Accept: 'application/vnd.github.v3+json',
+  ...(import.meta.env.TOKEN ? { Authorization: `Bearer ${import.meta.env.TOKEN}` } : {}),
+};
+
+function parseVersionTag(tag: string | null | undefined): string | null {
+  if (!tag) return null;
+  const match = tag.match(/^v?(\d+\.\d+(?:\.\d+)*(?:[.-][a-zA-Z0-9._-]*)?)/i);
+  return match ? match[1] : null;
+}
+
+async function fetchLatestRelease(githubPage: string): Promise<string | null> {
+  const match = githubPage.match(/github\.com\/([^\/]+)\/([^\/\?#]+)/);
+  if (!match) return null;
+  const owner = match[1];
+  const repo = match[2].replace(/\.git$/, '');
+  try {
+    const res = await fetch(
+      `https://api.github.com/repos/${owner}/${repo}/releases?per_page=1`,
+      { headers: githubHeaders }
+    );
+    if (!res.ok) return null;
+    const data = await res.json();
+    if (!Array.isArray(data) || data.length === 0) return null;
+    return parseVersionTag(data[0].tag_name);
+  } catch {
+    return null;
+  }
+}
+
 //Get and sort all projects
 const allProjects = await getCollection('projects');
 const sortedProjects = allProjects
@@ -18,6 +48,16 @@ const sortedProjects = allProjects
   });
 
 const unsupportedProjects = sortedProjects.filter( p => p.data.supported === false).length;
+
+// Fetch latest release tag for every project that has a githubPage, in parallel
+const liveVersionEntries = await Promise.all(
+  sortedProjects.map(async (p) => {
+    if (!p.data.githubPage) return [p.id, null] as [string, null];
+    const version = await fetchLatestRelease(p.data.githubPage);
+    return [p.id, version] as [string, string | null];
+  })
+);
+const liveVersionMap: Record<string, string | null> = Object.fromEntries(liveVersionEntries);
 
 //Get and sort all tags
 const allTags: string[] = [];
@@ -59,9 +99,9 @@ allTagsSorted.forEach(t => {
 				<!-- Order by date -->
 				<!-- <input id="orderByDate" type="checkbox" class="w-5 h-5 accent-steam-blue cursor-pointer rounded mt-auto mb-auto ml-2"/>
 				<h2 class="font-mono text-slate-400 uppercase mt-auto mb-auto ml-2">Order by date</h2> -->
-				<!-- Show unsupported/cancelled -->
+				<!-- Show archived/cancelled -->
 				<input id="showUnsupported" type="checkbox" class="w-5 h-5 accent-steam-blue cursor-pointer rounded mt-auto mb-auto ml-10"/>
-				<h2 class="font-mono text-slate-400 uppercase mt-auto mb-auto ml-2">Show unsupported ({unsupportedProjects})</h2>
+				<h2 class="font-mono text-slate-400 uppercase mt-auto mb-auto ml-2">Show archived ({unsupportedProjects})</h2>
 			</span>
 		</div>
 
@@ -79,7 +119,7 @@ allTagsSorted.forEach(t => {
     	        		data-title={item.data.title.toLowerCase()}
     	        		data-tags={item.data.tags.join(' ').toLowerCase()}
 						data-supported={String(item.data.supported)}>
-							<ProjectCard project={item}/>
+							<ProjectCard project={item} liveVersion={liveVersionMap[item.id] ?? null}/>
 						</div>
 					))}
 				</div>
@@ -96,13 +136,50 @@ allTagsSorted.forEach(t => {
     	    	    data-title={item.data.title.toLowerCase()}
     	    	    data-tags={item.data.tags.join(' ').toLowerCase()}
 					data-supported={String(item.data.supported)}>
-						<ProjectCard project={item}/>
+						<ProjectCard project={item} liveVersion={liveVersionMap[item.id] ?? null}/>
 					</div>
 				))}
 			</div>
 		</span>
 	</div>
 </Layout>
+
+<script type="application/json" id="gh-version-data" is:inline set:html={JSON.stringify(liveVersionMap)} />
+
+<script>
+  const VERSIONS_CACHE_KEY = 'gh-library-versions';
+
+  const versionDataEl = document.getElementById('gh-version-data');
+  const serverVersions: Record<string, string | null> = JSON.parse(versionDataEl?.textContent ?? '{}');
+
+  // Persist every version the API returned successfully
+  const toCache = Object.fromEntries(
+    Object.entries(serverVersions).filter(([, v]) => v !== null)
+  );
+  if (Object.keys(toCache).length > 0) {
+    try { localStorage.setItem(VERSIONS_CACHE_KEY, JSON.stringify(toCache)); } catch {}
+  }
+
+  // For projects where the API failed (null), restore from the last good cache
+  const failedIds = Object.entries(serverVersions)
+    .filter(([, v]) => v === null)
+    .map(([id]) => id);
+
+  if (failedIds.length > 0) {
+    try {
+      const cached: Record<string, string> = JSON.parse(
+        localStorage.getItem(VERSIONS_CACHE_KEY) ?? '{}'
+      );
+      failedIds.forEach(id => {
+        const cachedVersion = cached[id];
+        if (cachedVersion) {
+          document.querySelectorAll<HTMLElement>(`[data-version-id="${CSS.escape(id)}"]`)
+            .forEach(el => { el.textContent = cachedVersion; });
+        }
+      });
+    } catch {}
+  }
+</script>
 
 <script>
 	const input = document.querySelector('#search-input') as HTMLInputElement;

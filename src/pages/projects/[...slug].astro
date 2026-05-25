@@ -1,8 +1,6 @@
 ---
-// import '../../styles/global.css';
 import { getCollection, render, type CollectionEntry } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
-import Footer from '../../components/Footer.astro'
 import ImageCarousel from '../../components/ImageCarousel.astro';
 import githubLogo from '../../../public/images/icons/github.png';
 import { Image } from 'astro:assets';
@@ -10,29 +8,110 @@ import { Image } from 'astro:assets';
 export async function getStaticPaths() {
   const entries = await getCollection('projects');
   return entries.map((entry) => ({
-    params: { slug: entry.id.replace(/\.md$/, '') }, 
+    params: { slug: entry.id.replace(/\.md$/, '') },
     props: { entry },
   }));
-}
-
-export async function isRepoAccessibleAsync(url : string) : Promise<boolean>{
-  const response = await fetch(url);
-
-  if(response.ok) return true;
-  else return false;
 }
 
 type Props = {
   entry: CollectionEntry<'projects'>;
 };
 
+function parseGithubUrl(url: string): { owner: string; repo: string } | null {
+  const match = url.match(/github\.com\/([^\/]+)\/([^\/\?#]+)/);
+  if (match) return { owner: match[1], repo: match[2].replace(/\.git$/, '') };
+  return null;
+}
+
+function parseVersionTag(tag: string | null | undefined): string | null {
+  if (!tag) return null;
+  const match = tag.match(/^v?(\d+\.\d+(?:\.\d+)*(?:[.-][a-zA-Z0-9._-]*)?)/i);
+  return match ? match[1] : null;
+}
+
+const githubHeaders: HeadersInit = {
+  Accept: 'application/vnd.github.v3+json',
+  ...(import.meta.env.TOKEN ? { Authorization: `Bearer ${import.meta.env.TOKEN}` } : {}),
+};
+
+async function fetchGithubRepo(owner: string, repo: string) {
+  try {
+    const res = await fetch(`https://api.github.com/repos/${owner}/${repo}`, { headers: githubHeaders });
+    if (!res.ok) return null;
+    return await res.json();
+  } catch {
+    return null;
+  }
+}
+
+async function fetchGithubReleases(owner: string, repo: string) {
+  try {
+    const res = await fetch(
+      `https://api.github.com/repos/${owner}/${repo}/releases?per_page=5`,
+      { headers: githubHeaders }
+    );
+    if (!res.ok) return [];
+    const data = await res.json();
+    return Array.isArray(data) ? data.filter((r: any) => !r.draft) : [];
+  } catch {
+    return [];
+  }
+}
+
+async function fetchGithubIssues(owner: string, repo: string) {
+  try {
+    const res = await fetch(
+      `https://api.github.com/repos/${owner}/${repo}/issues?state=open&per_page=5`,
+      { headers: githubHeaders }
+    );
+    if (!res.ok) return [];
+    const data = await res.json();
+    // GitHub issues endpoint also returns PRs — filter them out
+    return Array.isArray(data) ? data.filter((i: any) => !i.pull_request) : [];
+  } catch {
+    return [];
+  }
+}
+
+async function fetchGithubCommits(owner: string, repo: string) {
+  try {
+    const res = await fetch(
+      `https://api.github.com/repos/${owner}/${repo}/commits?per_page=5`,
+      { headers: githubHeaders }
+    );
+    if (!res.ok) return [];
+    const data = await res.json();
+    return Array.isArray(data) ? data : [];
+  } catch {
+    return [];
+  }
+}
+
 const { entry } = Astro.props;
 const { Content } = await render(entry);
 const { dateOfCreation } = entry.data;
-const isRepoAccessible = entry.data.githubPage ? await isRepoAccessibleAsync(entry.data.githubPage) : false;
+
+const githubInfo = entry.data.githubPage ? parseGithubUrl(entry.data.githubPage) : null;
+const [repoData, releases, issues, commits] = githubInfo
+  ? await Promise.all([
+      fetchGithubRepo(githubInfo.owner, githubInfo.repo),
+      fetchGithubReleases(githubInfo.owner, githubInfo.repo),
+      fetchGithubIssues(githubInfo.owner, githubInfo.repo),
+      fetchGithubCommits(githubInfo.owner, githubInfo.repo),
+    ])
+  : [null, [], [], []];
+
+const isRepoAccessible = repoData !== null;
+const hasReleases = releases.length > 0;
+const hasIssues = issues.length > 0;
+const hasCommits = commits.length > 0;
+const showSidebar = hasReleases || hasIssues || hasCommits;
+
+const liveVersion = hasReleases ? parseVersionTag(releases[0].tag_name) : null;
+const displayVersion = liveVersion ?? entry.data.version ?? '1.0.0';
 
 const getOrdinal = (n: number) => {
-  const s = ["th", "st", "nd", "rd"];
+  const s = ['th', 'st', 'nd', 'rd'];
   const v = n % 100;
   return n + (s[(v - 20) % 10] || s[v] || s[0]);
 };
@@ -41,58 +120,458 @@ const formattedDate = dateOfCreation.toLocaleDateString('en-US', {
   month: 'long',
   year: 'numeric',
 });
-
 const day = getOrdinal(dateOfCreation.getDate());
 const dateString = `${formattedDate.split(' ')[0]} ${day}, ${dateOfCreation.getFullYear()}`;
+
+function formatReleaseDate(dateStr: string): string {
+  const d = new Date(dateStr);
+  return `${d.toLocaleDateString('en-US', { month: 'long' })} ${getOrdinal(d.getDate())}, ${d.getFullYear()}`;
+}
+
+function truncateBody(body: string | null, max = 220): string {
+  if (!body) return '';
+  const cleaned = body
+    .replace(/#{1,6}\s*/g, '')
+    .replace(/\*\*/g, '')
+    .replace(/\r?\n/g, ' ')
+    .trim();
+  return cleaned.length > max ? cleaned.slice(0, max) + '…' : cleaned;
+}
+
+function totalDownloads(release: any): number {
+  return (release.assets || []).reduce(
+    (sum: number, a: any) => sum + (a.download_count || 0),
+    0
+  );
+}
+
+function shortDate(dateStr: string): string {
+  return new Date(dateStr).toLocaleDateString('en-US', {
+    month: 'short', day: 'numeric', year: 'numeric',
+  });
+}
+
+function firstLine(msg: string, max = 72): string {
+  const line = (msg || '').split('\n')[0].trim();
+  return line.length > max ? line.slice(0, max) + '…' : line;
+}
+
+// Lean pre-processed snapshot for client-side localStorage caching
+// Important for when the github api can't be reached for whatever reason
+const sidebarCacheData = {
+  githubPage: entry.data.githubPage ?? '',
+  liveVersion: liveVersion,
+  repoStats: repoData ? {
+    stars: repoData.stargazers_count as number,
+    forks: repoData.forks_count as number,
+    language: (repoData.language ?? null) as string | null,
+    issues: repoData.open_issues_count as number,
+  } : null,
+  releases: releases.map((r: any, i: number) => ({
+    html_url: r.html_url,
+    tag_name: r.tag_name,
+    name: (r.name && r.name !== r.tag_name) ? r.name : '',
+    date: formatReleaseDate(r.published_at),
+    notes: truncateBody(r.body),
+    prerelease: !!r.prerelease,
+    downloads: totalDownloads(r),
+    isLatest: i === 0,
+  })),
+  issues: issues.map((i: any) => ({
+    html_url: i.html_url,
+    number: i.number,
+    title: i.title,
+    date: shortDate(i.created_at),
+    labels: ((i.labels ?? []) as any[]).slice(0, 3).map((l: any) => l.name as string),
+  })),
+  commits: commits.map((c: any) => ({
+    html_url: c.html_url,
+    sha: ((c.sha as string) ?? '').slice(0, 7),
+    message: firstLine(c.commit?.message ?? ''),
+    author: c.commit?.author?.name ?? '',
+    date: shortDate(c.commit?.author?.date ?? ''),
+  })),
+};
 ---
 
-<Layout title={entry.data.title} currentTab="library"> 
-  <div class="grid grid-cols-1 min-[940px]:grid-cols-2 min-[940px]:grid-rows-1 h-fit min-[940px]:h-fit gap-2 ml-[10%] mr-[10%] mt-5 bg-steam-dark2/90 panel-glow border border-white/30 border-t-steam-matrix/45 border-l-white/45 opacity-90 z-2 p-2 rounded">
+<Layout title={entry.data.title} currentTab="library">
+  <!-- Header panel -->
+  <div class="grid grid-cols-1 min-[940px]:grid-cols-2 min-[940px]:grid-rows-1 h-fit gap-2 ml-[10%] mr-[10%] mt-5 bg-steam-dark2/90 panel-glow border border-white/30 border-t-steam-matrix/45 border-l-white/45 opacity-90 z-2 p-2 rounded">
     <div class="overflow-hidden bg-steam-dark border border-white/30 border-t-steam-matrix/50 rounded shadow-2xl h-fit">
-      <ImageCarousel screenshots={entry.data.screenshots} /> 
+      <ImageCarousel screenshots={entry.data.screenshots} />
     </div>
     <div class="flex flex-col z-2">
-      <h1 class="text-5xl text-white mt-2 uppercase font-mono font-extrabold">{entry.data.title}</h1>
-      <div class="flex overflow-hidden gap-2">
+      <!-- Title + status badge -->
+      <div class="flex items-start gap-3 mt-2 flex-wrap">
+        <h1 class="text-5xl text-white uppercase font-mono font-extrabold leading-tight">{entry.data.title}</h1>
+      </div>
+      <!-- Tags -->
+      <div class="flex flex-wrap gap-2 mt-2">
         {entry.data.tags.map((tag: string) => (
-          <span class="text-[12px] h-fit mt-auto bg-black/40 px-2 py-0.5 text-steam-accent">{tag}</span>
+          <span class="text-[12px] h-fit bg-black/40 px-2 py-0.5 text-steam-accent">{tag}</span>
         ))}
       </div>
+      <!-- Description -->
       <p class="text-gray-400 mt-2">{entry.data.description}</p>
-      <p class="mt-6 text-slate-400">Author: {entry.data.author}</p>
-      <p class=" text-slate-400 gap-2"><label style=`${(entry.data.contributors ?? []).length > 0? "visiblity: visible;" : "visibility: hidden;"}`>Contributors:</label>
+      <!-- GitHub stats bar — always present; JS populates from cache when repoData is null -->
+      <div id="github-stats-bar" class={`flex flex-row gap-4 mt-3 flex-wrap border-t border-steam-accent/10 pt-3 ${repoData ? '' : 'hidden'}`}>
+        {repoData && (<>
+          <span class={`shrink-0 text-[10px] font-mono font-bold px-2 py-0.5 uppercase tracking-widest border ${entry.data.supported ? 'text-steam-btn2 border-steam-btn2/60 bg-steam-btn2/10' : 'text-steam-accent/40 border-steam-accent/20 bg-steam-dark/50'}`}>
+            {entry.data.supported ? 'ACTIVE' : 'ARCHIVED'}
+          </span>
+          <span class="flex items-center gap-1.5 text-steam-blue text-sm font-mono">
+            <svg width="13" height="13" viewBox="0 0 16 16" fill="currentColor">
+              <path d="M8 .25a.75.75 0 0 1 .673.418l1.882 3.815 4.21.612a.75.75 0 0 1 .416 1.279l-3.046 2.97.719 4.192a.75.75 0 0 1-1.088.791L8 12.347l-3.766 1.98a.75.75 0 0 1-1.088-.79l.72-4.194L.818 6.374a.75.75 0 0 1 .416-1.28l4.21-.611L7.327.668A.75.75 0 0 1 8 .25Z" />
+            </svg>
+            {repoData.stargazers_count.toLocaleString()}
+          </span>
+          <span class="flex items-center gap-1.5 text-steam-accent/60 text-sm font-mono">
+            <svg width="13" height="13" viewBox="0 0 16 16" fill="currentColor">
+              <path d="M5 5.372v.878c0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75v-.878a2.25 2.25 0 1 1 1.5 0v.878a2.25 2.25 0 0 1-2.25 2.25h-1.5v2.128a2.251 2.251 0 1 1-1.5 0V8.5h-1.5A2.25 2.25 0 0 1 3.5 6.25v-.878a2.25 2.25 0 1 1 1.5 0ZM5 3.25a.75.75 0 1 0-1.5 0 .75.75 0 0 0 1.5 0Zm6.75.75a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Zm-3 8.75a.75.75 0 1 0-1.5 0 .75.75 0 0 0 1.5 0Z" />
+            </svg>
+            {repoData.forks_count.toLocaleString()}
+          </span>
+          {repoData.language && (
+            <span class="flex items-center gap-1.5 text-steam-matrix/80 text-sm font-mono">
+              <span class="w-2 h-2 rounded-full bg-steam-matrix/60 inline-block shrink-0"></span>
+              {repoData.language}
+            </span>
+          )}
+          {repoData.open_issues_count > 0 && (
+            <span class="flex items-center gap-1.5 text-steam-accent/40 text-sm font-mono">
+              <svg width="13" height="13" viewBox="0 0 16 16" fill="currentColor">
+                <path d="M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Z" />
+                <path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0ZM1.5 8a6.5 6.5 0 1 0 13 0 6.5 6.5 0 0 0-13 0Z" />
+              </svg>
+              {repoData.open_issues_count} issues
+            </span>
+          )}
+        </>)}
+      </div>
+           <!-- Author / contributors -->
+      <p class="mt-4 text-slate-400">Author: {entry.data.author}</p>
+      <p class="text-slate-400 gap-2">
+        <label style={`${(entry.data.contributors ?? []).length > 0 ? 'visibility: visible;' : 'visibility: hidden;'}`}>Contributors:</label>
         {(entry.data.contributors ?? []).map((contributor: string) => (
           <span class="mr-1">{contributor},</span>
         ))}
       </p>
+      <!-- Date / repo button / version -->
       <span class="mt-auto grid grid-rows-2 grid-cols-2">
-        <p class=" text-slate-400 col-span-2 mb-2 content-end">Created on {dateString}</p>
+        <p class="text-slate-400 col-span-2 mb-2 content-end">Created on {dateString}</p>
         <span class="mr-auto mb-2 flex h-fit w-full">
-          <span title=`${isRepoAccessible ? "Navigate to github.com" : "Repository not found or unavailable."}`>
-            <a class=`${isRepoAccessible ? "navigate-repo-btn-enabled link-enabled" : "navigate-repo-btn-disabled link-disabled"}` href={entry.data.githubPage}>
-              <Image 
-                  width={32}
-                  height={32}
-                  src={githubLogo} 
-                  alt="Go to repository"/>
+          <span title={isRepoAccessible ? 'Navigate to github.com' : 'Repository not found or unavailable.'}>
+            <a
+              class={isRepoAccessible ? 'navigate-repo-btn-enabled link-enabled' : 'navigate-repo-btn-disabled link-disabled'}
+              href={entry.data.githubPage}
+            >
+              <Image width={32} height={32} src={githubLogo} alt="Go to repository" />
               <p class="font-mono font-bold text-white ml-2 mt-auto mb-auto">GO TO REPOSITORY</p>
             </a>
           </span>
         </span>
-        <p class="ml-auto mr-2 mt-auto text-white font-mono font-bold text-2xl">{entry.data.version}</p>
+        <p id="project-version" class="ml-auto mr-2 mt-auto text-white font-mono font-bold text-2xl">{displayVersion}</p>
       </span>
     </div>
   </div>
 
-  <div>
-    <article class="panel-glow prose prose-invert rounded ml-[10%] mr-[10%] mt-6 max-w-none row-span-3 bg-steam-dark2/90 p-2 border border-white/30 border-t-steam-matrix/45 border-l-white/45 opacity-90 markdown-content">
+  <!-- Bottom section: markdown + optional sidebar -->
+  <!-- The grid and col-span are managed here at build time, and by JS when restoring from cache -->
+  <div id="bottom-section" class={`ml-[10%] mr-[10%] mt-6 mb-8 grid grid-cols-1 lg:grid-cols-3 gap-4 items-start`}>
+    <article id="markdown-article" class={`panel-glow prose prose-invert rounded max-w-none bg-steam-dark2/90 p-4 border border-white/30 border-t-steam-matrix/45 border-l-white/45 opacity-90 markdown-content ${showSidebar ? 'lg:col-span-2' : 'lg:col-span-3'}`}>
       <Content />
     </article>
+
+    <aside id="github-sidebar" class={`panel-glow rounded bg-steam-dark2/90 border border-white/30 border-t-steam-matrix/45 border-l-white/45 opacity-90 flex flex-col h-fit sticky top-4 ${showSidebar ? '' : 'hidden'}`}>
+
+        {/* ── RELEASES ── */}
+        {hasReleases && (
+          <div>
+            <div class="border-b border-steam-matrix/30 px-4 py-3 flex items-center justify-between">
+              <h2 class="sidebar-section-title">Releases</h2>
+              <a href={`${entry.data.githubPage}/releases`} target="_blank" rel="noopener noreferrer" class="sidebar-view-all">
+                View all →
+              </a>
+            </div>
+            <div class="flex flex-col divide-y divide-steam-accent/10">
+              {releases.map((release: any, i: number) => {
+                const downloads = totalDownloads(release);
+                const notes = truncateBody(release.body);
+                return (
+                  <a href={release.html_url} target="_blank" rel="noopener noreferrer" class="sidebar-entry px-4 py-3 flex flex-col gap-1.5">
+                    <div class="flex items-center gap-1.5 flex-wrap">
+                      <span class="font-mono text-xs font-bold px-1.5 py-0.5 bg-steam-blue/10 border border-steam-blue/30 text-steam-blue">
+                        {release.tag_name}
+                      </span>
+                      {i === 0 && (
+                        <span class="font-mono text-[10px] px-1.5 py-0.5 bg-steam-btn2/10 border border-steam-btn2/30 text-steam-btn2 uppercase">Latest</span>
+                      )}
+                      {release.prerelease && (
+                        <span class="font-mono text-[10px] px-1.5 py-0.5 bg-yellow-500/10 border border-yellow-500/30 text-yellow-400 uppercase">Pre</span>
+                      )}
+                    </div>
+                    {release.name && release.name !== release.tag_name && (
+                      <p class="text-steam-accent text-sm font-mono font-semibold leading-tight m-0">{release.name}</p>
+                    )}
+                    <p class="text-steam-accent/40 text-[11px] font-mono m-0">{formatReleaseDate(release.published_at)}</p>
+                    {notes && <p class="text-steam-accent/55 text-xs leading-relaxed m-0 line-clamp-3">{notes}</p>}
+                    {downloads > 0 && (
+                      <p class="text-steam-accent/35 text-[11px] font-mono flex items-center gap-1 m-0">
+                        <svg width="11" height="11" viewBox="0 0 16 16" fill="currentColor">
+                          <path d="M2.75 14A1.75 1.75 0 0 1 1 12.25v-2.5a.75.75 0 0 1 1.5 0v2.5c0 .138.112.25.25.25h10.5a.25.25 0 0 0 .25-.25v-2.5a.75.75 0 0 1 1.5 0v2.5A1.75 1.75 0 0 1 13.25 14Z" />
+                          <path d="M7.25 7.689V2a.75.75 0 0 1 1.5 0v5.689l1.97-1.97a.749.749 0 1 1 1.06 1.06l-3.25 3.25a.749.749 0 0 1-1.06 0L4.22 6.779a.749.749 0 1 1 1.06-1.06l1.97 1.97Z" />
+                        </svg>
+                        {downloads.toLocaleString()} downloads
+                      </p>
+                    )}
+                  </a>
+                );
+              })}
+            </div>
+          </div>
+        )}
+
+        {/* ── OPEN ISSUES ── */}
+        {hasIssues && (
+          <div class={hasReleases ? 'border-t border-steam-matrix/20' : ''}>
+            <div class="border-b border-steam-matrix/30 px-4 py-3 flex items-center justify-between">
+              <h2 class="sidebar-section-title">Open Issues</h2>
+              <a href={`${entry.data.githubPage}/issues`} target="_blank" rel="noopener noreferrer" class="sidebar-view-all">
+                View all →
+              </a>
+            </div>
+            <div class="flex flex-col divide-y divide-steam-accent/10">
+              {issues.map((issue: any) => (
+                <a href={issue.html_url} target="_blank" rel="noopener noreferrer" class="sidebar-entry px-4 py-3 flex flex-col gap-1">
+                  <div class="flex items-center gap-1.5">
+                    <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor" class="shrink-0 text-steam-btn2/70">
+                      <path d="M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Z"/>
+                      <path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0ZM1.5 8a6.5 6.5 0 1 0 13 0 6.5 6.5 0 0 0-13 0Z"/>
+                    </svg>
+                    <span class="text-steam-accent/40 text-[11px] font-mono">#{issue.number}</span>
+                  </div>
+                  <p class="text-steam-accent text-xs font-mono leading-snug m-0 line-clamp-2">{issue.title}</p>
+                  {issue.labels?.length > 0 && (
+                    <div class="flex flex-wrap gap-1 mt-0.5">
+                      {issue.labels.slice(0, 3).map((label: any) => (
+                        <span class="text-[10px] font-mono px-1.5 py-0 bg-steam-accent/10 border border-steam-accent/20 text-steam-accent/60">
+                          {label.name}
+                        </span>
+                      ))}
+                    </div>
+                  )}
+                  <p class="text-steam-accent/30 text-[11px] font-mono m-0">{shortDate(issue.created_at)}</p>
+                </a>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* ── RECENT COMMITS ── */}
+        {hasCommits && (
+          <div class={hasReleases || hasIssues ? 'border-t border-steam-matrix/20' : ''}>
+            <div class="border-b border-steam-matrix/30 px-4 py-3 flex items-center justify-between">
+              <h2 class="sidebar-section-title">Recent Commits</h2>
+              <a href={`${entry.data.githubPage}/commits`} target="_blank" rel="noopener noreferrer" class="sidebar-view-all">
+                View all →
+              </a>
+            </div>
+            <div class="flex flex-col divide-y divide-steam-accent/10">
+              {commits.map((c: any) => (
+                <a href={c.html_url} target="_blank" rel="noopener noreferrer" class="sidebar-entry px-4 py-3 flex flex-col gap-1">
+                  <div class="flex items-center gap-2">
+                    <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor" class="shrink-0 text-steam-matrix/60">
+                      <path d="M11.93 8.5a4.002 4.002 0 0 1-7.86 0H.75a.75.75 0 0 1 0-1.5h3.32a4.002 4.002 0 0 1 7.86 0h3.32a.75.75 0 0 1 0 1.5Zm-1.43-.75a2.5 2.5 0 1 0-5 0 2.5 2.5 0 0 0 5 0Z"/>
+                    </svg>
+                    <span class="font-mono text-[11px] text-steam-matrix/70 bg-steam-matrix/5 border border-steam-matrix/20 px-1.5 py-0">
+                      {c.sha.slice(0, 7)}
+                    </span>
+                  </div>
+                  <p class="text-steam-accent text-xs font-mono leading-snug m-0 line-clamp-2">
+                    {firstLine(c.commit.message)}
+                  </p>
+                  <p class="text-steam-accent/30 text-[11px] font-mono m-0">
+                    {c.commit.author.name} · {shortDate(c.commit.author.date)}
+                  </p>
+                </a>
+              ))}
+            </div>
+          </div>
+        )}
+
+    </aside>
   </div>
 </Layout>
 
+<!-- Sidebar data for client-side localStorage caching (mirrors ActivityCarousel pattern) -->
+<script type="application/json" id="gh-sidebar-data" is:inline set:html={JSON.stringify(sidebarCacheData)} />
+
+<script>
+  const CACHE_KEY = `gh-sidebar:${window.location.pathname}`;
+
+  const dataEl = document.getElementById('gh-sidebar-data');
+  const serverData: any = JSON.parse(dataEl?.textContent ?? '{}');
+
+  const hasSidebarData = (d: any) =>
+    (d?.releases?.length ?? 0) > 0 ||
+    (d?.issues?.length ?? 0) > 0 ||
+    (d?.commits?.length ?? 0) > 0;
+
+  // Save whatever we got from the build — sidebar data and/or stats
+  if (hasSidebarData(serverData) || serverData.repoStats) {
+    try { localStorage.setItem(CACHE_KEY, JSON.stringify(serverData)); } catch {}
+  }
+
+  // Restore anything that was missing at build time from the last good cache
+  const statsBar = document.getElementById('github-stats-bar') as HTMLElement;
+  const sidebar  = document.getElementById('github-sidebar')   as HTMLElement;
+  const article  = document.getElementById('markdown-article') as HTMLElement;
+
+  const missingStats   = !serverData.repoStats;
+  const missingSidebar = !hasSidebarData(serverData);
+  const missingVersion = !serverData.liveVersion;
+
+  if (missingStats || missingSidebar || missingVersion) {
+    try {
+      const raw = localStorage.getItem(CACHE_KEY);
+      if (raw) {
+        const cached: any = JSON.parse(raw);
+
+        if (missingVersion && cached.liveVersion) {
+          const versionEl = document.getElementById('project-version');
+          if (versionEl) versionEl.textContent = cached.liveVersion;
+        }
+
+        if (missingStats && cached.repoStats) {
+          statsBar.innerHTML = buildStatsBar(cached.repoStats);
+          statsBar.classList.remove('hidden');
+        }
+
+        if (missingSidebar && hasSidebarData(cached)) {
+          sidebar.innerHTML = buildSidebar(cached, true);
+          sidebar.classList.remove('hidden');
+          article.classList.remove('lg:col-span-3');
+          article.classList.add('lg:col-span-2');
+        }
+      }
+    } catch {}
+  }
+
+  function esc(s: any): string {
+    return String(s ?? '')
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  }
+
+  function buildStatsBar(stats: any): string {
+    return `
+      <span class="flex items-center gap-1.5 text-steam-blue text-sm font-mono">
+        <svg width="13" height="13" viewBox="0 0 16 16" fill="currentColor"><path d="M8 .25a.75.75 0 0 1 .673.418l1.882 3.815 4.21.612a.75.75 0 0 1 .416 1.279l-3.046 2.97.719 4.192a.75.75 0 0 1-1.088.791L8 12.347l-3.766 1.98a.75.75 0 0 1-1.088-.79l.72-4.194L.818 6.374a.75.75 0 0 1 .416-1.28l4.21-.611L7.327.668A.75.75 0 0 1 8 .25Z"/></svg>
+        ${Number(stats.stars).toLocaleString()}
+      </span>
+      <span class="flex items-center gap-1.5 text-steam-accent/60 text-sm font-mono">
+        <svg width="13" height="13" viewBox="0 0 16 16" fill="currentColor"><path d="M5 5.372v.878c0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75v-.878a2.25 2.25 0 1 1 1.5 0v.878a2.25 2.25 0 0 1-2.25 2.25h-1.5v2.128a2.251 2.251 0 1 1-1.5 0V8.5h-1.5A2.25 2.25 0 0 1 3.5 6.25v-.878a2.25 2.25 0 1 1 1.5 0ZM5 3.25a.75.75 0 1 0-1.5 0 .75.75 0 0 0 1.5 0Zm6.75.75a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Zm-3 8.75a.75.75 0 1 0-1.5 0 .75.75 0 0 0 1.5 0Z"/></svg>
+        ${Number(stats.forks).toLocaleString()}
+      </span>
+      ${stats.language ? `
+        <span class="flex items-center gap-1.5 text-steam-matrix/80 text-sm font-mono">
+          <span class="w-2 h-2 rounded-full bg-steam-matrix/60 inline-block shrink-0"></span>
+          ${esc(stats.language)}
+        </span>` : ''}
+      ${stats.issues > 0 ? `
+        <span class="flex items-center gap-1.5 text-steam-accent/40 text-sm font-mono">
+          <svg width="13" height="13" viewBox="0 0 16 16" fill="currentColor"><path d="M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Z"/><path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0ZM1.5 8a6.5 6.5 0 1 0 13 0 6.5 6.5 0 0 0-13 0Z"/></svg>
+          ${Number(stats.issues).toLocaleString()} issues
+        </span>` : ''}
+    `;
+  }
+
+  function buildSidebar(data: any, isStale: boolean): string {
+    const hasReleases = data.releases?.length > 0;
+    const hasIssues   = data.issues?.length > 0;
+    const hasCommits  = data.commits?.length > 0;
+    let html = '';
+
+    if (isStale) {
+      html += `<div class="px-4 py-2 border-b border-yellow-500/20">
+        <span class="text-yellow-400/50 text-[10px] font-mono uppercase tracking-wider">Cached — live data unavailable</span>
+      </div>`;
+    }
+
+    if (hasReleases) {
+      html += `<div>
+        <div class="border-b border-steam-matrix/30 px-4 py-3 flex items-center justify-between">
+          <h2 class="sidebar-section-title">Releases</h2>
+          <a href="${esc(data.githubPage)}/releases" target="_blank" rel="noopener noreferrer" class="sidebar-view-all">View all →</a>
+        </div>
+        <div class="flex flex-col divide-y divide-steam-accent/10">
+          ${data.releases.map((r: any) => `
+            <a href="${esc(r.html_url)}" target="_blank" rel="noopener noreferrer" class="sidebar-entry px-4 py-3 flex flex-col gap-1.5">
+              <div class="flex items-center gap-1.5 flex-wrap">
+                <span class="font-mono text-xs font-bold px-1.5 py-0.5 bg-steam-blue/10 border border-steam-blue/30 text-steam-blue">${esc(r.tag_name)}</span>
+                ${r.isLatest ? '<span class="font-mono text-[10px] px-1.5 py-0.5 bg-steam-btn2/10 border border-steam-btn2/30 text-steam-btn2 uppercase">Latest</span>' : ''}
+                ${r.prerelease ? '<span class="font-mono text-[10px] px-1.5 py-0.5 bg-yellow-500/10 border border-yellow-500/30 text-yellow-400 uppercase">Pre</span>' : ''}
+              </div>
+              ${r.name ? `<p class="text-steam-accent text-sm font-mono font-semibold leading-tight m-0">${esc(r.name)}</p>` : ''}
+              <p class="text-steam-accent/40 text-[11px] font-mono m-0">${esc(r.date)}</p>
+              ${r.notes ? `<p class="text-steam-accent/55 text-xs leading-relaxed m-0 line-clamp-3">${esc(r.notes)}</p>` : ''}
+              ${r.downloads > 0 ? `<p class="text-steam-accent/35 text-[11px] font-mono flex items-center gap-1 m-0">
+                <svg width="11" height="11" viewBox="0 0 16 16" fill="currentColor"><path d="M2.75 14A1.75 1.75 0 0 1 1 12.25v-2.5a.75.75 0 0 1 1.5 0v2.5c0 .138.112.25.25.25h10.5a.25.25 0 0 0 .25-.25v-2.5a.75.75 0 0 1 1.5 0v2.5A1.75 1.75 0 0 1 13.25 14Z"/><path d="M7.25 7.689V2a.75.75 0 0 1 1.5 0v5.689l1.97-1.97a.749.749 0 1 1 1.06 1.06l-3.25 3.25a.749.749 0 0 1-1.06 0L4.22 6.779a.749.749 0 1 1 1.06-1.06l1.97 1.97Z"/></svg>
+                ${Number(r.downloads).toLocaleString()} downloads
+              </p>` : ''}
+            </a>`).join('')}
+        </div>
+      </div>`;
+    }
+
+    if (hasIssues) {
+      html += `<div class="${hasReleases ? 'border-t border-steam-matrix/20' : ''}">
+        <div class="border-b border-steam-matrix/30 px-4 py-3 flex items-center justify-between">
+          <h2 class="sidebar-section-title">Open Issues</h2>
+          <a href="${esc(data.githubPage)}/issues" target="_blank" rel="noopener noreferrer" class="sidebar-view-all">View all →</a>
+        </div>
+        <div class="flex flex-col divide-y divide-steam-accent/10">
+          ${data.issues.map((i: any) => `
+            <a href="${esc(i.html_url)}" target="_blank" rel="noopener noreferrer" class="sidebar-entry px-4 py-3 flex flex-col gap-1">
+              <div class="flex items-center gap-1.5">
+                <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor" class="shrink-0 text-steam-btn2/70"><path d="M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Z"/><path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0ZM1.5 8a6.5 6.5 0 1 0 13 0 6.5 6.5 0 0 0-13 0Z"/></svg>
+                <span class="text-steam-accent/40 text-[11px] font-mono">#${esc(i.number)}</span>
+              </div>
+              <p class="text-steam-accent text-xs font-mono leading-snug m-0 line-clamp-2">${esc(i.title)}</p>
+              ${i.labels?.length > 0 ? `<div class="flex flex-wrap gap-1 mt-0.5">${i.labels.map((l: string) => `<span class="text-[10px] font-mono px-1.5 py-0 bg-steam-accent/10 border border-steam-accent/20 text-steam-accent/60">${esc(l)}</span>`).join('')}</div>` : ''}
+              <p class="text-steam-accent/30 text-[11px] font-mono m-0">${esc(i.date)}</p>
+            </a>`).join('')}
+        </div>
+      </div>`;
+    }
+
+    if (hasCommits) {
+      html += `<div class="${(hasReleases || hasIssues) ? 'border-t border-steam-matrix/20' : ''}">
+        <div class="border-b border-steam-matrix/30 px-4 py-3 flex items-center justify-between">
+          <h2 class="sidebar-section-title">Recent Commits</h2>
+          <a href="${esc(data.githubPage)}/commits" target="_blank" rel="noopener noreferrer" class="sidebar-view-all">View all →</a>
+        </div>
+        <div class="flex flex-col divide-y divide-steam-accent/10">
+          ${data.commits.map((c: any) => `
+            <a href="${esc(c.html_url)}" target="_blank" rel="noopener noreferrer" class="sidebar-entry px-4 py-3 flex flex-col gap-1">
+              <div class="flex items-center gap-2">
+                <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor" class="shrink-0 text-steam-matrix/60"><path d="M11.93 8.5a4.002 4.002 0 0 1-7.86 0H.75a.75.75 0 0 1 0-1.5h3.32a4.002 4.002 0 0 1 7.86 0h3.32a.75.75 0 0 1 0 1.5Zm-1.43-.75a2.5 2.5 0 1 0-5 0 2.5 2.5 0 0 0 5 0Z"/></svg>
+                <span class="font-mono text-[11px] text-steam-matrix/70 bg-steam-matrix/5 border border-steam-matrix/20 px-1.5 py-0">${esc(c.sha)}</span>
+              </div>
+              <p class="text-steam-accent text-xs font-mono leading-snug m-0 line-clamp-2">${esc(c.message)}</p>
+              <p class="text-steam-accent/30 text-[11px] font-mono m-0">${esc(c.author)} · ${esc(c.date)}</p>
+            </a>`).join('')}
+        </div>
+      </div>`;
+    }
+
+    return html;
+  }
+</script>
+
 <style is:global>
   @reference "../../styles/global.css";
+
   .prose h1, .prose h2 {
     @apply text-white text-2xl font-mono font-bold uppercase tracking-wider border-b border-steam-gray pb-2 mt-5;
   }
@@ -102,7 +581,6 @@ const dateString = `${formattedDate.split(' ')[0]} ${day}, ${dateOfCreation.getF
   .prose strong {
     @apply text-steam-blue;
   }
-
   .prose ul {
     @apply list-disc ml-6 mb-4 text-steam-accent;
   }
@@ -113,42 +591,23 @@ const dateString = `${formattedDate.split(' ')[0]} ${day}, ${dateOfCreation.getF
     @apply mb-1 pl-1 text-steam-blue;
   }
 
-  .background{
-    background-size: cover;
-    height: 100vh;
-  }
-  .navigate-repo-btn-enabled{
+  .navigate-repo-btn-enabled {
     @apply bg-linear-to-b from-steam-btn1 to-steam-btn2 hover:from-65% hover:scale-102 shadow-2xs hover:shadow-2xl p-2 flex w-fit h-fit transition delay-75;
   }
-
-  .navigate-repo-btn-disabled{
+  .navigate-repo-btn-disabled {
     @apply bg-steam-dark2 border border-steam-accent/30 opacity-80 shadow-2xs p-2 flex w-fit h-fit transition delay-75;
   }
-
-  .link-enabled{
+  .link-enabled {
     pointer-events: all;
     cursor: pointer;
   }
-
-  .link-disabled{
+  .link-disabled {
     pointer-events: none;
     cursor: default;
   }
 
-  .test{
-    visibility: hidden
-  }
-
-  .panel-glow{
+  .panel-glow {
     @apply shadow-[0_20px_40px_rgba(0,0,0,0.2),inset_0_0_10px_rgba(255,255,255,0.2)];
-  }
-
-  .panel-glow-r-0{
-    @apply shadow-[0_20px_40px_rgba(0,0,0,0.2),inset_-10_0_10px_rgba(255,255,255,0.2)];
-  }
-
-  .specular-overlay{
-    @apply absolute inset-0 bg-linear-to-br from-white/5 via-transparent to-transparent pointer-events-none;
   }
 
   .markdown-content img {
@@ -156,9 +615,37 @@ const dateString = `${formattedDate.split(' ')[0]} ${day}, ${dateOfCreation.getF
     max-width: 65% !important;
     height: auto !important;
     display: block;
-    margin: 2rem auto; /* Optional: centers and adds spacing */
-    border-radius: 8px; /* Optional: adds styling */
-    @apply shadow-2xl
+    margin: 2rem auto;
+    border-radius: 8px;
+    @apply shadow-2xl;
   }
 
+  /* Sidebar shared utilities */
+  .sidebar-section-title {
+    all: unset;
+    display: block;
+    font-family: monospace;
+    font-weight: 800;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: #66c0f4;
+  }
+  .sidebar-view-all {
+    font-size: 0.6875rem;
+    font-family: monospace;
+    color: rgba(199, 213, 224, 0.5);
+    text-decoration: none;
+    transition: color 0.15s;
+  }
+  .sidebar-view-all:hover {
+    color: #66c0f4;
+  }
+  a.sidebar-entry {
+    text-decoration: none;
+    transition: background-color 0.15s;
+  }
+  a.sidebar-entry:hover {
+    background-color: rgba(0, 170, 255, 0.04);
+  }
 </style>

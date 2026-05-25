@@ -1,7 +1,8 @@
 ---
 import { Image } from 'astro:assets'
 const base = import.meta.env.BASE_URL;
-const { project } = Astro.props;
+const { project, liveVersion } = Astro.props;
+const displayVersion: string = liveVersion ?? project.data.version ?? '1.0.0';
 const { dateOfCreation } = project.data;
 const slug = project.id.replace(/\.md$/, '');
 
@@ -28,7 +29,6 @@ const dateString = `${formattedDate.split(' ')[0]} ${day}, ${dateOfCreation.getF
     class="group block bg-steam-gray/50 hover:bg-steam-gray transition-all duration-300 rounded">
     <div class="relative group-hover:scale-105 backdrop-blur rounded border border-white/30 border-t-steam-matrix/45 border-l-white/30 transition-transform duration-300 drop-shadow-2xl aspect-video">
         <span>
-            <label class:list={[project.data.supported ? 'unsupported-title-hidden' : 'unsupported-title-visible', 'absolute']}>UNSUPPORTED</label>
             <Image 
             src={project.data.thumbnail} 
             alt={project.data.title} 
@@ -36,23 +36,31 @@ const dateString = `${formattedDate.split(' ')[0]} ${day}, ${dateOfCreation.getF
             /> 
         </span>
 
-        <div class="p-4 border-b-2 border-transparent group-hover:border-steam-blue bg-linear-to-b from-steam-dark to-steam-dark2 overflow-hidden rounded-b">
+        <div class="p-4 border-b-2 border-transparent group-hover:border-steam-blue bg-linear-to-b from-steam-dark to-steam-dark2 overflow-hidden rounded-b flex flex-col gap-1.5">
             <h3 class="text-white truncate font-bold font-mono text-lg uppercase tracking-tight">{project.data.title}</h3>
-            <div class="grid grid-cols-2, grid-rows-2 mt-2">
-              <span class="col-span-2 flex gap-2">
+            <span class="flex flex-wrap gap-1.5">
                 {
                     project.data.tags
-                        .sort((a : string, b : string) => a.localeCompare(b)) // 1. Alphabetical sort
-                        .slice(0, 4)                        // 2. Take only the first 4
-                        .map((tag: string) => (             // 3. Map the result
-                        <span class="text-[10px] truncate h-5 overflow-hidden mt-auto mb-auto bg-black/40 px-2 py-0.5 text-steam-accent">
+                        .sort((a : string, b : string) => a.localeCompare(b))
+                        .slice(0, 4)
+                        .map((tag: string) => (
+                        <span class="text-[10px] truncate h-5 overflow-hidden bg-black/40 px-2 py-0.5 text-steam-accent">
                             {tag}
                         </span>
                     ))
                 }
-              </span>
-            </div>  
-            <span class="text-slate-500 ml-auto mt-auto mb-auto">{dateString}</span>
+            </span>
+            <p class="text-slate-400/70 text-xs leading-snug line-clamp-2 mt-0.5">{project.data.description}</p>
+            <div class="flex items-center justify-between mt-auto pt-1">
+                <span class="text-slate-500 text-xs">{dateString}</span>
+                <!-- <label class:list={[project.data.supported ? 'archived-title-hidden' : 'archived-title-visible', 'absolute']}>ARCHIVED</label> -->
+                <span
+                    class="font-mono text-[10px] font-bold px-1.5 py-0.5 bg-steam-blue/10 border border-steam-blue/25 text-steam-blue/70"
+                    data-version-id={project.id}
+                >
+                    {displayVersion}
+                </span>
+            </div>
         </div> 
 
         <div class="absolute inset-0 shadow-[inset_0_0_30px_rgba(102,192,244,0)] group-hover:shadow-[inset_0_0_30px_rgba(102,192,244,0.2)] transition-shadow"></div>
@@ -66,11 +74,11 @@ const dateString = `${formattedDate.split(' ')[0]} ${day}, ${dateOfCreation.getF
         perspective: 1000px;
     }
 
-    .unsupported-title-visible{
-        @apply font-mono font-extrabold shadow-2xs opacity-70 text-steam-dark bg-steam-accent uppercase absolute rounded-2xl mt-2 ml-2 p-2;
+    .archived-title-visible{
+        @apply font-mono font-extrabold shadow-2xs opacity-70 text-steam-dark bg-yellow-300/80 border border-amber-200/90 uppercase absolute rounded  mt-2 ml-2 p-2;
     }
 
-    .unsupported-title-hidden{
+    .archived-title-hidden{
         visibility: hidden;
     }
 

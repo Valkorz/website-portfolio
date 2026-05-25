@@ -3,7 +3,7 @@ projectName: "armedcrusaderun"
 githubPage: ""
 supported: false
 title: "Armed Crusader (Unity)"
-description: "The first prototype for Armed Crusader (unsupported). A 2D roguelite with RPG elements developed using Unity."
+description: "The first prototype for Armed Crusader (archived). A 2D roguelite with RPG elements developed using Unity."
 version: "0.0.1"
 author: "Valkorz (Vittorio Pivarci)"
 contributors: []
