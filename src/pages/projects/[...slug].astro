@@ -4,6 +4,18 @@ import Layout from '../../layouts/Layout.astro';
 import ImageCarousel from '../../components/ImageCarousel.astro';
 import githubLogo from '../../../public/images/icons/github.png';
 import { Image } from 'astro:assets';
+import { readFileSync } from 'node:fs';
+
+const _collaboratorsRaw: Record<string, string> = JSON.parse(
+  readFileSync(new URL('../../../public/collaborators.json', import.meta.url), 'utf-8')
+);
+// Build a lowercase-keyed map for case-insensitive lookups
+const collaboratorUrls: Record<string, string> = Object.fromEntries(
+  Object.entries(_collaboratorsRaw).map(([k, v]) => [k.toLowerCase(), v])
+);
+function collaboratorUrl(name: string): string | null {
+  return collaboratorUrls[name.toLowerCase()] ?? null;
+}
 
 export async function getStaticPaths() {
   const entries = await getCollection('projects');
@@ -248,13 +260,16 @@ const sidebarCacheData = {
           )}
         </>)}
       </div>
-           <!-- Author / contributors -->
+      <!-- Author / contributors -->
       <p class="mt-4 text-slate-400">Author: {entry.data.author}</p>
-      <p class="text-slate-400 gap-2">
+      <p class="text-slate-400 gap-2" id="contributors-block">
         <label style={`${(entry.data.contributors ?? []).length > 0 ? 'visibility: visible;' : 'visibility: hidden;'}`}>Contributors:</label>
-        {(entry.data.contributors ?? []).map((contributor: string) => (
-          <span class="mr-1">{contributor},</span>
-        ))}
+        {(entry.data.contributors ?? []).map((contributor: string) => {
+          const url = collaboratorUrl(contributor);
+          return url
+            ? <a href={url} target="_blank" rel="noopener noreferrer" class="mr-1 text-steam-blue hover:underline">{contributor}</a>
+            : <span class="mr-1">{contributor}</span>;
+        })}
       </p>
       <!-- Date / repo button / version -->
       <span class="mt-auto grid grid-rows-2 grid-cols-2">
@@ -282,11 +297,11 @@ const sidebarCacheData = {
       <Content />
     </article>
 
-    <aside id="github-sidebar" class={`panel-glow rounded bg-steam-dark2/90 border border-white/30 border-t-steam-matrix/45 border-l-white/45 opacity-90 flex flex-col h-fit sticky top-4 ${showSidebar ? '' : 'hidden'}`}>
+    <aside id="github-sidebar" class={`panel-glow rounded bg-steam-dark2/90 border border-white/30 border-t-steam-matrix/45 border-l-white/45 opacity-90 flex flex-col h-fit lg:sticky lg:top-4 lg:col-start-3 lg:row-start-1 ${showSidebar ? '' : 'hidden'}`}>
 
         {/* ── RELEASES ── */}
         {hasReleases && (
-          <div>
+          <div id="sidebar-releases-section">
             <div class="border-b border-steam-matrix/30 px-4 py-3 flex items-center justify-between">
               <h2 class="sidebar-section-title">Releases</h2>
               <a href={`${entry.data.githubPage}/releases`} target="_blank" rel="noopener noreferrer" class="sidebar-view-all">
@@ -331,6 +346,8 @@ const sidebarCacheData = {
           </div>
         )}
 
+        <div id="sidebar-issues-commits">
+        <div class={`grid grid-cols-1 lg:block ${hasIssues && hasCommits ? 'sm:grid-cols-2' : ''}`}>
         {/* ── OPEN ISSUES ── */}
         {hasIssues && (
           <div class={hasReleases ? 'border-t border-steam-matrix/20' : ''}>
@@ -369,7 +386,7 @@ const sidebarCacheData = {
 
         {/* ── RECENT COMMITS ── */}
         {hasCommits && (
-          <div class={hasReleases || hasIssues ? 'border-t border-steam-matrix/20' : ''}>
+          <div class={`${hasReleases ? 'border-t border-steam-matrix/20' : (hasIssues ? 'lg:border-t border-steam-matrix/20' : '')} ${hasIssues ? 'sm:border-l sm:border-steam-matrix/20 lg:border-l-0' : ''}`}>
             <div class="border-b border-steam-matrix/30 px-4 py-3 flex items-center justify-between">
               <h2 class="sidebar-section-title">Recent Commits</h2>
               <a href={`${entry.data.githubPage}/commits`} target="_blank" rel="noopener noreferrer" class="sidebar-view-all">
@@ -398,13 +415,76 @@ const sidebarCacheData = {
             </div>
           </div>
         )}
+        </div>{/* end inner grid */}
+        </div>{/* end sidebar-issues-commits */}
 
     </aside>
+
+    {/* ── BELOW-ARTICLE: issues + commits as inline cards (shown when article is shorter than sidebar) ── */}
+    {(hasIssues || hasCommits) && (
+      <div id="below-article" class="hidden lg:col-span-2 lg:col-start-1 lg:row-start-2">
+        <div class={`grid gap-4 ${hasIssues && hasCommits ? 'md:grid-cols-2' : 'grid-cols-1'}`}>
+        {hasIssues && (
+          <div class="panel-glow rounded bg-steam-dark2/90 border border-white/30 border-t-steam-matrix/45 border-l-white/45 opacity-90 flex flex-col">
+            <div class="border-b border-steam-matrix/30 px-4 py-3 flex items-center justify-between">
+              <h2 class="sidebar-section-title">Open Issues</h2>
+              <a href={`${entry.data.githubPage}/issues`} target="_blank" rel="noopener noreferrer" class="sidebar-view-all">View all →</a>
+            </div>
+            <div class="flex flex-col divide-y divide-steam-accent/10">
+              {issues.map((issue: any) => (
+                <a href={issue.html_url} target="_blank" rel="noopener noreferrer" class="sidebar-entry px-4 py-3 flex flex-col gap-1">
+                  <div class="flex items-center gap-1.5">
+                    <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor" class="shrink-0 text-steam-btn2/70">
+                      <path d="M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Z"/>
+                      <path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0ZM1.5 8a6.5 6.5 0 1 0 13 0 6.5 6.5 0 0 0-13 0Z"/>
+                    </svg>
+                    <span class="text-steam-accent/40 text-[11px] font-mono">#{issue.number}</span>
+                  </div>
+                  <p class="text-steam-accent text-xs font-mono leading-snug m-0 line-clamp-2">{issue.title}</p>
+                  {issue.labels?.length > 0 && (
+                    <div class="flex flex-wrap gap-1 mt-0.5">
+                      {issue.labels.slice(0, 3).map((label: any) => (
+                        <span class="text-[10px] font-mono px-1.5 py-0 bg-steam-accent/10 border border-steam-accent/20 text-steam-accent/60">{label.name}</span>
+                      ))}
+                    </div>
+                  )}
+                  <p class="text-steam-accent/30 text-[11px] font-mono m-0">{shortDate(issue.created_at)}</p>
+                </a>
+              ))}
+            </div>
+          </div>
+        )}
+        {hasCommits && (
+          <div class="panel-glow rounded bg-steam-dark2/90 border border-white/30 border-t-steam-matrix/45 border-l-white/45 opacity-90 flex flex-col">
+            <div class="border-b border-steam-matrix/30 px-4 py-3 flex items-center justify-between">
+              <h2 class="sidebar-section-title">Recent Commits</h2>
+              <a href={`${entry.data.githubPage}/commits`} target="_blank" rel="noopener noreferrer" class="sidebar-view-all">View all →</a>
+            </div>
+            <div class="flex flex-col divide-y divide-steam-accent/10">
+              {commits.map((c: any) => (
+                <a href={c.html_url} target="_blank" rel="noopener noreferrer" class="sidebar-entry px-4 py-3 flex flex-col gap-1">
+                  <div class="flex items-center gap-2">
+                    <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor" class="shrink-0 text-steam-matrix/60">
+                      <path d="M11.93 8.5a4.002 4.002 0 0 1-7.86 0H.75a.75.75 0 0 1 0-1.5h3.32a4.002 4.002 0 0 1 7.86 0h3.32a.75.75 0 0 1 0 1.5Zm-1.43-.75a2.5 2.5 0 1 0-5 0 2.5 2.5 0 0 0 5 0Z"/>
+                    </svg>
+                    <span class="font-mono text-[11px] text-steam-matrix/70 bg-steam-matrix/5 border border-steam-matrix/20 px-1.5 py-0">{c.sha.slice(0, 7)}</span>
+                  </div>
+                  <p class="text-steam-accent text-xs font-mono leading-snug m-0 line-clamp-2">{firstLine(c.commit.message)}</p>
+                  <p class="text-steam-accent/30 text-[11px] font-mono m-0">{c.commit.author.name} · {shortDate(c.commit.author.date)}</p>
+                </a>
+              ))}
+            </div>
+          </div>
+        )}
+        </div>{/* end inner grid */}
+      </div>
+    )}
   </div>
 </Layout>
 
 <!-- Sidebar data for client-side localStorage caching (mirrors ActivityCarousel pattern) -->
 <script type="application/json" id="gh-sidebar-data" is:inline set:html={JSON.stringify(sidebarCacheData)} />
+<script type="application/json" id="markdown-data" is:inline set:html={JSON.stringify(entry.data)}/>
 
 <script>
   const CACHE_KEY = `gh-sidebar:${window.location.pathname}`;
@@ -456,6 +536,26 @@ const sidebarCacheData = {
       }
     } catch {}
   }
+
+  function checkLayout() {
+    if (window.innerWidth < 1024) return;
+
+    const article = document.getElementById('markdown-article') as HTMLElement | null;
+    const sidebar = document.getElementById('github-sidebar') as HTMLElement | null;
+    const belowArticle = document.getElementById('below-article') as HTMLElement | null;
+    const sidebarIssuesCommits = document.getElementById('sidebar-issues-commits') as HTMLElement | null;
+    const sidebarReleasesSection = document.getElementById('sidebar-releases-section') as HTMLElement | null;
+
+    if (!article || !sidebar || !belowArticle || !sidebarIssuesCommits || !sidebarReleasesSection) return;
+    if (!sidebarIssuesCommits.children.length) return;
+
+    if (article.offsetHeight < sidebar.offsetHeight) {
+      belowArticle.classList.remove('hidden');
+      sidebarIssuesCommits.classList.add('hidden');
+    }
+  }
+
+  window.addEventListener('load', checkLayout);
 
   function esc(s: any): string {
     return String(s ?? '')
