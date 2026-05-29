@@ -76,6 +76,14 @@ p, h1, h3, span, div {
 
 :root{
     --color-text-dark-transparent: rgba(23, 26, 33, 1);
+    color-scheme: dark;
+}
+
+html, body {
+    color-scheme: dark;
+    /* Prevent mobile browsers from applying auto dark-mode transforms */
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
 }
 
 @source "../**/*.{astro,html,js,jsx,md,mdx,ts,tsx}";

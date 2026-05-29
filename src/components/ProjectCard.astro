@@ -26,17 +26,18 @@ const dateString = `${formattedDate.split(' ')[0]} ${day}, ${dateOfCreation.getF
 ---
 
 <a  href={projectLink}
-    class="group block bg-steam-gray/50 hover:bg-steam-gray transition-all duration-300 rounded">
-    <div class="relative group-hover:scale-105 backdrop-blur rounded border border-white/30 border-t-steam-matrix/45 border-l-white/30 transition-transform duration-300 drop-shadow-2xl aspect-video">
-        <span>
-            <Image 
-            src={project.data.thumbnail} 
-            alt={project.data.title} 
-            class="object-cover w-full h-full bg-steam-dark2 rounded-t"
-            /> 
-        </span>
+    class="group flex flex-col h-full bg-steam-gray/50 hover:bg-steam-gray transition-all duration-300 rounded">
+    <div class="relative flex flex-col h-full group-hover:scale-105 backdrop-blur rounded border border-white/30 border-t-steam-matrix/45 border-l-white/30 transition-transform duration-300 drop-shadow-2xl">
 
-        <div class="p-4 border-b-2 border-transparent group-hover:border-steam-blue bg-linear-to-b from-steam-dark to-steam-dark2 overflow-hidden rounded-b flex flex-col gap-1.5">
+        <div class="aspect-video shrink-0 overflow-hidden rounded-t">
+            <Image
+            src={project.data.thumbnail}
+            alt={project.data.title}
+            class="object-cover w-full h-full bg-steam-dark2"
+            />
+        </div>
+
+        <div class="p-4 border-b-2 border-transparent group-hover:border-steam-blue bg-linear-to-b from-steam-dark to-steam-dark2 overflow-hidden rounded-b flex flex-col gap-1.5 flex-1">
             <h3 class="text-white truncate font-bold font-mono text-lg uppercase tracking-tight">{project.data.title}</h3>
             <span class="flex flex-wrap gap-1.5">
                 {
@@ -53,7 +54,6 @@ const dateString = `${formattedDate.split(' ')[0]} ${day}, ${dateOfCreation.getF
             <p class="text-slate-400/70 text-xs leading-snug line-clamp-2 mt-0.5">{project.data.description}</p>
             <div class="flex items-center justify-between mt-auto pt-1">
                 <span class="text-slate-500 text-xs">{dateString}</span>
-                <!-- <label class:list={[project.data.supported ? 'archived-title-hidden' : 'archived-title-visible', 'absolute']}>ARCHIVED</label> -->
                 <span
                     class="font-mono text-[10px] font-bold px-1.5 py-0.5 bg-steam-blue/10 border border-steam-blue/25 text-steam-blue/70"
                     data-version-id={project.id}
@@ -61,10 +61,10 @@ const dateString = `${formattedDate.split(' ')[0]} ${day}, ${dateOfCreation.getF
                     {displayVersion}
                 </span>
             </div>
-        </div> 
+        </div>
 
-        <div class="absolute inset-0 shadow-[inset_0_0_30px_rgba(102,192,244,0)] group-hover:shadow-[inset_0_0_30px_rgba(102,192,244,0.2)] transition-shadow"></div>
-        <div class="pointer-events-none absolute inset-0 shadow-[0_10px_28px_-4px_rgba(0,0,0,0.2)] group-hover:shadow-[0_10px_28px_-4px_rgba(0,0,0,0.6)] transition-shadow"></div>
+        <div class="absolute inset-0 shadow-[inset_0_0_30px_rgba(102,192,244,0)] group-hover:shadow-[inset_0_0_30px_rgba(102,192,244,0.2)] transition-shadow pointer-events-none rounded"></div>
+        <div class="pointer-events-none absolute inset-0 shadow-[0_10px_28px_-4px_rgba(0,0,0,0.2)] group-hover:shadow-[0_10px_28px_-4px_rgba(0,0,0,0.6)] transition-shadow rounded"></div>
     </div>
 </a>
 
@@ -81,8 +81,4 @@ const dateString = `${formattedDate.split(' ')[0]} ${day}, ${dateOfCreation.getF
     .archived-title-hidden{
         visibility: hidden;
     }
-
-    /* .hover-effects{
-        @apply pointer-events-none absolute inset-0 shadow-[0_10px_28px_-4px_rgba(0,0,0,0.2)] group-hover:shadow-[0_10px_28px_-4px_rgba(0,0,0,0.6)] transition-shadow group-hover:border-steam-blue
-    } */
 </style>

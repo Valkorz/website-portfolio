@@ -208,7 +208,7 @@ const sidebarCacheData = {
 
 <Layout title={entry.data.title} currentTab="library">
   <!-- Header panel -->
-  <div class="grid grid-cols-1 min-[940px]:grid-cols-2 min-[940px]:grid-rows-1 h-fit gap-2 ml-[10%] mr-[10%] mt-5 bg-steam-dark2/90 panel-glow border border-white/30 border-t-steam-matrix/45 border-l-white/45 opacity-90 z-2 p-2 rounded">
+  <div class="grid grid-cols-1 min-[940px]:grid-cols-2 min-[940px]:grid-rows-1 h-fit gap-2 mx-4 sm:mx-[10%] mt-5 bg-steam-dark2/90 panel-glow border border-white/30 border-t-steam-matrix/45 border-l-white/45 opacity-90 z-2 p-2 rounded">
     <div class="overflow-hidden bg-steam-dark border border-white/30 border-t-steam-matrix/50 rounded shadow-2xl h-fit">
       <ImageCarousel screenshots={entry.data.screenshots} />
     </div>
@@ -272,27 +272,27 @@ const sidebarCacheData = {
         })}
       </p>
       <!-- Date / repo button / version -->
-      <span class="mt-auto grid grid-rows-2 grid-cols-2">
-        <p class="text-slate-400 col-span-2 mb-2 content-end">Created on {dateString}</p>
-        <span class="mr-auto mb-2 flex h-fit w-full">
-          <span title={isRepoAccessible ? 'Navigate to github.com' : 'Repository not found or unavailable.'}>
+      <div class="mt-auto flex flex-col gap-2 pt-2">
+        <p class="text-slate-400">Created on {dateString}</p>
+        <div class="flex flex-row flex-wrap items-center gap-3">
+          <span title={isRepoAccessible ? 'Navigate to github.com' : 'Repository not found or unavailable.'} class="shrink-0">
             <a
               class={isRepoAccessible ? 'navigate-repo-btn-enabled link-enabled' : 'navigate-repo-btn-disabled link-disabled'}
               href={entry.data.githubPage}
             >
               <Image width={32} height={32} src={githubLogo} alt="Go to repository" />
-              <p class="font-mono font-bold text-white ml-2 mt-auto mb-auto">GO TO REPOSITORY</p>
+              <p class="font-mono font-bold text-white ml-2 whitespace-nowrap">GO TO REPOSITORY</p>
             </a>
           </span>
-        </span>
-        <p id="project-version" class="ml-auto mr-2 mt-auto text-white font-mono font-bold text-2xl">{displayVersion}</p>
-      </span>
+          <p id="project-version" class="ml-auto text-white font-mono font-bold text-2xl shrink-0">{displayVersion}</p>
+        </div>
+      </div>
     </div>
   </div>
 
   <!-- Bottom section: markdown + optional sidebar -->
   <!-- The grid and col-span are managed here at build time, and by JS when restoring from cache -->
-  <div id="bottom-section" class={`ml-[10%] mr-[10%] mt-6 mb-8 grid grid-cols-1 lg:grid-cols-3 gap-4 items-start`}>
+  <div id="bottom-section" class={`mx-4 sm:mx-[10%] mt-6 mb-8 grid grid-cols-1 lg:grid-cols-3 gap-4 items-start`}>
     <article id="markdown-article" class={`panel-glow prose prose-invert rounded max-w-none bg-steam-dark2/90 p-4 border border-white/30 border-t-steam-matrix/45 border-l-white/45 opacity-90 markdown-content ${showSidebar ? 'lg:col-span-2' : 'lg:col-span-3'}`}>
       <Content />
     </article>
