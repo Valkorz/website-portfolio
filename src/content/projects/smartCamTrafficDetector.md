@@ -7,7 +7,7 @@ description: "A Computer Vision Artificial Intelligence model trained to detect 
 version: "1.0.2"
 author: "Valkorz (Vittorio Pivarci)"
 contributors: ["GuiMLima"]
-tags: ["Open-Source", "Python", "YOLO", "Computer Vision"]
+tags: ["Open-Source", "Python", "YOLO", "Computer Vision", "Artificial Intelligence"]
 dateOfCreation: 2025-07-01
 thumbnail: "./images/trafficDetector1.png"
 screenshots:

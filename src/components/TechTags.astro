@@ -1,10 +1,13 @@
 ---
 interface Props { tags: string[]; }
 const { tags } = Astro.props;
+import HyperlinkWrapper from './HyperlinkWrapper.astro';
 ---
 
 {tags.map(tech => (
-  <span class="hover:bg-steam-blue/20 hover:cursor-pointer px-2 py-1 text-[10px] font-bold bg-white/5 border border-white/10 text-steam-blue rounded uppercase">
-    {tech}
-  </span>
+  <HyperlinkWrapper query={tech}>
+    <span class="hover:bg-steam-blue/20 hover:cursor-pointer px-2 py-1 text-[10px] font-bold bg-white/5 border border-white/10 text-steam-blue rounded uppercase">
+      {tech}
+    </span>
+  </HyperlinkWrapper>
 ))}

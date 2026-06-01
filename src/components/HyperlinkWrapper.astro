@@ -1,0 +1,16 @@
+---
+const base = import.meta.env.BASE_URL;
+const cleanBase = base.endsWith('/') ? base : `${base}/`;
+
+interface Props{
+    query: string;
+}
+
+const { query } = Astro.props;
+
+const searchQuery = `${cleanBase}library?q=${encodeURIComponent(query)}`;
+---
+
+<a href={searchQuery} class="contents">
+    <slot />
+</a>

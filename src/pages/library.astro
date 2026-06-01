@@ -82,6 +82,9 @@ allTagsSorted.forEach(t => {
 	projectsByTag.push({ key: t, value: projects });
 });
 
+// const query = Astro.url.searchParams.get('q'); 
+// console.log(`Parameters: ${Astro.url.searchParams.get('q')}`);
+
 ---
 
 <Layout title="library" currentTab="library">
@@ -187,6 +190,8 @@ allTagsSorted.forEach(t => {
 	const orderByTagCheck = document.querySelector('#orderByTag') as HTMLInputElement;
 	const showUnsupported = document.querySelector('#showUnsupported') as HTMLInputElement;
 
+	const query = new URLSearchParams(window.location.search).get('q');
+
 	// Project lists
 	const orderedList = document.querySelector('#ordered-project-list') as HTMLInputElement;
 	const unorderedList = document.querySelector('#unordered-project-list') as HTMLInputElement;
@@ -221,6 +226,10 @@ allTagsSorted.forEach(t => {
 	}
 
 	orderByTagCheck?.addEventListener('change', updateListDisplay);
+	
+	if(query){
+		input.value = query
+	}
 	
 	updateListDisplay();
 	updateShowInput();
