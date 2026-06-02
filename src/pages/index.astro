@@ -12,7 +12,6 @@ import MatrixBanner from '../components/MatrixBanner.astro';
 import Footer from '../components/Footer.astro';
 import AnimatedBackground from '../components/AnimatedBackground.astro';
 import { getCollection } from 'astro:content';
-import { json } from 'node:stream/consumers';
 
 const allProjects = await getCollection('projects');
 const projectsWithActivity = await Promise.all(
@@ -85,7 +84,7 @@ const domains = [
 ---
 
 <LayoutSimple>
-  <MatrixBanner />
+  <MatrixBanner projectCount={allProjects.length} />
   
 	<body>
     <ActivityCarousel projects={activeProjects} />
@@ -95,8 +94,8 @@ const domains = [
     <h1 class="font-mono text-steam-accent text-3xl font-bold mb-5 px-4 sm:px-0">TECH STACK</h1>
     <div class="flex flex-col min-[680px]:grid min-[680px]:grid-cols-2 min-[680px]:grid-rows-2 min-[1450px]:flex min-[1450px]:flex-row gap-6 h-fit px-4 sm:px-0">
       {domains.map(domain => (
-        <div class="relative min-h-65 w-full max-w-85 rounded border bg-steam-dark2/70 lg:bg-steam-dark2/10 border-white/30 border-t-steam-matrix/45 border-l-white/45 hover:scale-102 backdrop-blur shadow-2xl">
-          <div class="h-full w-full hover:shadow-inner shadow-steam-matrix/50 pt-2 pb-24 transition-all duration-100">
+        <div class="relative min-h-65 w-full max-w-85 rounded border bg-white/5 border-white/20 border-t-steam-matrix/50 border-l-white/30 hover:scale-[1.02] backdrop-blur shadow-[0_8px_32px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.07)] hover:shadow-[0_8px_32px_rgba(0,170,255,0.08),inset_0_1px_0_rgba(255,255,255,0.12)] transition-all duration-300">
+          <div class="h-full w-full pt-2 pb-24">
             <h1 class="font-white font-extrabold text-2xl text-center uppercase drop-shadow-[0_0_10px_rgba(0,170,255,0.5)]">{domain.title}</h1>
             <p class="text-slate-400 text-center mt-2 ml-2 font-mono drop-shadow-[0_0_10px_rgba(0,170,255,0.5)]">{domain.desc}</p>
           </div>

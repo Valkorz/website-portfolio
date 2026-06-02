@@ -4,31 +4,25 @@ const { activeTab = 'main', headerEnabled = true} = Astro.props;
 console.log(`class: ${headerEnabled? 'header-visible' : 'header-hidden'}`);
 ---
 
-<div class="shadow-2xl">
-    <header class:list={[headerEnabled? 'header-visible' : 'header-hidden', "bg-steam-dark w-full z-10 relative p-3"]}>
+<div class="backdrop-blur bg-white/3 border-b border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.4),inset_0_1px_0_rgba(255,255,255,0.05)]">
+    <header class:list={[headerEnabled? 'header-visible' : 'header-hidden', "w-full z-10 relative p-3"]}>
         <h1 class="text-steam-accent text-3xl mr-3 text-right font-black tracking-tighter uppercase z-0">
          <span class="text-steam-blue font-mono font-extrabold">{"</>"}</span> Vittorio Pivarci
         </h1>
-        <canvas id="matrix-canvas-header" class="absolute top-0 left-0 w-full h-full z-1 opacity-15"></canvas>
+        <canvas id="matrix-canvas-header" class="absolute top-0 left-0 w-full h-full z-1 opacity-10"></canvas>
     </header>
-    <nav class="flex gap-1 bg-steam-dark2/90 opacity-90 nav-header z-3 relative -mt-2">
+    <nav class="flex gap-1 border-t border-white/5 z-3 relative">
       {['main', 'library', 'about'].map((tab) => (
         <a  href={tab === 'main' ? '/website-portfolio' : `/website-portfolio/${tab}`}
             class:list={[
-            "px-6 py-6 uppercase text-sm font-bold drop-shadow-2xl transition-all duration-200 transform hover:translate-y-2 active:scale-95 rounded",
-            activeTab === tab 
-              ? "bg-steam-dark text-white border-b-2 border-steam-blue" 
-              : "text-steam-accent hover:text-white hover:bg-steam-dark2 hover:border hover:border-l-0 hover:border-r-0 hover:border-t-0 hover:border-b-steam-accent"
-            // "nav-button"
+            "px-6 py-4 uppercase text-sm font-bold font-mono tracking-widest transition-all duration-200 active:scale-95",
+            activeTab === tab
+              ? "bg-white/8 text-white border-b-2 border-steam-blue"
+              : "text-steam-accent/70 hover:text-white hover:bg-white/5 border-b-2 border-transparent"
             ]}>
             {tab}
         </a>
       ))}
-<!-- 
-    <div class:list={[searchEnabled ? 'searchbar-visible' : 'searchbar-hidden', 'bg-steam-accent ml-auto w-full']} >
-        test
-    </div> -->
-
     </nav>
 </div>
 

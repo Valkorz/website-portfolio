@@ -2,47 +2,80 @@
 const base = import.meta.env.BASE_URL;
 const libraryUrl = `${base}/library`;
 const aboutUrl = `${base}/about`;
+
+interface Props {
+    projectCount?: number;
+}
+const { projectCount = 0 } = Astro.props;
 ---
 
-<div class="relative w-full h-full bg-[#0A0A12] shadow-2xl p-5">
+<div class="relative w-full bg-[#0A0A12] shadow-2xl px-6 py-10 md:py-16">
   <canvas id="matrix-canvas" class="absolute top-0 left-0 w-full h-full z-0 opacity-35"></canvas>
-  
-  <div class="inset-0 flex items-center justify-start z-10">
-    <div id="header-content" class="flex flex-col justify-center min-[1155px]:grid min-[1155px]:grid-cols-2 w-full gap-8">
-        <span class="h-auto block ml-auto mr-auto min-[1155px]:m-0">
-            <h1 class="text-4xl md:text-5xl font-black text-center min-[1155px]:text-start text-white uppercase tracking-widest drop-shadow-[0_0_10px_rgba(0,170,255,0.8)]">
-                <p>Vittorio Pivarci</p>
-                <p class="text-3xl text-slate-400 font-semibold">Software Developer</p>
-            </h1>
-        </span>
-        <span class="grid grid-rows-2 gap-5 justify-center items-center min-[1155px]:gap-0 min-[1155px]:flex min-[1155px]:flex-row ">
-            <a href={aboutUrl} class="bg-slate-500/10 backdrop-blur max-w-200 h-full ml-auto mr-auto rounded border border-white/30 border-t-steam-matrix/45 p-6 hover:scale-102 z-3 cursor-pointer hover:shadow-inner shadow-steam-matrix/50 transition-all duration-300">
-                <h1 class="text-2xl w-full font-black text-white uppercase tracking-widest drop-shadow-[0_0_10px_rgba(0,170,255,0.8)]">
-                    ABOUT ME
-                </h1>   
-                <p class="text-slate-400 font-semibold truncate tracking-widest text-balance ml-1 drop-shadow-[0_0_10px_rgba(0,170,255,0.8)]">
-                    Mechatronics Technician graduate and in-progress bachelor degree of Computer Engineering at Facens, I love computers, programming and math! 
-                </p>
-                <p class="text-steam-blue uppercase font-semibold tracking-widest text-right drop-shadow-[0_0_10px_rgba(0,170,255,0.8)]">Learn more →</p>
-            </a>
 
-            <a href={libraryUrl} class="bg-slate-500/15 max-w-200 h-full ml-auto mr-auto min-[1155px]:ml-5 backdrop-blur rounded border border-white/30 border-t-steam-matrix/45 p-6 hover:scale-102 z-3 cursor-pointer hover:shadow-inner shadow-steam-matrix/50 transition-all duration-300">
-                <h1 class="text-2xl w-full font-black text-white uppercase tracking-widest drop-shadow-[0_0_10px_rgba(0,170,255,0.8)]">
-                    MY WORK
-                </h1>
-                <p class="text-slate-400 font-semibold tracking-widest text-balance ml-1 drop-shadow-[0_0_10px_rgba(0,170,255,0.8)]">
-                    I have experience in a plethora of projects, ranging from software solutions to hardware implementations. I have worked with a wide variety of tech stacks from frontend to backend. 
-                </p>
-                <p class="text-steam-blue uppercase font-semibold tracking-widest text-right drop-shadow-[0_0_10px_rgba(0,170,255,0.8)]">Browse projects →</p>
-            </a>
-        </span>
+  <div class="relative z-10">
+    <div id="header-content" class="flex flex-col min-[1155px]:flex-row w-full gap-8 items-center">
+
+      <div class="min-[1155px]:w-2/5 text-center min-[1155px]:text-left shrink-0">
+        <h1 class="text-5xl md:text-6xl font-black text-white uppercase leading-tight tracking-widest drop-shadow-[0_0_14px_rgba(0,170,255,0.8)]">
+          Vittorio<br>Pivarci
+        </h1>
+        <p class="text-base text-slate-400 font-mono mt-3 tracking-[0.25em] uppercase">
+          Software Developer
+        </p>
+        <div class="flex gap-2 mt-4 justify-center min-[1155px]:justify-start flex-wrap">
+          <span class="text-[10px] font-mono px-2 py-0.5 border border-steam-matrix/40 text-steam-matrix/60 uppercase tracking-wider">Computer Engineering</span>
+          <span class="text-[10px] font-mono px-2 py-0.5 border border-steam-blue/40 text-steam-blue/60 uppercase tracking-wider">FACENS</span>
+          <span class="text-[10px] font-mono px-2 py-0.5 border border-white/15 text-white/35 uppercase tracking-wider">Brazil</span>
+        </div>
+      </div>
+
+      <div class="flex flex-col sm:flex-row gap-4 flex-1 w-full min-[1155px]:w-auto min-[1155px]:justify-end">
+
+        <!-- About Me -->
+        <a href={aboutUrl} class="flex-1 flex flex-col gap-2 bg-white/5 backdrop-blur rounded border border-white/20 border-t-steam-matrix/50 border-l-white/30 p-5 hover:scale-[1.02] cursor-pointer shadow-[0_8px_32px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.07)] hover:shadow-[0_8px_32px_rgba(0,170,255,0.08),inset_0_1px_0_rgba(255,255,255,0.12)] transition-all duration-300">
+          <span class="text-[9px] font-mono uppercase tracking-[0.25em] text-steam-matrix/50">Profile</span>
+          <h2 class="text-xl font-black text-white uppercase tracking-widest drop-shadow-[0_0_10px_rgba(0,170,255,0.8)]">About Me</h2>
+          <p class="text-slate-400 text-sm leading-relaxed">
+            Mechatronics Technician graduate pursuing a Computer Engineering degree at FACENS. Passionate about computers, mathematics, and building things that work.
+          </p>
+          <div class="flex gap-1.5 flex-wrap mt-1">
+            <span class="text-[9px] font-mono px-1.5 py-0.5 bg-steam-blue/10 border border-steam-blue/20 text-steam-blue/70 uppercase">5th Semester</span>
+            <span class="text-[9px] font-mono px-1.5 py-0.5 bg-white/5 border border-white/10 text-white/35 uppercase">São Paulo, BR</span>
+          </div>
+          <p class="text-steam-blue text-xs uppercase font-semibold tracking-widest text-right mt-auto pt-2 drop-shadow-[0_0_8px_rgba(0,170,255,0.6)]">Learn more →</p>
+        </a>
+
+        <!-- My Work -->
+        <a href={libraryUrl} class="flex-1 flex flex-col gap-2 bg-white/5 backdrop-blur rounded border border-white/20 border-t-steam-matrix/50 border-l-white/30 p-5 hover:scale-[1.02] cursor-pointer shadow-[0_8px_32px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.07)] hover:shadow-[0_8px_32px_rgba(0,170,255,0.08),inset_0_1px_0_rgba(255,255,255,0.12)] transition-all duration-300">
+          <span class="text-[9px] font-mono uppercase tracking-[0.25em] text-steam-matrix/50">Portfolio</span>
+          <h2 class="text-xl font-black text-white uppercase tracking-widest drop-shadow-[0_0_10px_rgba(0,170,255,0.8)]">My Work</h2>
+          <div class="flex gap-5 my-1">
+            <div>
+              <p class="text-2xl font-black text-steam-blue drop-shadow-[0_0_10px_rgba(102,192,244,0.5)]">{projectCount}</p>
+              <p class="text-[10px] font-mono text-slate-500 uppercase tracking-wider">Projects</p>
+            </div>
+            <!-- <div>
+              <p class="text-2xl font-black text-steam-blue drop-shadow-[0_0_10px_rgba(102,192,244,0.5)]">4</p>
+              <p class="text-[10px] font-mono text-slate-500 uppercase tracking-wider">Domains</p>
+            </div> -->
+            <div>
+              <p class="text-2xl font-black text-steam-blue drop-shadow-[0_0_10px_rgba(102,192,244,0.5)]">2+</p>
+              <p class="text-[10px] font-mono text-slate-500 uppercase tracking-wider">Years</p>
+            </div>
+          </div>
+          <p class="text-slate-400 text-sm leading-relaxed">
+            From embedded firmware and hardware prototypes to full-stack web apps and game development.
+          </p>
+          <p class="text-steam-blue text-xs uppercase font-semibold tracking-widest text-right mt-auto pt-2 drop-shadow-[0_0_8px_rgba(0,170,255,0.6)]">Browse projects →</p>
+        </a>
+
+      </div>
     </div>
   </div>
 </div>
 
 <script>
     const canvas = document.getElementById('matrix-canvas') as HTMLCanvasElement;
-    const headerContent = document.getElementById('header-content') as HTMLDivElement;
     const ctx = canvas.getContext('2d');
 
     let width = canvas.parentElement?.offsetWidth ?? 800;
@@ -60,7 +93,7 @@ const aboutUrl = `${base}/about`;
     }
 
     function draw(){
-        if(!ctx) return;     
+        if(!ctx) return;
         ctx.fillStyle = 'rgba(10,10,18,0.1)';
         ctx.fillRect(0,0,width,height);
 
@@ -69,22 +102,17 @@ const aboutUrl = `${base}/about`;
 
         for(let i = 0; i < drops.length; i++){
             const text = characters.charAt(Math.floor(Math.random() * characters.length));
-
             const x = i * fontSize;
             const y = drops[i] * fontSize;
-
             ctx.fillText(text, x, y);
 
             if(y > height && Math.random() > 0.975){
                 drops[i] = 0;
             }
-
             drops[i]++;
         }
 
-        setTimeout(() => {
-            requestAnimationFrame(draw);
-        }, 50);
+        setTimeout(() => { requestAnimationFrame(draw); }, 50);
     }
 
     window.addEventListener('resize', () => {
@@ -99,7 +127,7 @@ const aboutUrl = `${base}/about`;
                 drops[i] = Math.random() * -height;
             }
         }
-      });
+    });
 
-  draw();
+    draw();
 </script>

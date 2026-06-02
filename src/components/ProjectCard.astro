@@ -26,8 +26,8 @@ const dateString = `${formattedDate.split(' ')[0]} ${day}, ${dateOfCreation.getF
 ---
 
 <a  href={projectLink}
-    class="group flex flex-col h-full bg-steam-gray/50 hover:bg-steam-gray transition-all duration-300 rounded">
-    <div class="relative flex flex-col h-full group-hover:scale-105 backdrop-blur rounded border border-white/30 border-t-steam-matrix/45 border-l-white/30 transition-transform duration-300 drop-shadow-2xl">
+    class="group flex flex-col h-full transition-all duration-300 rounded">
+    <div class="relative flex flex-col h-full group-hover:scale-[1.02] backdrop-blur rounded border border-white/20 border-t-steam-matrix/50 border-l-white/30 transition-all duration-300 shadow-[0_8px_32px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.07)] group-hover:shadow-[0_8px_32px_rgba(0,170,255,0.1),inset_0_0_30px_rgba(102,192,244,0.08),inset_0_1px_0_rgba(255,255,255,0.12)]">
 
         <div class="aspect-video shrink-0 overflow-hidden rounded-t">
             <Image
@@ -63,8 +63,6 @@ const dateString = `${formattedDate.split(' ')[0]} ${day}, ${dateOfCreation.getF
             </div>
         </div>
 
-        <div class="absolute inset-0 shadow-[inset_0_0_30px_rgba(102,192,244,0)] group-hover:shadow-[inset_0_0_30px_rgba(102,192,244,0.2)] transition-shadow pointer-events-none rounded"></div>
-        <div class="pointer-events-none absolute inset-0 shadow-[0_10px_28px_-4px_rgba(0,0,0,0.2)] group-hover:shadow-[0_10px_28px_-4px_rgba(0,0,0,0.6)] transition-shadow rounded"></div>
     </div>
 </a>
 
