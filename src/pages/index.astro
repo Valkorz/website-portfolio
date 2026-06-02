@@ -7,6 +7,7 @@ import LayoutSimple from '../layouts/LayoutSimple.astro';
 import { Image } from 'astro:assets'
 import { execSync } from 'node:child_process';
 import ActivityCarousel from '../components/ActivityCarousel.astro';
+import HyperlinkWrapper from '../components/HyperlinkWrapper.astro';
 import MatrixBanner from '../components/MatrixBanner.astro';
 import Footer from '../components/Footer.astro';
 import AnimatedBackground from '../components/AnimatedBackground.astro';
@@ -68,7 +69,7 @@ const domains = [
   {
     title: "Game Development",
     desc: "Team-based and solo game development implementing principles of clean code, teamwork and design patterns to ensure smooth and coherent gameplay logic.",
-    tags: ["C#", "Unity Engine", "Godot"],
+    tags: ["C#", "UnityEngine", "Godot"],
     icon: UnityLogo
   },
   {
@@ -103,7 +104,9 @@ const domains = [
             <Image src={domain.icon} alt="openCV" class="w-16 h-16"/>
             <div class="flex flex-row flex-wrap justify-end items-end ml-2">
             {domain.tags.map(tag => (
-              <div class="h-fit w-fit scale-80 p-2 border border-steam-matrix/30 text-sm rounded bg-steam-dark/5 font-mono text-steam-blue drop-shadow-[0_0_10px_rgba(0,170,255,0.5)]">{tag}</div>
+              <HyperlinkWrapper query={tag}>
+                <div class="h-fit w-fit scale-80 p-2 border border-steam-matrix/30 text-sm rounded bg-steam-dark/5 hover:bg-steam-blue/10 font-mono text-steam-blue drop-shadow-[0_0_10px_rgba(0,170,255,0.5)]">{tag}</div>
+              </HyperlinkWrapper>
             ))}
             </div>
           </span>

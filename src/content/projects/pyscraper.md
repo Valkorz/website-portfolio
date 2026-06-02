@@ -3,7 +3,7 @@ projectName: "pyscraper"
 githubPage: "https://github.com/Valkorz/eshopping-price-scraper"
 supported: false
 title: "eshopping price scraper"
-description: "A price scraper for eshopping websites"
+description: "An automated price aggregation tool that scrapes product listings from online storefronts, calculates a mean average price, and presents a structured price history to help users identify the best available offer."
 version: "1.0.1"
 author: "Valkorz (Vittorio Pivarci)"
 contributors: []
@@ -15,19 +15,16 @@ screenshots:
     - "./images/pyscraper2.png"
 ---
 
-# DISCLAIMER
-The current state of the project is non-functional due to recent changes in the Mercado Livre scraping policy.
-
+> **Disclaimer:** This project is currently non-functional due to recent changes in Mercado Livre's scraping policy.
 
 # INTRODUCTION
-PyScraper (eshopping-price-scraper) is a prototype project designed for scraping prices for products from online stores and other sources. Its main objective is to simplify the process of determining the price of a specific product, by utilizing an automated system to quickly search several store fronts and return a calculated mean average price while accounting for taxes, inflation and displaying a detailed and comprehensible price history, while aiding the user to select the best available offer.
 
+eshopping-price-scraper (PyScraper) is a prototype tool designed to automate the retrieval and comparison of product pricing from online storefronts. Its primary objective is to simplify cost estimation by querying multiple sources, calculating a mean average price adjusted for taxes and inflation, and presenting a structured price history — enabling users to quickly identify the most favorable available offer.
 
-# CURRENT STATE (as of 2024)
-The current state of the project is capable of scraping the Mercado Livre interface using the BeautifulSoup Python library. Mercado Livre is a popular Brazilian online storefront, chosen for this prototype as it freely allows scraping. I look forward to implementing ways to ethically obtain pricing data and further improve the scraping algorithm including support for different locations and currencies.
+# IMPLEMENTATION
 
+The prototype was implemented in Python using the BeautifulSoup library for HTML parsing and DOM traversal. The initial target storefront was Mercado Livre, a widely used Brazilian e-commerce platform selected for its permissive scraping policy at the time of development. The scraper navigates product listing pages, extracts relevant pricing data, and feeds it into a processing pipeline for normalization and aggregation.
 
-# PURPOSE
-The sole purpose of this project is to facilitate the gathering, analysis and comparison of pricing data. The ability to quickly price items is extremely useful to budget efficiently and ensure the best deals on products.
+# RELEVANCE
 
-**DEVELOPER NOTE: I've put the project on hold for a while. I want to get back to it eventually, though.**
+Price transparency remains a significant challenge in consumer e-commerce, particularly in markets with high price volatility or fragmented storefronts. Automated price aggregation tools reduce the manual effort required to compare offers across platforms, enabling more informed purchasing decisions and more efficient budget management.

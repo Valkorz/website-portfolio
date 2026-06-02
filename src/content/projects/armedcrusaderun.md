@@ -18,6 +18,6 @@ screenshots:
 
 # INTRODUCTION
 
-One of the first prototypes for Arsenalize, which eventually got discontinued in favor of switching the project over to Monogame (August 2023). There have not been any project files backed up, rendering the project unrecoverable. 
+Armed Crusader (Unity) is the earliest prototype in the development lineage that eventually became Arsenalize. Developed in Unity with C#, this initial version established the foundational concept of a 2D roguelite with RPG elements. The project was discontinued in favor of a MonoGame-based rebuild in August 2023. No project files were preserved from this version, rendering it unrecoverable from source.
 
-**This project is no longer maintaned**
+**This project is no longer maintained.**

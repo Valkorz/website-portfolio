@@ -104,7 +104,7 @@ allTagsSorted.forEach(t => {
 				<h2 class="font-mono text-slate-400 uppercase mt-auto mb-auto ml-2">Order by date</h2> -->
 				<!-- Show archived/cancelled -->
 				<input id="showUnsupported" type="checkbox" class="w-5 h-5 accent-steam-blue cursor-pointer rounded mt-auto mb-auto ml-10"/>
-				<h2 class="font-mono text-slate-400 uppercase mt-auto mb-auto ml-2">Show archived ({unsupportedProjects})</h2>
+				<h2 class="font-mono text-slate-400 uppercase mt-auto mb-auto ml-2">Show archived (<span id="archived-count">{unsupportedProjects}</span>)</h2>
 			</span>
 		</div>
 
@@ -189,6 +189,7 @@ allTagsSorted.forEach(t => {
 	const projectWrappers = document.querySelectorAll<HTMLElement>('.project-wrapper');
 	const orderByTagCheck = document.querySelector('#orderByTag') as HTMLInputElement;
 	const showUnsupported = document.querySelector('#showUnsupported') as HTMLInputElement;
+	const archivedCountEl = document.querySelector('#archived-count');
 
 	const query = new URLSearchParams(window.location.search).get('q');
 
@@ -198,17 +199,35 @@ allTagsSorted.forEach(t => {
 
 	const updateShowInput = () => {
 		const searchTerm = input.value.toLowerCase();
+		const seen = new Set<string>();
+		let archivedMatchCount = 0;
+
 		projectWrappers.forEach(wrapper => {
 			const title = wrapper.dataset.title || "";
 			const tags = wrapper.dataset.tags || "";
 			const show = showUnsupported?.checked;
-
 			const isSupported = wrapper.dataset.supported === 'true';
+			const matches = title.includes(searchTerm) || tags.includes(searchTerm);
 
-			if((title.includes(searchTerm) || tags.includes(searchTerm)) &&
-			(isSupported || show)){
+			if (matches && (isSupported || show)) {
 				wrapper.style.display = 'flex';
-			} else wrapper.style.display = 'none';
+			} else {
+				wrapper.style.display = 'none';
+			}
+
+			if (!isSupported && matches && !seen.has(title)) {
+				seen.add(title);
+				archivedMatchCount++;
+			}
+		});
+
+		if (archivedCountEl) archivedCountEl.textContent = String(archivedMatchCount);
+
+		// Hide tag group rows that have no visible projects
+		orderedList.querySelectorAll<HTMLElement>(':scope > div').forEach(group => {
+			const hasVisible = Array.from(group.querySelectorAll<HTMLElement>('.project-wrapper'))
+				.some(w => w.style.display !== 'none');
+			group.style.display = hasVisible ? 'block' : 'none';
 		});
 	}
 

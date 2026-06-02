@@ -20,6 +20,6 @@ screenshots:
 
 # INTRODUCTION
 
-One of the first prototypes for Arsenalize, which eventually got discontinued in favor of switching the project over to the Godot Engine. 
+Armed Crusader (MonoGame) is the second prototype in the development lineage that eventually became Arsenalize. Developed in C# using the MonoGame framework, this iteration built upon the foundational concept of a 2D roguelite with RPG elements established in the Unity prototype. Development was ultimately discontinued in favor of migrating the project to the Godot Engine, which offered a more integrated development environment and faster iteration cycles.
 
-**This project is no longer maintaned**
+**This project is no longer maintained.**

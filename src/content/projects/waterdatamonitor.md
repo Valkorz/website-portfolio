@@ -24,20 +24,16 @@ screenshots:
 
 # INTRODUCTION
 
-The main goal of the project was to develop a system capable of reading, storing and analyzing the change of water level in rivers, with the main goal to alert an incoming overflow.
+Water Data Monitor is a system developed and presented at FACENS across two UPX project cycles (2024). The project addresses the recurring flood risk near the Sorocaba river by implementing a sensor-based data collection system that monitors water level variations in real time, alerts residents upon detection of critical thresholds, and provides a data foundation for future predictive flood modeling.
 
-# RELEVANCY
+# IMPLEMENTATION
 
-This project becomes relevant when tackling the overflow issue present in the Sorocaba river that passes beside the Dom Aguirre avenue. This phenomenon is very common during heavy rainfall, which causes increased transit and road accidents. The ability to predict if an overflow is likely to occur can help drivers find different travel paths, avoiding the possibility of being stuck in traffic.
+The system employs a resistive water level sensor mounted at the monitoring site, interfaced with an Arduino board for real-time readings. Collected data — including water level, time of day, and seasonal context — is transmitted to a .NET Core API backed by an SQLite database managed through Entity Framework. A web-based dashboard built in HTML, CSS, and JavaScript renders the stored data in an accessible format for public and administrative use.
 
-# THE SOLUTION
+# RELEVANCE
 
-The proposed solution is to implement a sensor (resistive or buoyant) to measure water levels routinely. Collect all data that may be deemed necessary (month of year, time of day, rain density, temperature and water level variation throughout the day). The collected data is used to train an AI model to calculate the probability of an overflow, with weights based on data of past overflow occurences. The results would be stored on a dedicated database and freely viewable on an online dashboard. The occurence of an overflow would also prompt an alert to be broadcasted through SMS.
+The Sorocaba river, which runs alongside Dom Aguirre Avenue, is prone to overflow during periods of heavy rainfall — causing significant traffic disruption and increasing road accident risk. A reliable, low-cost monitoring and early-warning system for this type of recurring hazard has direct public safety implications, and the data infrastructure developed in this project lays the groundwork for a fully automated predictive alert network.
 
 # RESULTS
 
-The project has been partially achieved, such that: the structure is complete, the dashboard is designed and functional and the database stores the appropriate values. The AI model was not finished due to time constraints.
-
-# WHAT CAN BE IMPROVED
-
-To fully achieve the established goal and increase the efficiency of the project, the AI model needs to be finished and the resistive sensor needs to be replaced for a buyoancy sensor, due to space constrants (the measuring space of a resistive sensor is too small).
+The core system infrastructure — sensor integration, database storage, and dashboard visualization — was successfully implemented and demonstrated. The AI-based predictive model was not completed within the project timeline. Future iterations should replace the resistive sensor with a buoyancy-based alternative to accommodate wider measurement ranges, and complete the machine learning pipeline to enable automated overflow probability forecasting.

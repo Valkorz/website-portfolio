@@ -19,5 +19,12 @@ screenshots:
 
 # INTRODUCTION
 
-A web application for personal finance management in the Brazilian tax system, with a minimalist interface that aims to be approachable for newcomers seeking to improve their financial literacy, with comprehensible graphs and tooltips that explain technical jargons. Furthermore, this website also includes an AI assistant for tips and advice.
-Using a database created with Supabase, user data is stored and can be retrieved upon authentication. The data may also be used as context for a rag-based local language model.
+Renda Fácil is a personal finance web application developed as part of a Web Development course at FACENS. The platform targets users new to financial management, offering a minimalist interface designed to be approachable for newcomers seeking to improve their financial literacy. The application features comprehensible graphs, contextual tooltips for financial terminology, and an integrated AI assistant for personalized tips and guidance. User data is persisted through a Supabase backend and retrieved securely upon authentication.
+
+# IMPLEMENTATION
+
+The application is built with Vue.js, leveraging its component-based architecture for a modular and maintainable front-end. Supabase provides both database and authentication services, enabling secure user data storage and retrieval. The AI assistant is powered by a RAG-based local language model that uses the authenticated user's financial data as context to generate relevant, personalized responses.
+
+# RELEVANCE
+
+Financial literacy remains a critical gap for many individuals entering adulthood, particularly in markets with complex tax structures such as Brazil. By combining an accessible interface with AI-assisted guidance, Renda Fácil lowers the barrier to entry for personal finance management — demonstrating how modern web technologies and locally hosted AI models can be combined to deliver meaningful, privacy-conscious user experiences.

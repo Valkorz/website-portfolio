@@ -18,14 +18,14 @@ screenshots:
 
 # INTRODUCTION
 
-A Website created in HTML/CSS/Javascript as part of a Computer Engineering assignment (2nd semester, Facens). The goal being the development of a basic website that uses Javascript behavior, DOM structure and custom styles. The group chose to develop a menu page for a restaurant.
+Restaurant Menu Website is a web application developed in HTML, CSS, and JavaScript as part of a Computer Engineering assignment (2nd semester, FACENS). The project simulates an interactive digital menu for a restaurant, enabling users to browse available dishes, add items to an order, and review a calculated total prior to checkout.
 
-# RELEVANCY
+# IMPLEMENTATION
 
-As the world shifts away from analog and paper-based menus, the group found great relevancy in developing a web-based menu, as many restaurants are currently implementing online menus (accessed through a link or QR Code). 
+The application was built using vanilla HTML5, CSS3, and JavaScript, with a focus on DOM manipulation, dynamic content rendering, and event-driven interaction. No external frameworks were used, providing the team with a foundational understanding of core web technologies and client-side scripting.
 
-# RESULTS
+# RELEVANCE
 
-The project functioned as espected. The objective was to allow the user to inspect the menu, select dishes and calculate the final price. We planned to also implement a checkout page, a scrapped feature due to time constraints. The current form, however, provided the group a solid introduction to web development and the code is freely available for any beginners alike.
+As restaurants increasingly adopt digital menus — accessible via QR codes or direct links — this project reflects a genuinely applicable use case in the hospitality industry. It demonstrates that a functional and accessible menu experience can be delivered with lightweight, dependency-free web technologies, making it a useful reference for developers exploring front-end fundamentals.
 
-- **Note: The page is ONLY available on portuguese. No translations have been made.**
+> **Note:** The application is available in Portuguese only. A checkout page was planned but was not implemented due to time constraints.

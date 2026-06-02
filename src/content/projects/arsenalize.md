@@ -21,6 +21,14 @@ screenshots:
 
 # INTRODUCTION
 
-Arsenalize is a single-player roguelite with RPG elements. The main goal is to eliminate as many enemies as possible, clearing dungeons, while at the disposal of a wide array of unique weapons.
+Arsenalize is a single-player 2D roguelite with RPG elements, currently in active development. The core gameplay loop centers on clearing procedurally structured dungeons while wielding a diverse arsenal of weapons, each with distinct mechanics and playstyles. The game emphasizes build diversity, enemy variety, and replayability through randomized loot and encounter design.
 
-The game's development has been temporarily halted due to focus on other projects.
+> **Note:** Development has been temporarily paused due to concurrent commitments on other projects.
+
+# IMPLEMENTATION
+
+The project is developed using the Godot Engine with C# as the scripting language. Godot's scene system and node-based architecture provide a flexible foundation for managing game state, entity behavior, and UI — enabling iterative design and rapid prototyping of new weapon mechanics and enemy systems.
+
+# RELEVANCE
+
+Arsenalize serves as a long-term personal project for exploring game design principles, including combat feel, progression systems, and procedural content generation. It also serves as a practical application of software engineering concepts — such as state machines, component-based design, and event-driven architecture — within an interactive medium.

@@ -18,27 +18,25 @@ screenshots:
 
 # INTRODUCTION
 
-"Maia Jr" is a category of automated miniature vehicle made created by the MAIA team. It is well regarded for its simplicity and use as a learning tool for new developers and hardware enthusiasts alike. 
+Maia Jr. is a category of automated miniature vehicle developed by the MAIA team at FACENS. Designed as an accessible entry point into robotics and embedded systems, it serves as a hands-on learning platform for new developers and hardware enthusiasts. The implementation documented here features real-time obstacle avoidance driven by ultrasonic sensor feedback.
 
-# FEATURES
+# IMPLEMENTATION
 
-The vehicle contains the following:
-- (1x-3x) ultrassonic sensors;
-- (1x) Arduino board;
-- (2x) Motors;
-- (1x) 5-12V CC Motor controller (M298N module);
-- (1x) 5V mobile rechargeable battery;
-- (1x) Battery charger regulator port (USB-C);
-- (1x) Chassis
-- (2x) mountable rubber wheels
+The vehicle is built around an Arduino microcontroller and powered by two DC motors managed through an M298N motor controller module. Between one and three ultrasonic sensors are mounted on the chassis — a three-sensor configuration places one sensor facing forward and two angled approximately 30° to either side. The firmware continuously polls distance readings from each sensor: when an obstacle is detected within a defined threshold, the vehicle rotates until a clear forward path is found before resuming movement. Power is supplied by a 5V rechargeable mobile battery with a USB-C charging port.
 
-# FUNCTIONALITY
-
-The vehicle is designed to avoid obstacles in real time by using the distance variation between ultrassonic sensor readings. The positioning of these sensors is crucial. For 3 sensors, one must be placed forwards from the center, followed by two additional sensors on both sides, rotated about 30° clockwise and counter-clockwise. If an object approaches the sensors, the vehicle will rotate accordingly until it finds a clear view to continue moving forwards.
+**Hardware components:**
+- (1–3×) Ultrasonic sensors
+- (1×) Arduino board
+- (2×) DC motors
+- (1×) M298N motor controller module
+- (1×) 5V rechargeable mobile battery
+- (1×) USB-C battery charging regulator
+- (1×) Chassis with (2×) mountable rubber wheels
 
 # RELEVANCE
 
-The project is relevant for the following reasons:
-- Allows the student to learn the functionality of Arduino, applications and how it interfaces with external input.
-- Encourages problem-solving skills by developing a solid firmware capable of utilizing sensor feedback to the best extent.
-- Introduces the student to hardware and electronics.
+Maia Jr. is an effective educational platform for the following reasons:
+
+- Provides practical exposure to Arduino programming and external peripheral interfacing.
+- Develops problem-solving and firmware design skills through real-time sensor integration.
+- Introduces students to fundamental electronics concepts, motor control, and hardware assembly.

@@ -19,16 +19,16 @@ screenshots:
 
 # INTRODUCTION
 
-The main goal of the project was to develop a system capable of storing and refrigerating vaccines and other medical equipment at acceptable temperatures, powered by solar energy, when being carried to places where availability of electricity is uncertain. 
+The Sustainable Refrigeration Unit is a prototype developed and presented at FACENS as part of the UPX initiative (June 2025). The project goal was to develop a portable refrigeration unit capable of maintaining medical-grade temperatures for vaccines and hospital supplies, powered entirely by solar energy — targeting deployment in areas where access to conventional electricity is unreliable.
 
-# RELEVANCY
+# IMPLEMENTATION
 
-This project becomes relevant when tackling the need to provide vaccines and medication in areas where power is not readily available, especially in countries ridden with poverty.
+The prototype was constructed using a Peltier cooling module housed within a polypropylene compartment, chosen for its heat-blocking properties. A solar panel provides the necessary power supply, eliminating dependence on grid electricity. An Arduino board monitors and regulates the internal temperature to maintain the required thermal range.
 
-# THE SOLUTION
+# RELEVANCE
 
-The proposed solution is to implement a portable refrigerator using a pelcier system, inside a heat-blocking compartment (polypropylene), powered by a solar panel.
+Reliable cold-chain logistics are critical for vaccine efficacy, yet many underserved regions lack the infrastructure to maintain them. This project directly addresses that gap by proposing a self-contained, renewable-energy-powered solution that could feasibly be deployed in remote or resource-limited environments, particularly in regions where consistent cold storage is unavailable.
 
 # RESULTS
 
-Despite interesting results (the inside of the compartment was able to reach temperatures as low as 2°C), the project was deemed unfeasible by the group due to high energy consumption to cooling intensity ratio provided by the Pelcier system.
+The prototype demonstrated promising results, achieving internal temperatures as low as 2°C. However, the project was ultimately deemed unfeasible by the group due to the high energy consumption relative to the cooling output provided by the Peltier system. A more energy-efficient cooling mechanism would be required for a viable real-world implementation.

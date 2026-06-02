@@ -17,14 +17,14 @@ screenshots:
 
 # INTRODUCTION
 
-A Website created in HTML/CSS/Javascript and Bootstrap as part of a Computer Engineering assignment (2nd semester, Facens). The goal being the development of a basic website that uses Javascript behavior, DOM structure and custom styles. The group chose to develop a music playback website inspired by Spotify.
+Audio Player Website is a web application developed in HTML, CSS, JavaScript, and Bootstrap as part of a Computer Engineering assignment (2nd semester, FACENS). The project simulates a music streaming interface inspired by Spotify, allowing users to search and play back songs from a curated local library.
 
-# RELEVANCY
+# IMPLEMENTATION
 
-The project displays the use of modern web development tools such as HTML5 and Boostrap, tested with popular libraries such as Express.js.
+The application was built using HTML5, CSS3, and JavaScript with the Bootstrap framework for responsive layout and component styling. The project was developed and tested in conjunction with Express.js. Audio files are served directly from the repository — a pragmatic decision made due to the time-constrained scope of the assignment and not representative of a production approach.
 
-# RESULTS
+# RELEVANCE
 
-The project functioned as espected. The objective was to allow the user to search and playback songs. We planned to also implement a profile and customization page, scrapped features due to time constraints. The current form, however, provided the group a solid introduction to web development and the code is freely available for any beginners alike.
+Music streaming platforms represent one of the most widely used categories of web application today. By recreating the core playback and search experience, this project provided hands-on exposure to media handling in the browser, asynchronous JavaScript, and component-based layout design — skills that are directly transferable to production web development.
 
-- **Note: The page is ONLY available on portuguese. No translations have been made. Moreover, the songs used are directly accessible within the repository itself. A practice done solely due to time constraints. The solution is innapropriate and is not recommended.**
+> **Note:** The application is available in Portuguese only. Serving audio assets directly from the repository is not a recommended practice for production environments and was adopted solely for the purposes of this assignment.
