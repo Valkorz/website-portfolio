@@ -51,6 +51,36 @@ const activeProjects = projectsWithActivity
   .sort((a, b) => b.lastPush - a.lastPush)
   .slice(0, 3);
 
+function parseVersionTag(tag: string | null | undefined): string | null {
+  if (!tag) return null;
+  const match = tag.match(/^v?(\d+\.\d+(?:\.\d+)*(?:[.-][a-zA-Z0-9._-]*)?)/i);
+  return match ? match[1] : null;
+}
+
+async function fetchLatestRelease(githubPage: string): Promise<string | null> {
+  const match = githubPage.match(/github\.com\/([^\/]+)\/([^\/\?#]+)/);
+  if (!match) return null;
+  const [, owner, repoRaw] = match;
+  const repo = repoRaw.replace(/\.git$/, '');
+  try {
+    const res = await fetch(
+      `https://api.github.com/repos/${owner}/${repo}/releases?per_page=1`,
+      { headers: { Accept: 'application/vnd.github.v3+json', ...(import.meta.env.TOKEN ? { Authorization: `Bearer ${import.meta.env.TOKEN}` } : {}) } }
+    );
+    if (!res.ok) return null;
+    const data = await res.json();
+    if (!Array.isArray(data) || data.length === 0) return null;
+    return parseVersionTag(data[0].tag_name);
+  } catch { return null; }
+}
+
+const activeProjectsWithVersions = await Promise.all(
+  activeProjects.map(async (p) => ({
+    ...p,
+    liveVersion: p.data.githubPage ? await fetchLatestRelease(p.data.githubPage) : null,
+  }))
+);
+
 
 const domains = [
   {
@@ -85,9 +115,10 @@ const domains = [
 
 <LayoutSimple>
   <MatrixBanner projectCount={allProjects.length} />
+
   
 	<body>
-    <ActivityCarousel projects={activeProjects} />
+    <ActivityCarousel projects={activeProjectsWithVersions} />
     <hr class="w-[80%] mt-5 h-5 mx-auto border-slate-700/65 bg-neutral-quaternary rounded-sm">
     
     <!-- Domans tech stack: maximum of 4 -->

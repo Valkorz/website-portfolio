@@ -12,6 +12,7 @@ const serializableProjects = projects.map((p: any) => ({
   data: {
     title: p.data.title,
     version: p.data.version,
+    liveVersion: p.liveVersion ?? null,
     thumbnailSrc: p.data.thumbnail.src,
     screenshotSrcs: (p.data.screenshots ?? []).slice(0, 4).map((s: any) => s.src)
   }
@@ -58,7 +59,7 @@ const serializableProjects = projects.map((p: any) => ({
                             <p class="text-steam-accent text-sm font-bold uppercase">Last updated in {displayDate}</p>
                             <p class="text-slate-400 text-xs mt-1">Based on recent GitHub activity</p>
                             <div class="mt-3 flex justify-between items-center">
-                                <span class="bg-white/10 px-2 py-1 text-xs text-white uppercase font-mono">{project.data.version}</span>
+                                <span class="bg-white/10 px-2 py-1 text-xs text-white uppercase font-mono">{project.liveVersion ?? project.data.version}</span>
                             </div>
                         </div>
                     </div>
@@ -102,6 +103,7 @@ const serializableProjects = projects.map((p: any) => ({
       month: 'long', day: 'numeric', year: 'numeric', timeZone: 'UTC'
     });
     const href = `${base}/projects/${project.id.replace(/\.md$/, '')}`;
+    const displayVersion = project.data.liveVersion ?? project.data.version;
 
     const div = document.createElement('div');
     div.className = `carousel-item ${index === 0 ? 'block' : 'hidden'} z-0 animate-fade-in`;
@@ -120,7 +122,7 @@ const serializableProjects = projects.map((p: any) => ({
             <p class="text-steam-accent text-sm font-bold uppercase">Last updated in ${displayDate}</p>
             <p class="text-slate-400 text-xs mt-1">Based on recent GitHub activity (cached)</p>
             <div class="mt-3 flex justify-between items-center">
-              <span class="bg-white/10 px-2 py-1 text-xs text-white uppercase font-mono">${project.data.version}</span>
+              <span class="bg-white/10 px-2 py-1 text-xs text-white uppercase font-mono">${displayVersion}</span>
             </div>
           </div>
         </div>
