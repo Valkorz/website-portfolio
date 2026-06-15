@@ -1,6 +1,6 @@
 ---
 projectName: "desenvweb"
-githubPage: "https://github.com/Vulpyra/desenv_web"
+githubPage: "https://github.com/ValkorProjects/RendaFacil"
 supported: true
 title: "Renda Fácil"
 description: "A personal finance application with an approachable user interface, and an AI assistant for tips and advice."
