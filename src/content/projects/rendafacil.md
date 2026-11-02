@@ -1,5 +1,5 @@
 ---
-projectName: "desenvweb"
+projectName: "rendafacil"
 githubPage: "https://github.com/ValkorProjects/RendaFacil"
 supported: true
 title: "Renda Fácil"
