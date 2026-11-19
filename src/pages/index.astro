@@ -23,12 +23,20 @@ const projectsWithActivity = await Promise.all(
     }
 
     try{
-      const repoPath = repoUrl.split('github.com/')[1].replace(/\$/, '');
+      const repoPath = repoUrl.split('github.com/')[1].replace(/\/$/, '');
       const response = await fetch(`https://api.github.com/repos/${repoPath}`, {
-        headers: import.meta.env.TOKEN 
-          ? { Authorization: `Bearer ${import.meta.env.TOKEN}` } 
+        headers: import.meta.env.TOKEN
+          ? { Authorization: `Bearer ${import.meta.env.TOKEN}` }
           : {}
       });
+
+      if (!response.ok) {
+        const hint = response.status === 401 ? ' (TOKEN invalid or expired?)'
+          : response.status === 403 || response.status === 429 ? ' (rate limited?)'
+          : '';
+        console.warn(`GitHub API ${response.status} for ${repoPath}${hint}`);
+        return { ...project, lastPush: 0 };
+      }
 
       const data = await response.json();
       console.log(`data: ${data.name}, path: ${repoPath}, lastpush: ${new Date(data.pushed_at).getTime()}`);

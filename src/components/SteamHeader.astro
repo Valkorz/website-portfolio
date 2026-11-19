@@ -1,5 +1,6 @@
 ---
 const { activeTab = 'main', headerEnabled = true} = Astro.props;
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
 console.log(`class: ${headerEnabled? 'header-visible' : 'header-hidden'}`);
 ---
@@ -13,7 +14,7 @@ console.log(`class: ${headerEnabled? 'header-visible' : 'header-hidden'}`);
     </header>
     <nav class="flex gap-1 border-t border-white/5 z-3 relative">
       {['main', 'library', 'about'].map((tab) => (
-        <a  href={tab === 'main' ? '/website-portfolio' : `/website-portfolio/${tab}`}
+        <a  href={tab === 'main' ? `${base}/` : `${base}/${tab}`}
             class:list={[
             "px-6 py-4 uppercase text-sm font-bold font-mono tracking-widest transition-all duration-200 active:scale-95",
             activeTab === tab
